@@ -57,7 +57,6 @@ Copy `.env.example` to `.env` and fill in all values:
 ```
 BOT_TOKEN=                   # Discord bot token
 CLIENT_ID=                   # Discord application ID
-GUILD_ID=                    # Discord server ID to register commands to
 SPREADSHEET_ID=              # Google Sheets spreadsheet ID
 GOOGLE_SERVICE_ACCOUNT_EMAIL= # Service account email
 GOOGLE_PRIVATE_KEY=          # Service account private key (include the full key with newlines)

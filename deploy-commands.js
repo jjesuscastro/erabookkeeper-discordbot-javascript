@@ -28,7 +28,7 @@ const rest = new REST().setToken(process.env.BOT_TOKEN);
     try {
         console.log(`Registering ${commands.length} application command(s)...`);
         await rest.put(
-            Routes.applicationGuildCommands(process.env.CLIENT_ID, process.env.GUILD_ID),
+            Routes.applicationCommands(process.env.CLIENT_ID),
             { body: commands }
         );
         console.log('Successfully registered application commands.');
