@@ -1,5 +1,5 @@
 // /balance [@user] — check your own or another user's coin balance
-const { SlashCommandBuilder } = require('discord.js');
+const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 const { getUser } = require('../../utils/sheets');
 
 module.exports = {
@@ -14,7 +14,16 @@ module.exports = {
         await interaction.deferReply();
         try {
             const { characterName, balance } = await getUser(target.id);
-            await interaction.editReply(`**${characterName}**'s balance: **${balance}**`);
+            
+            var line = characterName + "'s balance";
+            var line2 = balance + "edels"
+            const embed = new EmbedBuilder()
+            .setTitle(line)
+            .setColor(0xB7B75F)
+            .setDescription(line2);
+
+             await interaction.editReply({ embeds: [embed] });
+            //await interaction.editReply(`**${characterName}**'s balance: **${balance}**`);
         } catch (err) {
             await interaction.editReply(`Error: ${err.message}`);
         }
