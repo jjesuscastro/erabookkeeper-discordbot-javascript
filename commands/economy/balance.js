@@ -16,7 +16,7 @@ module.exports = {
             const { characterName, balance } = await getUser(target.id);
             
             var line = characterName + "'s balance";
-            var line2 = balance + "edels";
+            var line2 = balance + " edels";
             const embed = new EmbedBuilder()
             .setTitle(line)
             .setColor(0xB7B75F)

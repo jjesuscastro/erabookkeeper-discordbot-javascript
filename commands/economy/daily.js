@@ -35,7 +35,7 @@ module.exports = {
 
             const newBalance = await addBalance(interaction.user.id, DAILY_AMOUNT);
             await setLastDaily(rowIndex, new Date().toISOString());
-            const characterName = await getUser(target.id);
+            const { characterName, balance } = await getUser(target.id);
             
             var line = "Claimed your daily **" + DAILY_AMOUNT + "**. Don\'t waste it! \n" + characterName + "\'s balance: **" + newBalance +"** edels";
              const embed = new EmbedBuilder()
