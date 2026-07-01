@@ -18,7 +18,7 @@
 > OWNER matches the NAME field in Profiles.
 
 ## Shop
-| A | B |
-|-|-|
-| ITEM | PRICE |
-| *data* | *data* |
+| A | B | C |
+|-|-|-|
+| ITEM | PRICE | DESCRIPTION |
+| *data* | *data* | *data* | 

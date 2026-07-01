@@ -7,7 +7,7 @@ module.exports = {
         .setName('takemoney')
         .setDescription("give us your money (mod only)")
         .addUserOption(opt =>
-            opt.setName('user').setDescription('User to take money from').setRequired(true))
+            opt.setName('user').setDescription('User to take edels from').setRequired(true))
         .addIntegerOption(opt =>
             opt.setName('amount').setDescription('Amount to take').setMinValue(1).setRequired(true))
         .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),

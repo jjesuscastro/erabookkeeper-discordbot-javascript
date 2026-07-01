@@ -7,7 +7,7 @@ module.exports = {
         .setName('transfermoney')
         .setDescription('Transfer money to another user')
         .addUserOption(opt =>
-            opt.setName('user').setDescription('User to send money to').setRequired(true))
+            opt.setName('user').setDescription('User to send edels to').setRequired(true))
         .addIntegerOption(opt =>
             opt.setName('amount').setDescription('Amount to transfer').setMinValue(1).setRequired(true)),
 
