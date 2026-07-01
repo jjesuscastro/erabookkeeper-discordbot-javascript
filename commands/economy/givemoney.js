@@ -20,7 +20,7 @@ module.exports = {
         try {
             const newBalance = await addBalance(target.id, amount);
 
-            var line = "Gave **" + amount + "** to " + target + "\nNew balance: " + newBalance + " edels";
+            var line = "Gave **" + amount + "** to @" + target + "\nNew balance: " + newBalance + " edels";
             
             const embed = new EmbedBuilder()
             .setTitle('Give Money')
