@@ -29,7 +29,15 @@ module.exports = {
                 const elapsed = Date.now() - new Date(lastDaily).getTime();
                 if (elapsed < COOLDOWN_MS) {
                     const remaining = COOLDOWN_MS - elapsed;
-                    return interaction.editReply(`Allowance already claimed! Come back in **${formatTimeRemaining(remaining)}**.`);
+                    var line = "Allowance already claimed! Come back in " + formatTimeRemaining(remaining);
+                    const embed = new EmbedBuilder()
+                        .setTitle('Wait a little more...')
+                        .setColor(0xB7B75F)
+                        .setDescription(line);
+
+                    return interaction.editReply({ embeds: [embed] });
+                    
+                    //return interaction.editReply(`Allowance already claimed! Come back in **${formatTimeRemaining(remaining)}**.`);
                 }
             }
 

@@ -16,9 +16,24 @@ module.exports = {
         const amount = interaction.options.getInteger('amount');
         const sender = interaction.user;
 
-        if (target.id === sender.id) return interaction.reply({ content: 'You cannot transfer money to yourself.', ephemeral: true });
-        if (target.bot) return interaction.reply({ content: 'You cannot transfer money to a bot.', ephemeral: true });
+        if (target.id === sender.id){ 
+            const embed = new EmbedBuilder()
+            .setTitle('Uh oh...')
+            .setColor(0xB7B75F)
+            .setDescription('You cannot transfer money to yourself!');
 
+            return interaction.editReply({ embeds: [embed] });
+            //return interaction.reply({ content: 'You cannot transfer money to yourself.', ephemeral: true });
+        }
+        if (target.bot){ 
+            const embed = new EmbedBuilder()
+            .setTitle('Uh oh...')
+            .setColor(0xB7B75F)
+            .setDescription('You cannot transfer money to a bot!');
+
+            return interaction.editReply({ embeds: [embed] });
+            //return interaction.reply({ content: 'You cannot transfer money to a bot.', ephemeral: true });
+        }
         await interaction.deferReply();
         try {
             // Deduct first — if this fails (insufficient funds), addBalance is never called
