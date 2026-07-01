@@ -30,7 +30,7 @@ module.exports = {
             }
 
             const { characterName, age, pronouns, height, profile, balance } = await getUser(userId);
-            const mun = await client.users.fetch(userId);
+            const mun = await interaction.users.fetch(userId);
 
             const embed = new EmbedBuilder()
                 .setTitle(characterName)
