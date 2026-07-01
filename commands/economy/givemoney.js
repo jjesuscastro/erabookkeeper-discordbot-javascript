@@ -20,7 +20,7 @@ module.exports = {
         try {
             const newBalance = await addBalance(target.id, amount);
 
-            var line = "Gave **" + amount + "** to @" + target + "\nNew balance: " + newBalance + " edels";
+            var line = "Gave **" + amount + "** to <@" + target + ">\nNew balance: " + newBalance + " edels";
             
             const embed = new EmbedBuilder()
             .setTitle('Give Money')
@@ -29,7 +29,7 @@ module.exports = {
 
             await interaction.editReply({ embeds: [embed] });
 
-            //await interaction.editReply(`Gave **${amount}** to ${target}. New balance: **${newBalance}**`);
+            //await interaction.editReply(`Gave **${amount}** to can${target}. New balance: **${newBalance}**`);
         } catch (err) {
             await interaction.editReply(`Error: ${err.message}`);
         }
