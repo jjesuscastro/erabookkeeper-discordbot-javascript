@@ -146,7 +146,7 @@ async function deductBalance(userId, amount) {
 
 async function getShopItems() {
     const rows = await readRange('Shop!A:C');
-    return rows.slice(1).map(r => ({ name: r[0], price: parseInt(r[1] || '0', 10), itemdesc: r[3] }));
+    return rows.slice(1).map(r => ({ name: r[0], price: parseInt(r[1] || '0', 10), itemdesc: r[2] }));
 }
 
 // ── Inventory ─────────────────────────────────────────────────────────────────
