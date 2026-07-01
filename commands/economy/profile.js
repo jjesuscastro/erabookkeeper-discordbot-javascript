@@ -30,15 +30,18 @@ module.exports = {
             }
 
             const { characterName, age, pronouns, height, balance } = await getUser(userId);
+            const mun = await client.users.fetch(userId);
 
             const embed = new EmbedBuilder()
                 .setTitle(characterName)
                 .setColor(0xB7B75F)
                 .addFields(
+                    { name: 'Mun',      value: mun      || '—', inline: true },
                     { name: 'Age',      value: age      || '—', inline: true },
+                    { name: 'App Link', value: pronouns || '—', inline: true },
                     { name: 'Pronouns', value: pronouns || '—', inline: true },
                     { name: 'Height',   value: height   || '—', inline: true },
-                    { name: 'Balance',  value: `${balance} edels`, inline: true },
+                    //{ name: 'Balance',  value: `\`\`\`✧ ${balance} edels ✧\`\`\``, inline: true },
                 );
 
             await interaction.editReply({ embeds: [embed] });
