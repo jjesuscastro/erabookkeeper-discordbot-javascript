@@ -1,5 +1,5 @@
 // /daily — claim a daily coin bonus (24h cooldown)
-const { SlashCommandBuilder } = require('discord.js');
+const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 const { getUser, addBalance, setLastDaily } = require('../../utils/sheets');
 
 const DAILY_AMOUNT = 100;
