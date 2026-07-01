@@ -17,9 +17,9 @@ module.exports = {
             if (items.length === 0) return interaction.editReply('The shop is currently empty.');
 
             const embed = new EmbedBuilder()
-                .setTitle('Shop')
-                .setColor(0xf1c40f)
-                .setDescription(items.map(i => `**${i.name}** — ${i.price} coins`).join('\n'));
+                .setTitle('Eirenhel Services')
+                .setColor(0xB7B75F)
+                .setDescription(items.map(i => `**${i.name}** — ${i.price} coins - ${i.itemdesc}`).join('\n'));
 
             await interaction.editReply({ embeds: [embed] });
         } catch (err) {

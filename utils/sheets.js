@@ -142,11 +142,11 @@ async function deductBalance(userId, amount) {
 }
 
 // ── Shop ──────────────────────────────────────────────────────────────────────
-// Columns: A=ITEM, B=PRICE
+// Columns: A=ITEM, B=PRICE, C = description
 
 async function getShopItems() {
-    const rows = await readRange('Shop!A:B');
-    return rows.slice(1).map(r => ({ name: r[0], price: parseInt(r[1] || '0', 10) }));
+    const rows = await readRange('Shop!A:C');
+    return rows.slice(1).map(r => ({ name: r[0], price: parseInt(r[1] || '0', 10), itemdesc: r[3] }));
 }
 
 // ── Inventory ─────────────────────────────────────────────────────────────────
