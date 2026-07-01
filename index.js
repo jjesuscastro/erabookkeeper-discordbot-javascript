@@ -6,7 +6,7 @@ const path = require('path');
 // Book Keeper — main entry point
 // Loads all commands from /commands subfolders and routes Discord interactions
 
-const client = new Client({ intents: [GatewayIntentBits.Guilds] });
+const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages] });
 client.commands = new Collection();
 
 // Dynamically load every command file from commands/<folder>/<file>.js
