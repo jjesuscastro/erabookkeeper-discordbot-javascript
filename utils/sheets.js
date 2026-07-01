@@ -20,6 +20,7 @@ const COL = {
     AGE:        2, // C
     PRONOUNS:   3, // D
     HEIGHT:     4, // E
+    PROFILE:    5, // F
     BALANCE:    6, // G
     LAST_DAILY: 7, // H
 };
@@ -113,6 +114,7 @@ async function getUser(userId) {
                 age:           rows[i][COL.AGE] || '',
                 pronouns:      rows[i][COL.PRONOUNS] || '',
                 height:        rows[i][COL.HEIGHT] || '',
+                profile:       rows[i][COL.PROFILE] || '',
                 balance:       parseInt(rows[i][COL.BALANCE] || '0', 10),
                 lastDaily:     rows[i][COL.LAST_DAILY] || null,
             };

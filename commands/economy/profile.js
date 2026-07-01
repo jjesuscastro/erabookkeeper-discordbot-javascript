@@ -29,8 +29,7 @@ module.exports = {
                 userId = interaction.user.id;
             }
 
-            const { characterName, age, pronouns, height, balance } = await getUser(userId);
-            const mun = await client.users.fetch(userId);
+            const { characterName, age, pronouns, height, profile, balance } = await getUser(userId);
 
             const embed = new EmbedBuilder()
                 .setTitle(characterName)
@@ -41,7 +40,8 @@ module.exports = {
                     { name: 'App Link', value: pronouns || '—', inline: true },
                     { name: 'Pronouns', value: pronouns || '—', inline: true },
                     { name: 'Height',   value: height   || '—', inline: true },
-                    //{ name: 'Balance',  value: `\`\`\`✧ ${balance} edels ✧\`\`\``, inline: true },
+                    { name: 'Profile',  value: profile  || '—', inline: true },
+                    { name: 'Balance',  value: `${balance} edels`, inline: true },
                 );
 
             await interaction.editReply({ embeds: [embed] });
