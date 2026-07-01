@@ -1,6 +1,7 @@
-// /logthread <start> <end> — count words per user between two messages
+// /logthread <start> <end> — count words per user between two messages, with optional edel grant
 // Accepts message IDs (uses current channel) or full Discord message links
-const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
+const { SlashCommandBuilder, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
+const { addBalance } = require('../../utils/sheets');
 
 function parseInput(input, fallbackChannelId) {
     const linkMatch = input.match(/channels\/\d+\/(\d+)\/(\d+)/);
@@ -11,6 +12,21 @@ function parseInput(input, fallbackChannelId) {
 
 function countWords(content) {
     return content.trim().split(/\s+/).filter(w => w.length > 0).length;
+}
+
+function buildButtons(disabled = false) {
+    return new ActionRowBuilder().addComponents(
+        new ButtonBuilder()
+            .setCustomId('logthread_grant')
+            .setLabel('Grant Edels')
+            .setStyle(ButtonStyle.Success)
+            .setDisabled(disabled),
+        new ButtonBuilder()
+            .setCustomId('logthread_cancel')
+            .setLabel('Cancel')
+            .setStyle(ButtonStyle.Secondary)
+            .setDisabled(disabled),
+    );
 }
 
 module.exports = {
@@ -90,6 +106,7 @@ module.exports = {
 
             const results = [...wordMap.entries()]
                 .map(([userId, words]) => ({
+                    userId,
                     name: memberMap.get(userId)?.displayName ?? userId,
                     words,
                 }))
@@ -99,7 +116,6 @@ module.exports = {
 
             const lines = results.map((r, i) => `${i + 1}. **${r.name}** — ${r.words} words`);
 
-            // Respect Discord's 4096 char embed description limit
             let description = '';
             let shown = 0;
             for (const line of lines) {
@@ -107,10 +123,7 @@ module.exports = {
                 description += (description ? '\n' : '') + line;
                 shown++;
             }
-            if (shown < lines.length) {
-                description += `\n*...and ${lines.length - shown} more*`;
-            }
-
+            if (shown < lines.length) description += `\n*...and ${lines.length - shown} more*`;
             description += `\n\n${totalWords} total words · ${messageCount} messages scanned`;
 
             const embed = new EmbedBuilder()
@@ -118,7 +131,50 @@ module.exports = {
                 .setColor(0xB7B75F)
                 .setDescription(description);
 
-            await interaction.editReply({ embeds: [embed] });
+            const reply = await interaction.editReply({ embeds: [embed], components: [buildButtons()] });
+
+            // ── Button collector ──────────────────────────────────────────────
+            const collector = reply.createMessageComponentCollector({
+                filter: i => i.user.id === interaction.user.id,
+                time: 60_000,
+                max: 1,
+            });
+
+            collector.on('collect', async i => {
+                await i.update({ components: [buildButtons(true)] });
+
+                if (i.customId === 'logthread_cancel') return;
+
+                // Grant 1 edel per word to each user
+                const granted = [];
+                const failed  = [];
+
+                for (const r of results) {
+                    try {
+                        await addBalance(r.userId, r.words);
+                        granted.push(`**${r.name}** +${r.words} edels`);
+                    } catch {
+                        failed.push(r.name);
+                    }
+                }
+
+                let grantDesc = granted.join('\n');
+                if (failed.length > 0) grantDesc += `\n\nNo profile found for: ${failed.map(n => `**${n}**`).join(', ')}`;
+
+                const grantEmbed = new EmbedBuilder()
+                    .setTitle('Edels Granted!')
+                    .setColor(0xB7B75F)
+                    .setDescription(grantDesc);
+
+                await interaction.followUp({ embeds: [grantEmbed] });
+            });
+
+            collector.on('end', (_, reason) => {
+                if (reason === 'time') {
+                    interaction.editReply({ components: [buildButtons(true)] }).catch(() => {});
+                }
+            });
+
         } catch (err) {
             await interaction.editReply(`Error: ${err.message}`);
         }
