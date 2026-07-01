@@ -3,7 +3,8 @@ const { SlashCommandBuilder } = require('discord.js');
 const { getUser, addBalance, setLastDaily } = require('../../utils/sheets');
 
 const DAILY_AMOUNT = 100;
-const COOLDOWN_MS = 24 * 60 * 60 * 1000;
+const COOLDOWN_MS = 0;
+//const COOLDOWN_MS = 24 * 60 * 60 * 1000;
 
 function formatTimeRemaining(ms) {
     const totalSeconds = Math.floor(ms / 1000);
@@ -15,7 +16,7 @@ function formatTimeRemaining(ms) {
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('daily')
-        .setDescription(`Claim your daily ${DAILY_AMOUNT} coins (24h cooldown)`),
+        .setDescription(`Claim your daily allowance!`),
 
     async execute(interaction) {
         await interaction.deferReply();
@@ -27,13 +28,21 @@ module.exports = {
                 const elapsed = Date.now() - new Date(lastDaily).getTime();
                 if (elapsed < COOLDOWN_MS) {
                     const remaining = COOLDOWN_MS - elapsed;
-                    return interaction.editReply(`You already claimed your daily. Come back in **${formatTimeRemaining(remaining)}**.`);
+                    return interaction.editReply(`Allowance already claimed! Come back in **${formatTimeRemaining(remaining)}**.`);
                 }
             }
 
             const newBalance = await addBalance(interaction.user.id, DAILY_AMOUNT);
             await setLastDaily(rowIndex, new Date().toISOString());
-            await interaction.editReply(`Claimed your daily **${DAILY_AMOUNT}**! Balance: **${newBalance}**`);
+            const target = await getUser(target.id);
+            
+             const embed = new EmbedBuilder()
+                .setTitle('Here\'s your allowance!')
+                .setColor(0xE5CA95)
+                .setDescription('Claimed your daily **${DAILY_AMOUNT}**! Don\'t waste it! \n **${characterName}**\'s balance: **${balance}**');
+
+            await interaction.editReply({ embeds: [embed] });
+            //await interaction.editReply(`Claimed your daily **${DAILY_AMOUNT}**! Balance: **${newBalance}**`);
         } catch (err) {
             await interaction.editReply(`Error: ${err.message}`);
         }

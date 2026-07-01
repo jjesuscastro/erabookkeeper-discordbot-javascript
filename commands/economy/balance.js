@@ -7,7 +7,7 @@ module.exports = {
         .setName('balance')
         .setDescription("Check a user's balance")
         .addUserOption(opt =>
-            opt.setName('user').setDescription('User to check (defaults to yourself)').setRequired(false)),
+            opt.setName('user').setDescription('user to check (default: you)').setRequired(false)),
 
     async execute(interaction) {
         const target = interaction.options.getUser('user') ?? interaction.user;
