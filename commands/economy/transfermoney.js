@@ -1,5 +1,5 @@
 // /transfermoney @user <amount> — send coins to another user (deducted from your balance)
-const { SlashCommandBuilder } = require('discord.js');
+const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 const { deductBalance, addBalance } = require('../../utils/sheets');
 
 module.exports = {
@@ -24,6 +24,17 @@ module.exports = {
             // Deduct first — if this fails (insufficient funds), addBalance is never called
             const newBalance = await deductBalance(sender.id, amount);
             await addBalance(target.id, amount);
+            await deductBalance(sender.id, amount);
+
+            var line = "Transferred **" + amount + "** from <@" + sender + "> to <@" + target + ">";
+            
+            const embed = new EmbedBuilder()
+            .setTitle('Money Transferred!')
+            .setColor(0xB7B75F)
+            .setDescription(line);
+
+            await interaction.editReply({ embeds: [embed] });
+            
             await interaction.editReply(`Transferred **${amount}** to ${target}. Your balance: **${newBalance}**`);
         } catch (err) {
             await interaction.editReply(`Error: ${err.message}`);
