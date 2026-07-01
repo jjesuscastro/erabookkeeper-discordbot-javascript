@@ -1,11 +1,11 @@
 // /givemoney @user <amount> — admin only: add coins to a user (no one loses balance)
-const { SlashCommandBuilder, PermissionFlagsBits } = require('discord.js');
+const { SlashCommandBuilder, EmbedBuilder, PermissionFlagsBits } = require('discord.js');
 const { addBalance } = require('../../utils/sheets');
 
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('givemoney')
-        .setDescription('Add coins to a user (admin only)')
+        .setDescription('free money (mod use only)')
         .addUserOption(opt =>
             opt.setName('user').setDescription('User to give coins to').setRequired(true))
         .addIntegerOption(opt =>
@@ -19,7 +19,17 @@ module.exports = {
         await interaction.deferReply();
         try {
             const newBalance = await addBalance(target.id, amount);
-            await interaction.editReply(`Gave **${amount}** to ${target}. New balance: **${newBalance}**`);
+
+            var line = "Gave **" + amount + "** to " + target + "\nNew balance: " + newBalance + " edels";
+            
+            const embed = new EmbedBuilder()
+            .setTitle('Give Money')
+            .setColor(0xB7B75F)
+            .setDescription(line);
+
+            await interaction.editReply({ embeds: [embed] });
+
+            //await interaction.editReply(`Gave **${amount}** to ${target}. New balance: **${newBalance}**`);
         } catch (err) {
             await interaction.editReply(`Error: ${err.message}`);
         }
