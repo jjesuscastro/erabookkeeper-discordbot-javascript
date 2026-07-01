@@ -30,6 +30,7 @@ module.exports = {
             }
 
             const { characterName, age, pronouns, height, profile, balance } = await getUser(userId);
+            const mun = await client.users.fetch(userId);
 
             const embed = new EmbedBuilder()
                 .setTitle(characterName)
@@ -41,7 +42,7 @@ module.exports = {
                     { name: 'Pronouns', value: pronouns || '—', inline: true },
                     { name: 'Height',   value: height   || '—', inline: true },
                     { name: 'Profile',  value: profile  || '—', inline: true },
-                    { name: 'Balance',  value: `${balance} edels`, inline: true },
+                    //{ name: 'Balance',  value: `${balance} edels`, inline: true },
                 );
 
             await interaction.editReply({ embeds: [embed] });
