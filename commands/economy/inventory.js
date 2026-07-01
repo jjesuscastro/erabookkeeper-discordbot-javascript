@@ -7,16 +7,19 @@ const { setInventoryCache } = require('../../utils/cache');
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('inventory')
-        .setDescription('View your inventory'),
+        .setDescription('View a user\'s inventory')
+        .addUserOption(opt =>
+            opt.setName('user').setDescription('user to check (default: you)').setRequired(false)),
 
     async execute(interaction) {
+        const target = interaction.options.getUser('user') ?? interaction.user;
         await interaction.deferReply();
         try {
             // Resolve Discord user → character name before querying inventory
-            const { characterName } = await getUser(interaction.user.id);
+            const { characterName } = await getUser(target.id);
             const allItems = await getInventory(characterName);
             const items = allItems.filter(i => i.quantity > 0);
-            setInventoryCache(interaction.user.id, items); // warm cache for /use and /transferitem autocomplete
+            setInventoryCache(target.id, items); // warm cache for /use and /transferitem autocomplete
 
             if (items.length === 0) return interaction.editReply('Your inventory is empty.');
 
