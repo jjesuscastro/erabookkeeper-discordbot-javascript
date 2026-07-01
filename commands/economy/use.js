@@ -26,6 +26,7 @@ module.exports = {
     async execute(interaction) {
         const itemName = interaction.options.getString('item');
         const quantity = interaction.options.getInteger('quantity');
+        const target = interaction.user;
 
         await interaction.deferReply();
         try {
@@ -36,7 +37,7 @@ module.exports = {
             const embed = new EmbedBuilder()
                 .setTitle('Item Used!')
                 .setColor(0xB7B75F)
-                .setDescription(`<@${user.id}> used x${quantity} **${itemName}**`);
+                .setDescription(`<@${target.id}> used x${quantity} **${itemName}**`);
 
             await interaction.editReply({ embeds: [embed] });
 
