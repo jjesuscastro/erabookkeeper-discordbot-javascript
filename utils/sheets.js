@@ -201,8 +201,17 @@ async function removeInventoryItem(characterName, itemName, quantity) {
     await writeCell(`Inventory!C${existing.rowIndex}`, existing.quantity - quantity);
 }
 
+// Returns all profiles as { discordId, characterName } pairs (for autocomplete)
+async function getAllProfiles() {
+    const rows = await readRange('Profiles!A:H');
+    return rows.slice(1)
+        .filter(r => r[COL.DISCORD_ID] && r[COL.NAME])
+        .map(r => ({ discordId: r[COL.DISCORD_ID], characterName: r[COL.NAME] }));
+}
+
 module.exports = {
     getUser,
+    getAllProfiles,
     setLastDaily,
     addBalance,
     deductBalance,

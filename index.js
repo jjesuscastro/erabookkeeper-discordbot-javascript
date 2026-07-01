@@ -24,8 +24,18 @@ for (const folder of commandFolders) {
     }
 }
 
-client.once('ready', () => {
+client.once('ready', async () => {
     console.log(`Ready! Logged in as ${client.user.tag}`);
+    try {
+        const { getAllProfiles, getShopItems } = require('./utils/sheets');
+        const { setProfilesCache, setShopCache } = require('./utils/cache');
+        const [profiles, shopItems] = await Promise.all([getAllProfiles(), getShopItems()]);
+        setProfilesCache(profiles);
+        setShopCache(shopItems);
+        console.log(`Cache warmed: ${profiles.length} profiles, ${shopItems.length} shop items`);
+    } catch (err) {
+        console.error('Failed to warm cache on startup:', err);
+    }
 });
 
 client.on('interactionCreate', async interaction => {

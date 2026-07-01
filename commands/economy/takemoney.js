@@ -1,35 +1,40 @@
-// /takemoney @user <amount> — admin only: remove coins from a user and destroy them
+// /takemoney <user> <amount> — admin only: remove coins from a user and destroy them
+// <user> accepts a character name (autocomplete) or a Discord @mention
 const { SlashCommandBuilder, PermissionFlagsBits, EmbedBuilder } = require('discord.js');
 const { deductBalance } = require('../../utils/sheets');
+const { resolveTarget, autocompleteProfiles } = require('../../utils/resolver');
 
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('takemoney')
         .setDescription("give us your money (mod only)")
-        .addUserOption(opt =>
-            opt.setName('user').setDescription('User to take edels from').setRequired(true))
+        .addStringOption(opt =>
+            opt.setName('user').setDescription('Character name or @mention').setRequired(true).setAutocomplete(true))
         .addIntegerOption(opt =>
             opt.setName('amount').setDescription('Amount to take').setMinValue(1).setRequired(true))
         .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
 
+    async autocomplete(interaction) {
+        const focused = interaction.options.getFocused();
+        const choices = await autocompleteProfiles(focused);
+        await interaction.respond(choices);
+    },
+
     async execute(interaction) {
-        const target = interaction.options.getUser('user');
+        const input = interaction.options.getString('user');
         const amount = interaction.options.getInteger('amount');
 
         await interaction.deferReply();
         try {
-            // Coins are deducted and not given to anyone — they're simply removed
-            const newBalance = await deductBalance(target.id, amount);
-            var line = "Took **" + amount + "** edels from <@" + target + ">\nNew balance: " + newBalance + " edels";
-            
+            const target = await resolveTarget(input);
+            const newBalance = await deductBalance(target.discordId, amount);
+
             const embed = new EmbedBuilder()
-            .setTitle('Goodbye Edels...')
-            .setColor(0xB7B75F)
-            .setDescription(line);
+                .setTitle('Goodbye Edels...')
+                .setColor(0xB7B75F)
+                .setDescription(`Took **${amount}** edels from <@${target.discordId}>\nNew balance: ${newBalance} edels`);
 
             await interaction.editReply({ embeds: [embed] });
-            
-            //await interaction.editReply(`Took **${amount}** from ${target}. Their new balance: **${newBalance}**`);
         } catch (err) {
             await interaction.editReply(`Error: ${err.message}`);
         }
