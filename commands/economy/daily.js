@@ -35,12 +35,12 @@ module.exports = {
             //const target = interaction.options.getUser('user') ?? interaction.user;
             const newBalance = await addBalance(interaction.user.id, DAILY_AMOUNT);
             await setLastDaily(rowIndex, new Date().toISOString());
-            const target = await getUser(target.id);
+            //const target = await getUser(target.id);
             
              const embed = new EmbedBuilder()
                 .setTitle('Here\'s your allowance!')
                 .setColor(0xE5CA95)
-                .setDescription('Claimed your daily **${DAILY_AMOUNT}**! Don\'t waste it! \n **${characterName}**\'s balance: **${balance}**');
+                .setDescription('Claimed your daily **${DAILY_AMOUNT}**! Don\'t waste it! \n Balance: **${balance}**');
 
             await interaction.editReply({ embeds: [embed] });
             //await interaction.editReply(`Claimed your daily **${DAILY_AMOUNT}**! Balance: **${newBalance}**`);
