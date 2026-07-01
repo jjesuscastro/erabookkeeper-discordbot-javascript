@@ -48,7 +48,7 @@ module.exports = {
             var line = "Claimed your daily **" + DAILY_AMOUNT + "**. Don\'t waste it! \n" + characterName + "\'s balance: " + newBalance +" edels";
              const embed = new EmbedBuilder()
                 .setTitle('Here\'s your allowance!')
-                .setColor(0xB7B75F)
+                .setColor(0xF1CEB8)
                 .setDescription(line);
 
             await interaction.editReply({ embeds: [embed] });

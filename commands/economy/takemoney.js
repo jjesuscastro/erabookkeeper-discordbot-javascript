@@ -31,7 +31,7 @@ module.exports = {
 
             const embed = new EmbedBuilder()
                 .setTitle('Goodbye Edels...')
-                .setColor(0xB7B75F)
+                .setColor(0xF1CEB8)
                 .setDescription(`Took **${amount}** edels from <@${target.discordId}>\nNew balance: ${newBalance} edels`);
 
             await interaction.editReply({ embeds: [embed] });

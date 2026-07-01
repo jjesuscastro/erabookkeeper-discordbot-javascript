@@ -36,7 +36,7 @@ module.exports = {
             
             const embed = new EmbedBuilder()
                 .setTitle('Item Used!')
-                .setColor(0xB7B75F)
+                .setColor(0xCEA45A)
                 .setDescription(`<@${target.id}> used x${quantity} **${itemName}**`);
 
             await interaction.editReply({ embeds: [embed] });

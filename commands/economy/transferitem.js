@@ -58,7 +58,7 @@ module.exports = {
 
             const embed = new EmbedBuilder()
                 .setTitle('Item Transferred!')
-                .setColor(0xB7B75F)
+                .setColor(0xCEA45A)
                 .setDescription(`Transferred x${quantity} **${itemName}** from <@${sender.id}> to <@${target.discordId}>`);
 
             await interaction.editReply({ embeds: [embed] });
