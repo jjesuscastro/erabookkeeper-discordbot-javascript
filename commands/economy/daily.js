@@ -32,7 +32,7 @@ module.exports = {
                 }
             }
 
-            const target = interaction.options.getUser('user') ?? interaction.user;
+            //const target = interaction.options.getUser('user') ?? interaction.user;
             const newBalance = await addBalance(interaction.user.id, DAILY_AMOUNT);
             await setLastDaily(rowIndex, new Date().toISOString());
             const target = await getUser(target.id);
