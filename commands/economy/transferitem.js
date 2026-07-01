@@ -1,6 +1,6 @@
 // /transferitem @user <item> <quantity> — give items from your inventory to another user
 // Autocomplete reads from sender's inventory cache; falls back to Sheets if cold
-const { SlashCommandBuilder } = require('discord.js');
+const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 const { getUser, getInventory, removeInventoryItem, addInventoryItem } = require('../../utils/sheets');
 const { getInventoryCache, clearInventoryCache } = require('../../utils/cache');
 
