@@ -37,7 +37,7 @@ module.exports = {
             await addInventoryItem(characterName, shopItem.name, quantity);
             clearInventoryCache(interaction.user.id); // inventory changed — force fresh fetch on next autocomplete
 
-            var line = "Bought x" + quantity + "**" + shopItem.name + "** for " + totalCost + "\nNew balance: " + newBalance + " edels";
+            var line = "Bought x" + quantity + " **" + shopItem.name + "** for " + totalCost + "\nNew balance: " + newBalance + " edels";
             
             const embed = new EmbedBuilder()
             .setTitle('Item bought!')
