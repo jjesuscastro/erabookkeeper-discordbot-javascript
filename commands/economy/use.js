@@ -1,6 +1,6 @@
 // /use <item> <quantity> — consume items from your inventory
 // Autocomplete reads from inventory cache (warmed by /inventory); falls back to Sheets if cold
-const { SlashCommandBuilder } = require('discord.js');
+const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 const { getUser, getInventory, removeInventoryItem } = require('../../utils/sheets');
 const { getInventoryCache, clearInventoryCache } = require('../../utils/cache');
 
@@ -32,7 +32,15 @@ module.exports = {
             const { characterName } = await getUser(interaction.user.id);
             await removeInventoryItem(characterName, itemName, quantity);
             clearInventoryCache(interaction.user.id); // inventory changed — force fresh fetch on next autocomplete
-            await interaction.editReply(`Used **${quantity}x ${itemName}**.`);
+            
+            const embed = new EmbedBuilder()
+                .setTitle('Item Used!')
+                .setColor(0xB7B75F)
+                .setDescription(`<@${user.id}> used x${quantity} **${itemName}**`);
+
+            await interaction.editReply({ embeds: [embed] });
+
+            //await interaction.editReply(`Used **${quantity}x ${itemName}**.`);
         } catch (err) {
             await interaction.editReply(`Error: ${err.message}`);
         }

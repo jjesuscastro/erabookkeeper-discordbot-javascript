@@ -16,7 +16,8 @@ module.exports = {
         await interaction.deferReply();
         try {
             // Resolve Discord user → character name before querying inventory
-            const { characterName } = await getUser(target.id);
+            const { characterName, balance } = await getUser(target.id);
+            
             const allItems = await getInventory(characterName);
             const items = allItems.filter(i => i.quantity > 0);
             setInventoryCache(target.id, items); // warm cache for /use and /transferitem autocomplete
@@ -26,7 +27,7 @@ module.exports = {
             const embed = new EmbedBuilder()
                 .setTitle(`${characterName}'s Inventory`)
                 .setColor(0x3498db)
-                .setDescription(items.map(i => `- x${i.quantity} **${i.itemName}**`).join('\n'));
+                .setDescription(`**BALANCE**\n\`\`\`✧ ${balance} edels ✧\`\`\`\n**ITEMS**\n`.join(items.map(i => `\`x${i.quantity}\` **${i.itemName}**`).join('\n')));
 
             await interaction.editReply({ embeds: [embed] });
         } catch (err) {
