@@ -19,6 +19,7 @@ module.exports = {
         .setDescription(`Claim your daily allowance!`),
 
     async execute(interaction) {
+        const target = interaction.options.getUser('user') ?? interaction.user;
         await interaction.deferReply();
         try {
             // rowIndex is needed to write LastDaily back to the correct row
@@ -32,15 +33,14 @@ module.exports = {
                 }
             }
 
-            //const target = interaction.options.getUser('user') ?? interaction.user;
             const newBalance = await addBalance(interaction.user.id, DAILY_AMOUNT);
             await setLastDaily(rowIndex, new Date().toISOString());
-            //const target = await getUser(target.id);
+            const name = await getUser(target.id);
             
-            var line = "Claimed your daily **" + DAILY_AMOUNT + "**! Don\'t waste it! \n Balance: **" + newBalance +"**";
+            var line = "Claimed your daily **" + DAILY_AMOUNT + "**. Don\'t waste it! \n" + name +"\'s balance: **" + newBalance +"** edels";
              const embed = new EmbedBuilder()
                 .setTitle('Here\'s your allowance!')
-                .setColor(0xE5CA95)
+                .setColor(0xB7B75F)
                 .setDescription(line);
 
             await interaction.editReply({ embeds: [embed] });
