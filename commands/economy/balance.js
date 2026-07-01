@@ -34,7 +34,7 @@ module.exports = {
             const embed = new EmbedBuilder()
                 .setTitle(`${characterName}'s balance`)
                 .setColor(0xB7B75F)
-                .setDescription(`${balance} edels`);
+                .setDescription(`\`\`\`✧ ${balance} edels ✧\`\`\``);
 
             await interaction.editReply({ embeds: [embed] });
         } catch (err) {
