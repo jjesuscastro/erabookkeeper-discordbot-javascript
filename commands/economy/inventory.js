@@ -23,7 +23,7 @@ module.exports = {
             const embed = new EmbedBuilder()
                 .setTitle(`${characterName}'s Inventory`)
                 .setColor(0x3498db)
-                .setDescription(items.map(i => `**${i.itemName}** x${i.quantity}`).join('\n'));
+                .setDescription(items.map(i => `- x${i.quantity} **${i.itemName}**`).join('\n'));
 
             await interaction.editReply({ embeds: [embed] });
         } catch (err) {
