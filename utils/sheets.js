@@ -17,6 +17,9 @@ const DISCORD_ID_COL = 'A';
 const COL = {
     DISCORD_ID: 0, // A
     NAME:       1, // B
+    AGE:        2, // C
+    PRONOUNS:   3, // D
+    HEIGHT:     4, // E
     BALANCE:    6, // G
     LAST_DAILY: 7, // H
 };
@@ -107,8 +110,11 @@ async function getUser(userId) {
             return {
                 rowIndex: i + 1, // 1-based for Sheets API write calls
                 characterName: rows[i][COL.NAME] || '',
-                balance: parseInt(rows[i][COL.BALANCE] || '0', 10),
-                lastDaily: rows[i][COL.LAST_DAILY] || null,
+                age:           rows[i][COL.AGE] || '',
+                pronouns:      rows[i][COL.PRONOUNS] || '',
+                height:        rows[i][COL.HEIGHT] || '',
+                balance:       parseInt(rows[i][COL.BALANCE] || '0', 10),
+                lastDaily:     rows[i][COL.LAST_DAILY] || null,
             };
         }
     }
