@@ -35,12 +35,12 @@ module.exports = {
                 .setTitle(characterName)
                 .setColor(0xB7B75F)
                 .addFields(
-                    { name: 'Mun',      value: '<@${sender.id}>'      || '—', inline: true },
                     { name: 'Age',      value: age      || '—', inline: true },
-                    { name: 'App Link', value: pronouns || '—', inline: true },
+                    { name: 'Profile', value: profile || '—', inline: true },
                     { name: 'Pronouns', value: pronouns || '—', inline: true },
                     { name: 'Height',   value: height   || '—', inline: true },
-                    { name: 'Profile',  value: profile  || '—', inline: true },
+                    { name: 'Mun',      value: `<@${userId}>`      || '—', inline: true },
+                    //{ name: 'Profile',  value: profile  || '—', inline: true },
                     //{ name: 'Balance',  value: `${balance} edels`, inline: true },
                 );
 
