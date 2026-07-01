@@ -27,7 +27,7 @@ module.exports = {
             const embed = new EmbedBuilder()
                 .setTitle(`${characterName}'s Inventory`)
                 .setColor(0x3498db)
-                .setDescription(`**BALANCE**\n\`\`\`✧ ${balance} edels ✧\`\`\`\n**ITEMS**\n`.join(items.map(i => `\`x${i.quantity}\` **${i.itemName}**`).join('\n')));
+                .setDescription(items.map(i => `\`x${i.quantity}\` **${i.itemName}**`).join('\n**BALANCE**\n\`\`\`✧ ${balance} edels ✧\`\`\`\n'));
 
             await interaction.editReply({ embeds: [embed] });
         } catch (err) {
