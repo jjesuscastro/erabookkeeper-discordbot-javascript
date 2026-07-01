@@ -23,7 +23,7 @@ module.exports = {
             setInventoryCache(target.id, items); // warm cache for /use and /transferitem autocomplete
 
             if (items.length === 0) return interaction.editReply('Your inventory is empty.');
-            const line = `**BALANCE**\n\`\`\`✧ ${balance} edels ✧\`\`\`\n`;
+            const line = `**BALANCE**\n\`\`\`✧ ${balance} edels ✧\`\`\`\n**ITEMS**\n`;
 
             const embed = new EmbedBuilder()
                 .setTitle(`${characterName}'s Inventory`)
