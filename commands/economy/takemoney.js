@@ -1,11 +1,11 @@
 // /takemoney @user <amount> — admin only: remove coins from a user and destroy them
-const { SlashCommandBuilder, PermissionFlagsBits } = require('discord.js');
+const { SlashCommandBuilder, PermissionFlagsBits, EmbedBuilder } = require('discord.js');
 const { deductBalance } = require('../../utils/sheets');
 
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('takemoney')
-        .setDescription("Take and trash money from a user's balance (admin only)")
+        .setDescription("give us your money (mod only)")
         .addUserOption(opt =>
             opt.setName('user').setDescription('User to take money from').setRequired(true))
         .addIntegerOption(opt =>
@@ -20,7 +20,16 @@ module.exports = {
         try {
             // Coins are deducted and not given to anyone — they're simply removed
             const newBalance = await deductBalance(target.id, amount);
-            await interaction.editReply(`Took **${amount}** from ${target}. Their new balance: **${newBalance}**`);
+            var line = "Took **" + amount + "** edels from <@" + target + ">\nNew balance: " + newBalance + " edels";
+            
+            const embed = new EmbedBuilder()
+            .setTitle('Goodbye Edels...')
+            .setColor(0xB7B75F)
+            .setDescription(line);
+
+            await interaction.editReply({ embeds: [embed] });
+            
+            //await interaction.editReply(`Took **${amount}** from ${target}. Their new balance: **${newBalance}**`);
         } catch (err) {
             await interaction.editReply(`Error: ${err.message}`);
         }
