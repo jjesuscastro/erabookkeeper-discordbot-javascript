@@ -31,7 +31,10 @@ module.exports = {
         const quantity = interaction.options.getInteger('quantity');
         const sender = interaction.user;
 
-        if (target.id === sender.id) return interaction.reply({ content: 'You cannot transfer items to yourself.', ephemeral: true });
+        if (target.id === sender.id){ 
+            
+            return interaction.reply({ content: 'You cannot transfer items to yourself.', ephemeral: true });
+        }
         if (target.bot) return interaction.reply({ content: 'You cannot transfer items to a bot.', ephemeral: true });
 
         await interaction.deferReply();
@@ -46,7 +49,16 @@ module.exports = {
             clearInventoryCache(sender.id);
             clearInventoryCache(target.id);
 
-            await interaction.editReply(`Transferred **${quantity}x ${itemName}** to ${target}.`);
+            var line = "Transferred x" + quantity + " **" + itemName + "** from <@" + sender + "> to <@" + target + ">";
+            
+            const embed = new EmbedBuilder()
+            .setTitle('Item Transferred!')
+            .setColor(0xB7B75F)
+            .setDescription(line);
+
+            await interaction.editReply({ embeds: [embed] });
+
+            //await interaction.editReply(`Transferred **${quantity}x ${itemName}** to ${target}.`);
         } catch (err) {
             await interaction.editReply(`Error: ${err.message}`);
         }
