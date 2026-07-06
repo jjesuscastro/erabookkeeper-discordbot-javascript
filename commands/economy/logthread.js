@@ -78,25 +78,26 @@ module.exports = {
             tally(startMsg);
             messageCount++;
 
-            let afterId = startMsg.id;
-            let done = false;
+            let beforeId = endMsg.id;
 
-            while (!done) {
-                const batch = await channel.messages.fetch({ after: afterId, limit: 100 });
+            while (true) {
+                const batch = await channel.messages.fetch({ before: beforeId, limit: 100 });
                 if (batch.size === 0) break;
 
-                const sorted = [...batch.values()].sort((a, b) =>
+                const sortedAsc = [...batch.values()].sort((a, b) =>
                     BigInt(a.id) < BigInt(b.id) ? -1 : 1
                 );
 
-                for (const msg of sorted) {
-                    if (BigInt(msg.id) >= endId) { done = true; break; }
+                let reachedStart = false;
+                for (let i = sortedAsc.length - 1; i >= 0; i--) {
+                    const msg = sortedAsc[i];
+                    if (BigInt(msg.id) <= startId) { reachedStart = true; break; }
                     tally(msg);
                     messageCount++;
                 }
 
-                if (batch.size < 100 || done) break;
-                afterId = sorted[sorted.length - 1].id;
+                if (reachedStart || batch.size < 100) break;
+                beforeId = sortedAsc[0].id;
             }
 
             // Always tally the end message explicitly (unless start === end, already counted)
