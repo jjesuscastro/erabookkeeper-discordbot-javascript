@@ -68,7 +68,7 @@ module.exports = {
             let messageCount = 0;
 
             const tally = (msg) => {
-                //if (msg.author.bot || !msg.content) return;
+                if (msg.author.bot || !msg.content) return;
                 const words = countWords(msg.content);
                 if (words === 0) return;
                 wordMap.set(msg.author.id, (wordMap.get(msg.author.id) ?? 0) + words);
