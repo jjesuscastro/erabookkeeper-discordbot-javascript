@@ -89,13 +89,19 @@ module.exports = {
                 );
 
                 for (const msg of sorted) {
-                    if (BigInt(msg.id) > endId) { done = true; break; }
+                    if (BigInt(msg.id) >= endId) { done = true; break; }
                     tally(msg);
                     messageCount++;
                 }
 
                 if (batch.size < 100 || done) break;
                 afterId = sorted[sorted.length - 1].id;
+            }
+
+            // Always tally the end message explicitly (unless start === end, already counted)
+            if (startId !== endId) {
+                tally(endMsg);
+                messageCount++;
             }
 
             if (wordMap.size === 0) {
