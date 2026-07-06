@@ -11,6 +11,7 @@ function parseInput(input, fallbackChannelId) {
 }
 
 function countWords(content) {
+    if (!content) return 0;
     return content.trim().split(/\s+/).filter(w => w.length > 0).length;
 }
 
@@ -68,7 +69,6 @@ module.exports = {
             let messageCount = 0;
 
             const tally = (msg) => {
-                if (msg.author.bot || !msg.content) return;
                 const words = countWords(msg.content);
                 if (words === 0) return;
                 wordMap.set(msg.author.id, (wordMap.get(msg.author.id) ?? 0) + words);
