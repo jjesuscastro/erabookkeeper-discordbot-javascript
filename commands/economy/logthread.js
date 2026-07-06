@@ -74,6 +74,7 @@ module.exports = {
                 wordMap.set(msg.author.id, (wordMap.get(msg.author.id) ?? 0) + words);
             };
 
+            const debugLines = [`startMsg: "${startMsg.content}"`, `endMsg: "${endMsg.content}"`];
             tally(startMsg);
             messageCount++;
 
@@ -131,6 +132,7 @@ module.exports = {
             }
             if (shown < lines.length) description += `\n*...and ${lines.length - shown} more*`;
             description += `\n\n${totalWords} total words · ${messageCount} messages scanned`;
+            description += `\n\n**debug:**\n${debugLines.join('\n')}`;
 
             const embed = new EmbedBuilder()
                 .setTitle('Log Thread Word Count')
