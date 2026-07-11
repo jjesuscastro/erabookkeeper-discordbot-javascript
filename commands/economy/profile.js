@@ -34,6 +34,7 @@ module.exports = {
             const embed = new EmbedBuilder()
                 .setTitle(characterName)
                 .setColor(0xB7B75F)
+                .setImage('picture')
                 .addFields(
                     { name: 'Age',      value: age      || '—', inline: true },
                     { name: 'Profile',  value: profile  || '—', inline: true },
