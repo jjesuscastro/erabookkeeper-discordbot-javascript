@@ -10,12 +10,6 @@ module.exports = {
         .addStringOption(opt =>
             opt.setName('house').setDescription('Luna, Solis, or Astra').setRequired(true).setAutocomplete(false)),
 
-    async autocomplete(interaction) {
-        const focused = interaction.options.getFocused();
-        const choices = await autocompleteProfiles(focused);
-        await interaction.respond(choices);
-    },
-
     async execute(interaction) {
         const input = interaction.options.getString('house');
         await interaction.deferReply();
