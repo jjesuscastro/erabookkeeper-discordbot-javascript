@@ -41,7 +41,7 @@ module.exports = {
                     { name: 'Height',   value: height   || '—', inline: true },
                     { name: 'Mun',      value: `<@${userId}>`      || '—', inline: true },
                     { name: 'House',  value: house  || '—', inline: true },
-                    { name: 'Birthday',  value: birthday, inline: true },
+                    { name: 'Birthday',  value: birthday, inline: true }
                 );
 
             await interaction.editReply({ embeds: [embed] });
