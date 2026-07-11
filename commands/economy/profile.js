@@ -36,12 +36,12 @@ module.exports = {
                 .setColor(0xB7B75F)
                 .addFields(
                     { name: 'Age',      value: age      || '—', inline: true },
-                    { name: 'Profile', value: profile || '—', inline: true },
+                    { name: 'Profile',  value: profile  || '—', inline: true },
                     { name: 'Pronouns', value: pronouns || '—', inline: true },
                     { name: 'Height',   value: height   || '—', inline: true },
-                    { name: 'Mun',      value: `<@${userId}>`      || '—', inline: true },
-                    { name: 'House',  value: house  || '—', inline: true },
-                    { name: 'Birthday',  value: birthday, inline: true }
+                    { name: 'Mun',      value: `<@${userId}>` || '—', inline: true },
+                    { name: 'House',    value: house    || '—', inline: true },
+                    { name: 'Birthday', value: birthday || '—', inline: true }
                 );
 
             await interaction.editReply({ embeds: [embed] });
