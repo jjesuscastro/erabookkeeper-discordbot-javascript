@@ -122,7 +122,7 @@ async function getUser(userId) {
                 lastDaily:     rows[i][COL.LAST_DAILY] || null,
                 house:         rows[i][COL.HOUSE] || null,
                 birthday:      rows[i][COL.BITRHDAY] || null,
-                picture:       rows[i][COL.PICTURE] || null
+                picture:       rows[i][COL.PICTURE] || null,
             };
         }
     }
