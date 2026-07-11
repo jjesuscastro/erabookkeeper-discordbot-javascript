@@ -9,6 +9,7 @@
 | `/transfermoney @user <amount>` | Anyone | Sends coins to another user, deducted from your balance |
 | `/takemoney @user <amount>` | Admin | Removes coins from a user and destroys them |
 | `/givemoney @user <amount>` | Admin | Adds coins to a user |
+| `/housepoints <house>` | Anyone | Checks house points |
 
 ## Shop
 
