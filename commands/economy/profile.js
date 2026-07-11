@@ -32,17 +32,18 @@ module.exports = {
             const { characterName, age, pronouns, height, profile, balance, lastDaily, house, birthday, picture } = await getUser(userId);
             
             const embed = new EmbedBuilder()
-                .setTitle(characterName)
+                .setTitle(`✦ ${characterName}`)
                 .setColor(0xB7B75F)
                 .setThumbnail(picture)
                 .addFields(
                     { name: 'Age',      value: age      || '—', inline: true },
-                    { name: 'Profile',  value: `[Link](${profile})`  || '—', inline: true },
                     { name: 'Pronouns', value: pronouns || '—', inline: true },
-                    { name: 'Height',   value: height   || '—', inline: true },
-                    { name: 'Mun',      value: `<@${userId}>` || '—', inline: true },
+                    { name: 'Birthday', value: birthday || '—', inline: true },
                     { name: 'House',    value: house    || '—', inline: true },
-                    { name: 'Birthday', value: birthday || '—', inline: true }
+                    { name: 'Height',   value: height   || '—', inline: true },
+                    { name: 'Profile',  value: `[Link](${profile})`  || '—', inline: true },
+                    { name: 'Mun',      value: `<@${userId}>` || '—', inline: true },
+                    
                 );
 
             await interaction.editReply({ embeds: [embed] });
