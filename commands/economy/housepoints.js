@@ -1,4 +1,4 @@
-// /house [name] — check a house points
+// /housepoints <name> — check a house points
 const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 const { getHousePoints } = require('../../utils/sheets');
 const { resolveTarget, autocompleteProfiles } = require('../../utils/resolver');
