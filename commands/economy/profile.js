@@ -29,7 +29,7 @@ module.exports = {
                 userId = interaction.user.id;
             }
 
-            const { characterName, age, pronouns, height, profile, balance } = await getUser(userId);
+            const { characterName, age, pronouns, height, profile, balance, lastDaily, house, birthday, picture } = await getUser(userId);
             
             const embed = new EmbedBuilder()
                 .setTitle(characterName)
@@ -40,8 +40,8 @@ module.exports = {
                     { name: 'Pronouns', value: pronouns || '—', inline: true },
                     { name: 'Height',   value: height   || '—', inline: true },
                     { name: 'Mun',      value: `<@${userId}>`      || '—', inline: true },
-                    //{ name: 'Profile',  value: profile  || '—', inline: true },
-                    //{ name: 'Balance',  value: `${balance} edels`, inline: true },
+                    { name: 'House',  value: house  || '—', inline: true },
+                    { name: 'Birthday',  value: birthday, inline: true },
                 );
 
             await interaction.editReply({ embeds: [embed] });

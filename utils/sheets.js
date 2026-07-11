@@ -23,6 +23,9 @@ const COL = {
     PROFILE:    5, // F
     BALANCE:    6, // G
     LAST_DAILY: 7, // H
+    HOUSE:      8, // I
+    BITRHDAY:   9, // J
+    PICTURE:    10, //K
 };
 
 // ── Auth ──────────────────────────────────────────────────────────────────────
@@ -105,7 +108,7 @@ async function getSheetId(sheetName) {
 // Finds a profile row by Discord UserID (column H).
 // Throws if no profile exists — profiles must be set up manually by an admin.
 async function getUser(userId) {
-    const rows = await readRange('Profiles!A:H');
+    const rows = await readRange('Profiles!A:K');
     for (let i = 1; i < rows.length; i++) { // skip header row
         if (rows[i][COL.DISCORD_ID] === userId) {
             return {
@@ -117,6 +120,9 @@ async function getUser(userId) {
                 profile:       rows[i][COL.PROFILE] || '',
                 balance:       parseInt(rows[i][COL.BALANCE] || '0', 10),
                 lastDaily:     rows[i][COL.LAST_DAILY] || null,
+                house:         rows[i][COL.HOUSE] || null,
+                birthday:      rows[i][COL.BITRHDAY] || null,
+                picture:       rows[i][COL.PICTURE] || null
             };
         }
     }
