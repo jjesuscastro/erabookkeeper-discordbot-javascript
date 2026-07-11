@@ -155,6 +155,19 @@ async function deductBalance(userId, amount) {
     return newBalance;
 }
 
+// ── HOUSE ──────────────────────────────────────────────────────────────────────
+// Columns: A=HOUSE, B=POINTS
+
+async function getHousePoints(houseID) {
+    const rows = await readRange('House!A:B');
+    for (let i = 1; i < rows.length; i++) { // skip header row
+        if (rows[i][0] === houseID) {
+            return rows[i][1] || 0; 
+        }
+    }
+    throw new Error("House not found.");
+}
+
 // ── Shop ──────────────────────────────────────────────────────────────────────
 // Columns: A=ITEM, B=PRICE, C = description
 
@@ -229,6 +242,7 @@ module.exports = {
     setLastDaily,
     addBalance,
     deductBalance,
+    getHousePoints,
     getShopItems,
     getInventory,
     addInventoryItem,
