@@ -20,6 +20,7 @@ A Discord bot for managing a coin economy and item shop, backed by Google Sheets
 | `/transfermoney @user <amount>` | Anyone | Sends coins to another user |
 | `/givemoney @user <amount>` | Admin | Adds coins to a user |
 | `/takemoney @user <amount>` | Admin | Removes coins from a user |
+| `/housepoints <house>` | Anyone | Checks house points |
 
 ### Shop
 

@@ -27,6 +27,7 @@ Three sheets in one spreadsheet (configured via `SPREADSHEET_ID`):
 | `Profiles` | Rows created *manually* — bot only writes balance (col G) and last_daily (col H). Bot throws if no profile exists for a user. |
 | `Shop` | Item catalog — add a row and `/shop` picks it up immediately. |
 | `Inventory` | Per-character items. OWNER matches the `NAME` field in Profiles. |
+| `House` | House points. Rows do not change. Amount is changed via bot. |
 
 `BALANCE_COL` constant in `utils/sheets.js:12` — update if the balance column moves.
 
