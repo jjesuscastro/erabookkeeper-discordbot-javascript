@@ -10,7 +10,7 @@
 | `/takemoney @user <amount>` | Admin | Removes coins from a user and destroys them |
 | `/givemoney @user <amount>` | Admin | Adds coins to a user |
 | `/housepoints <house>` | Anyone | Checks house points |
-| `/addHousePoints <house> <amount>` | Admin | Checks house points |
+| `/addhousepoints <house> <amount>` | Admin | Checks house points |
 
 ## Shop
 
