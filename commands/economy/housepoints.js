@@ -1,7 +1,6 @@
 // /housepoints <name> — check a house points
 const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 const { getHousePoints } = require('../../utils/sheets');
-const { resolveTarget, autocompleteProfiles } = require('../../utils/resolver');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -14,9 +13,7 @@ module.exports = {
         const input = interaction.options.getString('house');
         await interaction.deferReply();
         try {
-            const target = await resolveTarget(input);
-
-            const points = await getHousePoints(target);
+            const points = await getHousePoints(input);
 
             const embed = new EmbedBuilder()
                 .setTitle(`${target} House Points`)
