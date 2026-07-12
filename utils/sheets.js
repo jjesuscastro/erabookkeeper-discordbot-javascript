@@ -173,7 +173,8 @@ async function addPoints(houseID, amount) {
     for (let i = 1; i < rows.length; i++) { // skip header row
         if ((rows[i][0]).toLowerCase === houseID.toLowerCase) {
             const newBalance = parseInt(rows[i][1]) + amount;
-            await writeCell(`House!B${i}`, amount); 
+            const index = i+1;
+            await writeCell(`House!B${index}`, amount); 
             return newBalance;
         }
     }
