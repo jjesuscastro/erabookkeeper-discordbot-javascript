@@ -1,7 +1,7 @@
 // /givepoints <house> <amount> — admin only: give points to a house
 // <user> accepts a character name (autocomplete) or a Discord @mention
 const { SlashCommandBuilder, EmbedBuilder, PermissionFlagsBits } = require('discord.js');
-const { addHousePoints } = require('../../utils/sheets');
+const { addPoints } = require('../../utils/sheets');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -19,12 +19,12 @@ module.exports = {
 
         await interaction.deferReply();
         try {
-            const newBalance = await addHousePoints(input, amount);
+            const newBalance = await addPoints(input, amount);
 
             const embed = new EmbedBuilder()
                 .setTitle('Congratulations!')
                 .setColor(0xB7B75F)
-                .setDescription(`**${input}** has gained ${amount}> points!\nCurrent standing: ${newBalance} points.`);
+                .setDescription(`**${input}** has gained ${amount} points!\nCurrent standing: ${newBalance} points.`);
 
             await interaction.editReply({ embeds: [embed] });
         } catch (err) {

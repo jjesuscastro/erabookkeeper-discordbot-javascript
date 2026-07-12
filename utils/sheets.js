@@ -168,7 +168,7 @@ async function getHousePoints(houseID) {
     throw new Error("House not found.");
 }
 
-async function addHousePoints(houseID, amount) {
+async function addPoints(houseID, amount) {
     const rows = await readRange('House!A:B');
     for (let i = 1; i < rows.length; i++) { // skip header row
         if ((rows[i][0]).toLowerCase === houseID.toLowerCase) {
@@ -255,7 +255,7 @@ module.exports = {
     addBalance,
     deductBalance,
     getHousePoints,
-    addHousePoints,
+    addPoints,
     getShopItems,
     getInventory,
     addInventoryItem,
