@@ -14,7 +14,6 @@ module.exports = {
         await interaction.deferReply();
         try {
             const points = await getHousePoints(input);
-
             const embed = new EmbedBuilder()
                 .setTitle(`${input.charAt(0).toUpperCase()}${input.slice(1)} House Points`)
                 .setColor(0xB7B75F)

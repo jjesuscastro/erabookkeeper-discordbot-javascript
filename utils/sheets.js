@@ -168,6 +168,18 @@ async function getHousePoints(houseID) {
     throw new Error("House not found.");
 }
 
+async function addHousePoints(houseID, amount) {
+    const rows = await readRange('House!A:B');
+    for (let i = 1; i < rows.length; i++) { // skip header row
+        if ((rows[i][0]).toLowerCase === houseID.toLowerCase) {
+            const newBalance = parseInt(rows[i][1]) + amount;
+            await writeCell(`House!B${i}`, amount); 
+            return newBalance;
+        }
+    }
+    throw new Error("House not found.");
+}
+
 // ── Shop ──────────────────────────────────────────────────────────────────────
 // Columns: A=ITEM, B=PRICE, C = description
 
