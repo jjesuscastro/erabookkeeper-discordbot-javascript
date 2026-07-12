@@ -161,7 +161,7 @@ async function deductBalance(userId, amount) {
 async function getHousePoints(houseID) {
     const rows = await readRange('House!A:B');
     for (let i = 1; i < rows.length; i++) { // skip header row
-        if (rows[i][0] === houseID) {
+        if ((rows[i][0]).toLowerCase === houseID.toLowerCase) {
             return rows[i][1] || 0; 
         }
     }
