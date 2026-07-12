@@ -181,6 +181,19 @@ async function addPoints(houseID, amount) {
     throw new Error("House not found.");
 }
 
+async function deductPoints(houseID, amount) {
+    const rows = await readRange('House!A:B');
+    for (let i = 1; i < rows.length; i++) { // skip header row
+        if ((rows[i][0]).toLowerCase() === houseID.toLowerCase()) {
+            const newBalance = parseInt(rows[i][1]) - amount;
+            const index = i+1;
+            await writeCell(`House!B${index}`, newBalance); 
+            return newBalance;
+        }
+    }
+    throw new Error("House not found.");
+}
+
 // ── Shop ──────────────────────────────────────────────────────────────────────
 // Columns: A=ITEM, B=PRICE, C = description
 
@@ -257,6 +270,7 @@ module.exports = {
     deductBalance,
     getHousePoints,
     addPoints,
+    deductPoints,
     getShopItems,
     getInventory,
     addInventoryItem,

@@ -24,7 +24,7 @@ module.exports = {
             const embed = new EmbedBuilder()
                 .setTitle('Congratulations!')
                 .setColor(0xB7B75F)
-                .setDescription(`**${input}** has gained ${amount} points!\nCurrent standing: ${newBalance} points.`);
+                .setDescription(`House **${input.charAt(0).toUpperCase()}${input.slice(1)}** has gained ${amount} points!\nCurrent standing: ${newBalance} points.`);
 
             await interaction.editReply({ embeds: [embed] });
         } catch (err) {
