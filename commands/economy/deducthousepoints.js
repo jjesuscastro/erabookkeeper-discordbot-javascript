@@ -1,7 +1,7 @@
 // /givepoints <house> <amount> — admin only: give points to a house
 // <user> accepts a character name (autocomplete) or a Discord @mention
 const { SlashCommandBuilder, EmbedBuilder, PermissionFlagsBits } = require('discord.js');
-const { addPoints } = require('../../utils/sheets');
+const { deductPoints } = require('../../utils/sheets');
 
 module.exports = {
     data: new SlashCommandBuilder()
