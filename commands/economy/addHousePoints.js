@@ -5,7 +5,7 @@ const { addPoints } = require('../../utils/sheets');
 
 module.exports = {
     data: new SlashCommandBuilder()
-        .setName('addHousePoints')
+        .setName('addhousepoints')
         .setDescription('(mod only)')
         .addStringOption(opt =>
             opt.setName('house').setDescription('Luna, Solis, or Astra').setRequired(true))
