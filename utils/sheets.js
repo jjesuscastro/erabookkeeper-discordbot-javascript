@@ -160,12 +160,12 @@ async function deductBalance(userId, amount) {
 
 async function getStandings(houseID) {
     const rows = await readRange('House!A:B');
+    rows.sort((a,b) => a.value - b.value);
     return rows.slice(1).map(r => ({ house: r[0], points: parseInt(r[1] || '0', 10)}));
 }
 
 async function getHousePoints(houseID) {
     const rows = await readRange('House!A:B');
-    rows.sort((a,b) => a.value - b.value)
     for (let i = 1; i < rows.length; i++) { // skip header row
         if ((rows[i][0]).toLowerCase() === houseID.toLowerCase()) {
             return rows[i][1] || 0; 
