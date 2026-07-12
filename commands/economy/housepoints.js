@@ -16,7 +16,7 @@ module.exports = {
             const points = await getHousePoints(input);
 
             const embed = new EmbedBuilder()
-                .setTitle(`${input} House Points`)
+                .setTitle(`${input.charAt(0).toUpperCase()} House Points`)
                 .setColor(0xB7B75F)
                 .setDescription(`\`\`\`✧ ${points} points ✧\`\`\``);
 
