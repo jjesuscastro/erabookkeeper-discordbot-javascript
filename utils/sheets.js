@@ -161,7 +161,7 @@ async function deductBalance(userId, amount) {
 async function getHousePoints(houseID) {
     const rows = await readRange('House!A:B');
     for (let i = 1; i < rows.length; i++) { // skip header row
-        if ((rows[i][0]).toLowerCase === houseID.toLowerCase) {
+        if ((rows[i][0]).toLowerCase() === houseID.toLowerCase()) {
             return rows[i][1] || 0; 
         }
     }
@@ -171,7 +171,7 @@ async function getHousePoints(houseID) {
 async function addPoints(houseID, amount) {
     const rows = await readRange('House!A:B');
     for (let i = 1; i < rows.length; i++) { // skip header row
-        if ((rows[i][0]).toLowerCase === houseID.toLowerCase) {
+        if ((rows[i][0]).toLowerCase() === houseID.toLowerCase()) {
             const newBalance = parseInt(rows[i][1]) + amount;
             const index = i+1;
             await writeCell(`House!B${index}`, newBalance); 
