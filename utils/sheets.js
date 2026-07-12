@@ -255,6 +255,7 @@ module.exports = {
     addBalance,
     deductBalance,
     getHousePoints,
+    addHousePoints,
     getShopItems,
     getInventory,
     addInventoryItem,
