@@ -4,7 +4,7 @@ const { getUser, addBalance, setLastDaily } = require('../../utils/sheets');
 
 const DAILY_AMOUNT = 100;
 //const COOLDOWN_MS = 0;
-const COOLDOWN_MS = 24 * 60 * 60 * 1000;
+const COOLDOWN_MS = 21 * 60 * 60 * 1000;
 
 function formatTimeRemaining(ms) {
     const totalSeconds = Math.floor(ms / 1000);
