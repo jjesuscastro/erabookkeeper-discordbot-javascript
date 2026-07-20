@@ -1,12 +1,17 @@
-// /logthread <start> <end> — count words per user between two messages, with optional edel grant
+// /logthread — count words per user in a whole thread or an inclusive message range
 // Accepts message IDs (uses current channel) or full Discord message links
 const { SlashCommandBuilder, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 const { addBalance } = require('../../utils/sheets');
 
+class LogThreadError extends Error {}
+
 function parseInput(input, fallbackChannelId) {
-    const linkMatch = input.match(/channels\/\d+\/(\d+)\/(\d+)/);
+    if (!input) return null;
+
+    const trimmed = input.trim();
+    const linkMatch = trimmed.match(/channels\/(?:@me|\d+)\/(\d+)\/(\d+)/);
     if (linkMatch) return { channelId: linkMatch[1], messageId: linkMatch[2] };
-    if (/^\d+$/.test(input.trim())) return { channelId: fallbackChannelId, messageId: input.trim() };
+    if (/^\d+$/.test(trimmed)) return { channelId: fallbackChannelId, messageId: trimmed };
     return null;
 }
 
@@ -30,88 +35,168 @@ function buildButtons(disabled = false) {
     );
 }
 
+async function fetchMessage(client, parsed, label) {
+    let channel;
+    try {
+        channel = await client.channels.fetch(parsed.channelId);
+    } catch {
+        throw new LogThreadError(`Could not access the channel for the ${label} message.`);
+    }
+
+    if (!channel?.isTextBased() || !channel.messages) {
+        throw new LogThreadError(`The ${label} message is not in a text-based channel.`);
+    }
+
+    try {
+        return { channel, message: await channel.messages.fetch(parsed.messageId) };
+    } catch {
+        throw new LogThreadError(`Could not find or access the ${label} message.`);
+    }
+}
+
+async function resolveThread(client, parsed) {
+    const { channel, message } = await fetchMessage(client, parsed, 'thread');
+
+    if (channel.isThread()) {
+        let starter;
+        try {
+            starter = await channel.fetchStarterMessage();
+        } catch {
+            throw new LogThreadError('Could not find or access this thread\'s starter message.');
+        }
+        return { thread: channel, starter };
+    }
+
+    if (!channel.threads) {
+        throw new LogThreadError('The supplied message does not have an associated thread.');
+    }
+
+    try {
+        const thread = await channel.threads.fetch(message.id);
+        if (!thread) throw new Error('Thread not found');
+        return { thread, starter: message };
+    } catch {
+        throw new LogThreadError('The supplied message does not have an associated thread.');
+    }
+}
+
+async function fetchThreadMessages(thread, starter) {
+    const messages = new Map([[starter.id, starter]]);
+    let before;
+
+    while (true) {
+        const options = { limit: 100 };
+        if (before) options.before = before;
+
+        const batch = await thread.messages.fetch(options);
+        for (const message of batch.values()) messages.set(message.id, message);
+
+        if (batch.size < 100) break;
+        before = batch.last().id;
+    }
+
+    return [...messages.values()];
+}
+
+async function fetchRangeMessages(channel, startMessage, endMessage) {
+    const startId = BigInt(startMessage.id);
+    const endId = BigInt(endMessage.id);
+    if (startId > endId) {
+        throw new LogThreadError('Start message must be before the end message.');
+    }
+
+    if (startId === endId) return [startMessage];
+
+    const messages = new Map([[endMessage.id, endMessage]]);
+    let before = endMessage.id;
+
+    while (true) {
+        const batch = await channel.messages.fetch({ before, limit: 100 });
+        if (batch.size === 0) break;
+
+        let reachedStart = false;
+        for (const message of batch.values()) {
+            const id = BigInt(message.id);
+            if (id < startId) {
+                reachedStart = true;
+                continue;
+            }
+            messages.set(message.id, message);
+            if (id === startId) reachedStart = true;
+        }
+
+        if (reachedStart || batch.size < 100) break;
+        before = batch.last().id;
+    }
+
+    if (!messages.has(startMessage.id)) {
+        throw new LogThreadError('Could not scan the complete message range.');
+    }
+
+    return [...messages.values()];
+}
+
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('logthread')
-        .setDescription('Count words per user between two messages')
+        .setDescription('Count words in a thread or between two messages')
         .addStringOption(opt =>
-            opt.setName('start').setDescription('Start message ID or link').setRequired(true))
+            opt.setName('thread').setDescription('Thread starter or reply message ID/link').setRequired(false))
         .addStringOption(opt =>
-            opt.setName('end').setDescription('End message ID or link').setRequired(true)),
+            opt.setName('start').setDescription('Start message ID or link').setRequired(false))
+        .addStringOption(opt =>
+            opt.setName('end').setDescription('End message ID or link').setRequired(false)),
 
     async execute(interaction) {
+        const threadInput = interaction.options.getString('thread');
         const startInput = interaction.options.getString('start');
-        const endInput   = interaction.options.getString('end');
+        const endInput = interaction.options.getString('end');
+        const isThreadMode = Boolean(threadInput) && !startInput && !endInput;
+        const isRangeMode = !threadInput && Boolean(startInput) && Boolean(endInput);
+
+        if (!isThreadMode && !isRangeMode) {
+            return interaction.reply({
+                content: 'Provide either `thread` by itself, or provide both `start` and `end`.',
+                ephemeral: true,
+            });
+        }
 
         await interaction.deferReply();
         try {
-            const startParsed = parseInput(startInput, interaction.channel.id);
-            const endParsed   = parseInput(endInput,   interaction.channel.id);
+            let messages;
 
-            if (!startParsed || !endParsed) {
-                return interaction.editReply('Invalid message ID or link.');
-            }
+            if (isThreadMode) {
+                const parsed = parseInput(threadInput, interaction.channel.id);
+                if (!parsed) throw new LogThreadError('Invalid thread message ID or link.');
 
-            const channel = await interaction.client.channels.fetch(startParsed.channelId);
-            if (!channel) return interaction.editReply('Channel not found.');
-
-            const startMsg = await channel.messages.fetch(startParsed.messageId);
-            const endMsg   = await channel.messages.fetch(endParsed.messageId);
-
-            const startId = BigInt(startMsg.id);
-            const endId   = BigInt(endMsg.id);
-
-            if (startId > endId) {
-                return interaction.editReply('Start message must be before the end message.');
-            }
-
-            const wordMap = new Map(); // userId → word count
-            let messageCount = 0;
-
-            const tally = (msg) => {
-                const words = countWords(msg.content);
-                if (words === 0) return;
-                wordMap.set(msg.author.id, (wordMap.get(msg.author.id) ?? 0) + words);
-            };
-
-            const debugLines = [`startMsg: "${startMsg.content}"`, `endMsg: "${endMsg.content}"`];
-            tally(startMsg);
-            messageCount++;
-
-            let beforeId = endMsg.id;
-
-            while (true) {
-                const batch = await channel.messages.fetch({ before: beforeId, limit: 100 });
-                if (batch.size === 0) break;
-
-                const sortedAsc = [...batch.values()].sort((a, b) =>
-                    BigInt(a.id) < BigInt(b.id) ? -1 : 1
-                );
-
-                let reachedStart = false;
-                for (let i = sortedAsc.length - 1; i >= 0; i--) {
-                    const msg = sortedAsc[i];
-                    if (BigInt(msg.id) <= startId) { reachedStart = true; break; }
-                    tally(msg);
-                    messageCount++;
+                const { thread, starter } = await resolveThread(interaction.client, parsed);
+                messages = await fetchThreadMessages(thread, starter);
+            } else {
+                const startParsed = parseInput(startInput, interaction.channel.id);
+                const endParsed = parseInput(endInput, interaction.channel.id);
+                if (!startParsed) throw new LogThreadError('Invalid start message ID or link.');
+                if (!endParsed) throw new LogThreadError('Invalid end message ID or link.');
+                if (startParsed.channelId !== endParsed.channelId) {
+                    throw new LogThreadError('Start and end messages must be in the same channel.');
                 }
 
-                if (reachedStart || batch.size < 100) break;
-                beforeId = sortedAsc[0].id;
+                const { channel, message: startMessage } = await fetchMessage(interaction.client, startParsed, 'start');
+                const { message: endMessage } = await fetchMessage(interaction.client, endParsed, 'end');
+                messages = await fetchRangeMessages(channel, startMessage, endMessage);
             }
 
-            // Always tally the end message explicitly (unless start === end, already counted)
-            if (startId !== endId) {
-                tally(endMsg);
-                messageCount++;
+            const wordMap = new Map();
+            for (const message of messages) {
+                const words = countWords(message.content);
+                if (words === 0) continue;
+                wordMap.set(message.author.id, (wordMap.get(message.author.id) ?? 0) + words);
             }
 
             if (wordMap.size === 0) {
-                return interaction.editReply('No user messages found in that range.');
+                return interaction.editReply('No messages with words found.');
             }
 
             const memberMap = await interaction.guild.members.fetch({ user: [...wordMap.keys()] });
-
             const results = [...wordMap.entries()]
                 .map(([userId, words]) => ({
                     userId,
@@ -120,9 +205,10 @@ module.exports = {
                 }))
                 .sort((a, b) => b.words - a.words);
 
-            const totalWords = results.reduce((sum, r) => sum + r.words, 0);
-
-            const lines = results.map((r, i) => `${i + 1}. **${r.name}** — ${r.words} words`);
+            const totalWords = results.reduce((sum, result) => sum + result.words, 0);
+            const lines = results.map((result, index) =>
+                `${index + 1}. **${result.name}** — ${result.words} words`
+            );
 
             let description = '';
             let shown = 0;
@@ -132,8 +218,7 @@ module.exports = {
                 shown++;
             }
             if (shown < lines.length) description += `\n*...and ${lines.length - shown} more*`;
-            description += `\n\n${totalWords} total words · ${messageCount} messages scanned`;
-            description += `\n\n**debug:**\n${debugLines.join('\n')}`;
+            description += `\n\n${totalWords} total words · ${messages.length} messages scanned`;
 
             const embed = new EmbedBuilder()
                 .setTitle('Log Thread Word Count')
@@ -141,8 +226,6 @@ module.exports = {
                 .setDescription(description);
 
             const reply = await interaction.editReply({ embeds: [embed], components: [buildButtons()] });
-
-            // ── Button collector ──────────────────────────────────────────────
             const collector = reply.createMessageComponentCollector({
                 filter: i => i.user.id === interaction.user.id,
                 time: 60_000,
@@ -151,24 +234,23 @@ module.exports = {
 
             collector.on('collect', async i => {
                 await i.update({ components: [buildButtons(true)] });
-
                 if (i.customId === 'logthread_cancel') return;
 
-                // Grant 1 edel per word to each user
                 const granted = [];
-                const failed  = [];
-
-                for (const r of results) {
+                const failed = [];
+                for (const result of results) {
                     try {
-                        await addBalance(r.userId, r.words);
-                        granted.push(`**${r.name}** +${r.words} edels`);
+                        await addBalance(result.userId, result.words);
+                        granted.push(`**${result.name}** +${result.words} edels`);
                     } catch {
-                        failed.push(r.name);
+                        failed.push(result.name);
                     }
                 }
 
                 let grantDesc = granted.join('\n');
-                if (failed.length > 0) grantDesc += `\n\nNo profile found for: ${failed.map(n => `**${n}**`).join(', ')}`;
+                if (failed.length > 0) {
+                    grantDesc += `\n\nNo profile found for: ${failed.map(name => `**${name}**`).join(', ')}`;
+                }
 
                 const grantEmbed = new EmbedBuilder()
                     .setTitle('Edels Granted!')
@@ -183,9 +265,9 @@ module.exports = {
                     interaction.editReply({ components: [buildButtons(true)] }).catch(() => {});
                 }
             });
-
         } catch (err) {
-            await interaction.editReply(`Error: ${err.message}`);
+            const message = err instanceof LogThreadError ? err.message : `Error: ${err.message}`;
+            await interaction.editReply(message);
         }
     },
 };
