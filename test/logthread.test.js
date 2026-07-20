@@ -13,6 +13,7 @@ function loadHelpers() {
             resolveThread,
             fetchThreadMessages,
             fetchRangeMessages,
+            buildDebugOutput,
         };`;
 
     class Builder {
@@ -41,6 +42,7 @@ function loadHelpers() {
                     ActionRowBuilder: Builder,
                     ButtonBuilder: Builder,
                     ButtonStyle: { Success: 1, Secondary: 2 },
+                    AttachmentBuilder: Builder,
                 };
             }
             if (request === '../../utils/sheets') return { addBalance: async () => {} };
@@ -48,6 +50,7 @@ function loadHelpers() {
         },
         Map,
         BigInt,
+        Buffer,
         Error,
     }, { filename });
 
@@ -97,6 +100,19 @@ test('counts whitespace-separated text content', () => {
     assert.equal(helpers.countWords(' one\n two   three '), 3);
     assert.equal(helpers.countWords(''), 0);
     assert.equal(helpers.countWords(null), 0);
+});
+
+test('debug output includes each scanned string and its word count', () => {
+    const output = helpers.buildDebugOutput([
+        message(2, 'three four five'),
+        message(1, 'one two'),
+        message(3, ''),
+    ]);
+
+    assert.match(output, /\[1\] 2 words: "one two"/);
+    assert.match(output, /\[2\] 3 words: "three four five"/);
+    assert.match(output, /\[3\] 0 words: ""/);
+    assert.match(output, /Total: 5 words across 3 messages/);
 });
 
 test('range scan is inclusive and supports a single-message range', async () => {
