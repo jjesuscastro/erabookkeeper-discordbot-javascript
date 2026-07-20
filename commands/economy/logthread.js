@@ -6,7 +6,6 @@ const {
     ActionRowBuilder,
     ButtonBuilder,
     ButtonStyle,
-    AttachmentBuilder,
 } = require('discord.js');
 const { addBalance } = require('../../utils/sheets');
 
@@ -25,21 +24,6 @@ function parseInput(input, fallbackChannelId) {
 function countWords(content) {
     if (!content) return 0;
     return content.trim().split(/\s+/).filter(w => w.length > 0).length;
-}
-
-function buildDebugOutput(messages) {
-    const sorted = [...messages].sort((a, b) => {
-        const aId = BigInt(a.id);
-        const bId = BigInt(b.id);
-        return aId < bId ? -1 : aId > bId ? 1 : 0;
-    });
-    const lines = sorted.map(message => {
-        const content = message.content ?? '';
-        return `[${message.id}] ${countWords(content)} words: ${JSON.stringify(content)}`;
-    });
-    const total = sorted.reduce((sum, message) => sum + countWords(message.content), 0);
-
-    return `${lines.join('\n')}\n\nTotal: ${total} words across ${sorted.length} messages\n`;
 }
 
 function buildButtons(disabled = false) {
@@ -248,12 +232,6 @@ module.exports = {
                 .setDescription(description);
 
             const reply = await interaction.editReply({ embeds: [embed], components: [buildButtons()] });
-            const debugOutput = buildDebugOutput(messages);
-            await interaction.followUp({
-                content: `Debug scan output: ${totalWords} words across ${messages.length} messages.`,
-                files: [new AttachmentBuilder(Buffer.from(debugOutput, 'utf8'), { name: 'logthread-debug.txt' })],
-            });
-
             const collector = reply.createMessageComponentCollector({
                 filter: i => i.user.id === interaction.user.id,
                 time: 60_000,
