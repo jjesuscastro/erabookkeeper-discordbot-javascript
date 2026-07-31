@@ -82,7 +82,7 @@ async function deleteRow(sheetId, rowIndex) {
             requests: [{
                 deleteDimension: {
                     range: {
-                        sheet_id: sheetId,
+                        sheet_id: String(sheetId),
                         dimension: 'ROWS',
                         startIndex: rowIndex - 1, // API uses 0-based index
                         endIndex: rowIndex,
