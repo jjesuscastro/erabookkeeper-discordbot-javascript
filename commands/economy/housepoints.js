@@ -15,13 +15,18 @@ module.exports = {
         try {
             const points = await getHousePoints(input);
             
-            if(input.toLowerCase() ==='luna')
+            if(input.toLowerCase() ==='luna'){
                 var picture = 'https://i.gyazo.com/586f175c28889ba68a223f5f22d813d3.png';
-            else if(input.toLowerCase() ==='solis')
+                var color = 'A3D1F9';
+            }
+            else if(input.toLowerCase() ==='solis'){
                 var picture = 'https://i.gyazo.com/807ed6c68623dd6b8e7778709e09a8f8.png';
-            else
+                var color = 'FFE1B7';
+            }
+            else{
                 var picture = 'https://i.gyazo.com/9bfe2be2895083682c6b9278e37f3b97.png';
-            
+                var color = 'DDB0FF';
+            }
             const embed = new EmbedBuilder()
                 .setThumbnail(picture)
                 .setTitle(`${input.charAt(0).toUpperCase()}${input.slice(1)} House Points`)
