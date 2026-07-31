@@ -256,7 +256,10 @@ async function removeInventoryItem(characterName, itemName, quantity) {
     const existing = await getInventoryItem(characterName, itemName);
     if (!existing) throw new Error(`You don't have any **${itemName}**.`);
     if (existing.quantity < quantity) throw new Error(`Insufficient quantity. You have ${existing.quantity}x **${itemName}**.`);
-    await writeCell(`Inventory!C${existing.rowIndex}`, existing.quantity - quantity);
+    if(existing.quantity-quantity > 0 )
+        await writeCell(`Inventory!C${existing.rowIndex}`, existing.quantity - quantity);
+    else
+        await deleteRow(SPREADSHEET_ID,existing.rowIndex);
 }
 
 // Returns all profiles as { discordId, characterName } pairs (for autocomplete)
