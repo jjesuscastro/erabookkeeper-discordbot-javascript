@@ -16,7 +16,7 @@ module.exports = {
             const points = await getHousePoints(input);
             
             if(input.toLowerCase() ==='luna')
-                var picture = 'https://i.gyazo.com/afeaeba512c8e9fd758d58ed9329bf62.png';
+                var picture = 'https://i.gyazo.com/586f175c28889ba68a223f5f22d813d3.png';
             else if(input.toLowerCase() ==='solis')
                 var picture = 'https://i.gyazo.com/807ed6c68623dd6b8e7778709e09a8f8.png';
             else
