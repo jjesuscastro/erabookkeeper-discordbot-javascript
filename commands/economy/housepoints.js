@@ -30,7 +30,7 @@ module.exports = {
             const embed = new EmbedBuilder()
                 .setThumbnail(picture)
                 .setTitle(`${input.charAt(0).toUpperCase()}${input.slice(1)} House Points`)
-                .setColor(color);
+                .setColor(color)
                 .setDescription(`\`\`\`✧ ${points} points ✧\`\`\``);
 
             await interaction.editReply({ embeds: [embed] });
