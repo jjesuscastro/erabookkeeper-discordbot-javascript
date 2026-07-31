@@ -76,7 +76,7 @@ async function appendRow(sheet, rowData) {
 
 // Deletes a single row by its 1-based sheet row index
 async function deleteRow(sheetId, rowIndex) {
-    const id = String(sheetId);
+    const id = parseInt(sheetId);
     await getSheets().spreadsheets.batchUpdate({
         spreadsheetId: SPREADSHEET_ID,
         resource: {
