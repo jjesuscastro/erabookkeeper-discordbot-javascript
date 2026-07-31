@@ -3,6 +3,7 @@
 
 require('dotenv').config();
 const { google } = require('googleapis');
+const inventory = require('../commands/economy/inventory');
 
 const SPREADSHEET_ID = process.env.SPREADSHEET_ID;
 
@@ -259,7 +260,7 @@ async function removeInventoryItem(characterName, itemName, quantity) {
     if((existing.quantity-quantity) > 0 )
         await writeCell(`Inventory!C${existing.rowIndex}`, existing.quantity - quantity);
     else
-        await deleteRow(SPREADSHEET_ID,existing.rowIndex);
+        await deleteRow(getSheetId('Inventory'),existing.rowIndex);
 }
 
 // Returns all profiles as { discordId, characterName } pairs (for autocomplete)
