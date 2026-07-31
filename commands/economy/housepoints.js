@@ -16,11 +16,11 @@ module.exports = {
             const points = await getHousePoints(input);
             
             if(input.toLowerCase() ==='luna')
-                const picture = 'https://i.gyazo.com/e895b504e3a89152e91cdb2bccd1812c.png';
+                var picture = 'https://i.gyazo.com/e895b504e3a89152e91cdb2bccd1812c.png';
             else if(input.toLowerCase() ==='solis')
-                const picture = 'https://i.gyazo.com/807ed6c68623dd6b8e7778709e09a8f8.png';
+                var picture = 'https://i.gyazo.com/807ed6c68623dd6b8e7778709e09a8f8.png';
             else
-                const picture = 'https://i.gyazo.com/9bfe2be2895083682c6b9278e37f3b97.png';
+                var picture = 'https://i.gyazo.com/9bfe2be2895083682c6b9278e37f3b97.png';
             
             const embed = new EmbedBuilder()
                 .setThumbnail(picture)
