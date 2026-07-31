@@ -3,7 +3,6 @@
 
 require('dotenv').config();
 const { google } = require('googleapis');
-const inventory = require('../commands/economy/inventory');
 
 const SPREADSHEET_ID = process.env.SPREADSHEET_ID;
 
