@@ -30,7 +30,8 @@ module.exports = {
                 const elapsed = Date.now() - new Date(lastDaily).getTime();
                 if (elapsed < COOLDOWN_MS) {
                     const remaining = COOLDOWN_MS - elapsed;
-                    var line = "Allowance already claimed! Come back in " + formatTimeRemaining(Date(lastDaily).getTime()+COOLDOWN_MS);
+                    const next = new Date(lastDaily).getTime() + COOLDOWN_MS;
+                    var line = "Allowance already claimed! Come back in " + formatTimeRemaining(next);
                     const embed = new EmbedBuilder()
                         .setTitle('Wait a little more...')
                         .setColor(0xB7B75F)
