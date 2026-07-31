@@ -10,7 +10,8 @@ function formatTimeRemaining(ms) {
     const totalSeconds = Math.floor(ms / 1000);
     const hours = Math.floor(totalSeconds / 3600);
     const minutes = Math.floor((totalSeconds % 3600) / 60);
-    return `${hours}h ${minutes}m`;
+    const time = Math.floor((ms + 30 * 60 * 1000) / 1000);
+    return `<t:${futureTime}:R>`;
 }
 
 module.exports = {
