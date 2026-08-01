@@ -229,17 +229,15 @@ module.exports = {
             const embed = new EmbedBuilder()
                 .setTitle('Log RP')
                 .setColor(0xB7B75F)
-                // .addFields(
-                //     { name: '',      value: '**Start: **'+startInput      || '—', inline: true },
-                //     { name: '', value: `**Total WC: **`+totalWords.toString()+' words' || '—', inline: true },
-                //     { name: '', value: '', inline: true },
-                //     { name: '', value: '**End: **'+endInput || '—', inline: true },
-                //     { name: '', value: '**Total Messages: **'+messages.length.toString()+' messages' || '—', inline: true },
-                //     { name: '', value: '', inline: true },
-                // )
-                .setDescription(`**Start: **${startInput} \u1CBC\u1CBC **Total WC: **${totalWords} words\n**End: **${endInput} \u1CBC\u1CBC\u1CBC\u1CBC **Total Messages: **${messages.length} messages
-                    \n${description}`);
-
+                .addFields(
+                    { name: '',      value: '**Start: **'+startInput+'\n**End: **'+endInput, inline: true },
+                    { name: '', value: `**Total WC: **`+totalWords.toString()+' words' || '—', inline: true },
+                    //{ name: '', value: '**Total Messages: **'+messages.length.toString()+' messages' || '—', inline: true },
+                    //{ name: '', value: '', inline: true },
+                )
+                //.setDescription(`**Start: **${startInput} \u1CBC\u1CBC **Total WC: **${totalWords} words\n**End: **${endInput} \u1CBC\u1CBC\u1CBC\u1CBC **Total Messages: **${messages.length} messages
+                //    \n${description}`);
+                .setDescription(`\n${description}`);
             const reply = await interaction.editReply({ embeds: [embed], components: [buildButtons()] });
             const collector = reply.createMessageComponentCollector({
                 filter: i => i.user.id === interaction.user.id,
