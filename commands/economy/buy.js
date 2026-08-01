@@ -37,10 +37,14 @@ module.exports = {
             await addInventoryItem(characterName, shopItem.name, quantity);
             clearInventoryCache(interaction.user.id); // inventory changed — force fresh fetch on next autocomplete
 
-            var line = "Bought x" + quantity + " **" + shopItem.name + "** for " + totalCost + "\nNew balance: " + newBalance + " edels";
+            var edels = "edels";
+            if(newBalance === 1)
+                edels = "edel"; 
+
+            var line = `<@${interaction.user.id}> purchased ${quantity} **${shopItem.name}** for ${totalCost} edels!\n— New balance: ${newBalance} ${edels}.`;
             
             const embed = new EmbedBuilder()
-            .setTitle('Item bought!')
+            .setTitle('🛍️ Item bought!')
             .setColor(0xB7B75F)
             .setDescription(line);
 
