@@ -27,8 +27,15 @@ module.exports = {
         try {
             const items = getShopCache() ?? await getShopItems();
             const shopItem = items.find(i => i.name.toLowerCase() === itemName.toLowerCase());
-            if (!shopItem) return interaction.editReply(`**${itemName}** is not in the shop. Use /shop to see available items.`);
+            if (!shopItem){ 
+                const embed = new EmbedBuilder()
+                    .setTitle('❌ Uh oh...')
+                    .setColor(0xB7B75F)
+                    .setDescription(`**${itemName}** is not in the shop. Check out /shop to see our available items.`)
 
+                    await interaction.editReply({ embeds: [embed] });
+            }
+            
             const totalCost = shopItem.price * quantity;
 
             // Resolve character name before touching inventory
@@ -40,18 +47,15 @@ module.exports = {
             var edels = "edels";
             if(newBalance === 1)
                 edels = "edel"; 
-
-            var line = `Purchased x${quantity} **${shopItem.name}** for ${totalCost} edels!\n`;
             
             const embed = new EmbedBuilder()
             .setTitle('🛍️ Item bought!')
             .setColor(0xB7B75F)
-            .setDescription(line)
+            .setDescription(`Purchased x${quantity} **${shopItem.name}** for ${totalCost} edels.`)
             .setFooter({text:`— New balance: ${newBalance} ${edels}.`});
 
             await interaction.editReply({ embeds: [embed] });
 
-            //await interaction.editReply(`Bought **${quantity}x ${shopItem.name}** for **${totalCost}** coins. Balance: **${newBalance}**`);
         } catch (err) {
             await interaction.editReply(`Error: ${err.message}`);
         }
