@@ -232,7 +232,7 @@ module.exports = {
                 .addFields(
                     { name: '',      value: '**Start: **'+startInput      || '—', inline: true },
                     { name: '', value: `**Total WC: **`+totalWords.toString()+' words' || '—', inline: true },
-                    { name: '', value: '', inline: true },
+                    { name: '\t', value: '\t', inline: true },
                     { name: '', value: '**End: **'+endInput || '—', inline: true },
                     { name: '', value: '**Total Messages: **'+messages.length.toString()+' messages' || '—', inline: true },
                 )
