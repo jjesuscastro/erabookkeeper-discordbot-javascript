@@ -236,8 +236,8 @@ module.exports = {
                     
                     { name: '', value: '``` ```', inline: false},
                     { name: 'LOG SUMMARY', value: description, inline: false},
-                    { name: '',      value: results.map((result) =>`**${result.name}**`), inline: true },
-                    { name: '',      value: results.map((result) =>`— ${result.words} words`), inline: true },
+                    { name: '', value: results.map((result) =>`**${result.name}**`).join('\n'), inline: true },
+                    { name: '', value: results.map((result) =>`— ${result.words} words`).join('\n'), inline: true },
                     { name: '\u1CBC', value: '\u1CBC', inline: true },
                     
                 )
