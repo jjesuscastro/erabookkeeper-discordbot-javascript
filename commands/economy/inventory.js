@@ -21,14 +21,14 @@ module.exports = {
             const allItems = await getInventory(characterName);
             const items = allItems.filter(i => i.quantity > 0);
             setInventoryCache(target.id, items); // warm cache for /use and /transferitem autocomplete
-
+            items.sort((a,b) => b.quantity - a.quantity );
             if (items.length === 0) return interaction.editReply('Your inventory is empty.');
             const line = `**BALANCE**\n\`\`\`✧ ${balance} edels ✧\`\`\`\n**ITEMS**\n`;
 
             const embed = new EmbedBuilder()
                 .setTitle(`${characterName}'s Inventory`)
                 .setColor(0xCEA45A)
-                .setDescription(line + items.map(i => `\`x${i.quantity}\` **${i.itemName}**`).join('\n'));
+                .setDescription(line + items.map(i => `\`x${i.quantity.toString().padEnd(i[0].quantity.toString().length)}\` **${i.itemName}**`).join('\n'));
 
             await interaction.editReply({ embeds: [embed] });
         } catch (err) {
