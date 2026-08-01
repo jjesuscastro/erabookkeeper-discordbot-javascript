@@ -231,9 +231,9 @@ module.exports = {
                 .setColor(0xB7B75F)
                 .addFields(
                     { name: '**Start**',      value: startInput      || '—', inline: true },
-                    { name: '**End**', value: endInput || '—', inline: true },
                     { name: '**Total WC**', value: totalWords.toString() || '—', inline: true },
-                    //{ name: '**Total Messages**', value: messages.length || '—', inline: true },
+                    { name: '**Total Messages**', value: messages.length.toString() || '—', inline: true },
+                    { name: '**End**', value: endInput || '—', inline: true },
                 )
                 .setDescription(`\n ${description}`);
 
