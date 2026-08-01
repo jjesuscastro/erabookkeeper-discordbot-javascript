@@ -230,10 +230,10 @@ module.exports = {
                 .setTitle('Log RP')
                 .setColor(0xB7B75F)
                 .addFields(
-                    { name: '**Start**',      value: startInput      || '—', inline: true },
-                    { name: '**Total WC**', value: totalWords.toString() || '—', inline: true },
-                    { name: '**Total Messages**', value: messages.length.toString() || '—', inline: true },
-                    { name: '**End**', value: endInput || '—', inline: true },
+                    { name: '',      value: '**Start**'+startInput      || '—', inline: true },
+                    { name: '', value: `**Total WC**`+totalWords.toString() || '—', inline: true },
+                    { name: '', value: '**Total Messages**'+messages.length.toString() || '—', inline: true },
+                    { name: '', value: '**End**'+endInput || '—', inline: true },
                 )
                 .setDescription(`\n ${description}`);
 
