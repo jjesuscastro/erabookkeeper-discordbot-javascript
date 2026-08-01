@@ -234,7 +234,7 @@ module.exports = {
                     { name: '\u1CBC', value: '\u1CBC', inline: true },
                     { name: '', value: `**Total WC: **`+totalWords.toString()+' words'+'\n**Total Messages: **'+messages.length.toString()+' messages', inline: true },
                     
-                    { name: '', value: '┈┈・ ✦ ・┈┈', inline: false},
+                    { name: '', value: '``` ```', inline: false},
                     { name: 'LOGS', value: description, inline: false},
                     
                 )
