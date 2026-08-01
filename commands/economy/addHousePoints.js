@@ -19,11 +19,25 @@ module.exports = {
 
         await interaction.deferReply();
         try {
+            if(input.toLowerCase() ==='luna'){
+                var picture = 'https://i.gyazo.com/586f175c28889ba68a223f5f22d813d3.png';
+                var color = 0xA3D1F9;
+            }
+            else if(input.toLowerCase() ==='solis'){
+                var picture = 'https://i.gyazo.com/807ed6c68623dd6b8e7778709e09a8f8.png';
+                var color = 0xFFE1B7;
+            }
+            else{
+                var picture = 'https://i.gyazo.com/9bfe2be2895083682c6b9278e37f3b97.png';
+                var color = 0xDDB0FF;
+            }
+
             const newBalance = await addPoints(input, amount);
 
             const embed = new EmbedBuilder()
                 .setTitle('Congratulations!')
-                .setColor(0xB7B75F)
+                .setThumbnail(picture)
+                .setColor(color)
                 .setDescription(`House **${input.charAt(0).toUpperCase()}${input.slice(1)}** has gained ${amount} points!\nCurrent standing: ${newBalance} points.`);
 
             await interaction.editReply({ embeds: [embed] });
