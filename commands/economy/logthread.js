@@ -213,7 +213,7 @@ module.exports = {
 
             const totalWords = results.reduce((sum, result) => sum + result.words, 0);
             const lines = results.map((result, index) =>
-                `${index + 1}. **${result.name}** — ${result.words} words`
+                `${index + 1}. **${result.name}** — @mun — ${result.words} words`
             );
 
             let description = '';
@@ -235,11 +235,7 @@ module.exports = {
                     { name: '', value: `**Total WC: **`+totalWords.toString()+' words'+'\n**Total Messages: **'+messages.length.toString()+' messages', inline: true },
                     
                     { name: '', value: '``` ```', inline: false},
-                    { name: 'LOG SUMMARY', value: '', inline: false},
-                    { name: '', value: results.map((result) =>`**${result.name}**`).join('\n'), inline: true },
-                    { name: '', value: '@mun', inline: true },
-                    { name: '', value: results.map((result) =>`— ${result.words} WC`).join('\n'), inline: true },
-                    
+                    { name: 'LOG SUMMARY', value: description, inline: false},
                     
                 )
                 //.setDescription(`\n${description}`);
