@@ -41,12 +41,13 @@ module.exports = {
             if(newBalance === 1)
                 edels = "edel"; 
 
-            var line = `<@${interaction.user.id}> purchased ${quantity} **${shopItem.name}** for ${totalCost} edels!\n— New balance: ${newBalance} ${edels}.`;
+            var line = `Purchased ${quantity} **${shopItem.name}** for ${totalCost} edels!\n`;
             
             const embed = new EmbedBuilder()
             .setTitle('🛍️ Item bought!')
             .setColor(0xB7B75F)
-            .setDescription(line);
+            .setDescription(line)
+            .setFooter(`— New balance: ${newBalance} ${edels}.`);
 
             await interaction.editReply({ embeds: [embed] });
 

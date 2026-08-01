@@ -32,7 +32,7 @@ module.exports = {
             const { characterName, balance } = await getUser(userId);
 
             const embed = new EmbedBuilder()
-                .setTitle(`${characterName}'s balance 🪙`)
+                .setTitle(`🪙 ${characterName}'s balance`)
                 .setColor(0xB7B75F)
                 .setDescription(`\`\`\`✧ ${balance} edels ✧\`\`\``);
 
