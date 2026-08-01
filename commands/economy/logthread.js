@@ -231,8 +231,8 @@ module.exports = {
                 .setColor(0xB7B75F)
                 .addFields(
                     { name: '',      value: '**Start: **'+startInput+'\n**End: **'+endInput, inline: true },
-                    { name: '', value: `**Total WC: **`+totalWords.toString()+' words' || '—', inline: true },
-                    //{ name: '', value: '**Total Messages: **'+messages.length.toString()+' messages' || '—', inline: true },
+                    { name: '', value: `**Total WC: **`+totalWords.toString()+' words'+'\n**Total Messages: **'+messages.length.toString()+' messages', inline: true },
+                    //{ name: '', value:  || '—', inline: true },
                     //{ name: '', value: '', inline: true },
                 )
                 //.setDescription(`**Start: **${startInput} \u1CBC\u1CBC **Total WC: **${totalWords} words\n**End: **${endInput} \u1CBC\u1CBC\u1CBC\u1CBC **Total Messages: **${messages.length} messages
