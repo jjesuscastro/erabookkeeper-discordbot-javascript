@@ -30,10 +30,10 @@ module.exports = {
             if (!shopItem){ 
                 const embed = new EmbedBuilder()
                     .setTitle('❌ Uh oh...')
-                    .setColor(0xB7B75F)
-                    .setDescription(`**${itemName}** is not in the shop. Check out /shop to see our available items.`)
+                    .setColor(0xEBBCA2)
+                    .setDescription(`**${itemName}** is not in the shop. Check out \`/shop\` to see our available items.`)
 
-                    await interaction.editReply({ embeds: [embed] });
+                    return interaction.editReply({ embeds: [embed] });
             }
             
             const totalCost = shopItem.price * quantity;
