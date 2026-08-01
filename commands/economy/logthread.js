@@ -208,7 +208,7 @@ module.exports = {
                     userId,
                     name: memberMap.get(userId)?.displayName ?? userId,
                     words,
-                    edels: parseInt(words)/5;
+                    edels: parseInt(words)/5,
                 }))
                 .sort((a, b) => b.words - a.words);
 
@@ -238,7 +238,7 @@ module.exports = {
                     { name: 'LOG SUMMARY', value: description, inline: false},
                     { name: '', value: '', inline: false},
                     { name: 'EDELS', value: results.map((result) =>
-                `\`${result.edels.toString().padEnd(parseInt(results[0].edels.toString().length), " ")} WC\` — <@${result.userId}>`), inline: false},
+                        `\`${result.edels.toString().padEnd(parseInt(results[0].edels.toString().length), " ")} WC\` — <@${result.userId}>`), inline: false},
                     
                 )
                 //.setDescription(`\n${description}`);
