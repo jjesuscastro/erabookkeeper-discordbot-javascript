@@ -52,7 +52,7 @@ module.exports = {
                 .setTitle('✨ Here\'s your allowance!')
                 .setColor(0xB7B75F)
                 .setDescription(line)
-                .setFooter({text:`— ${characterName}'s balance: ${newBalance} ${edels}.`});
+                .setFooter({text:`— ${characterName}'s balance: ${newBalance} edels.`});
 
             await interaction.editReply({ embeds: [embed] });
         } catch (err) {
