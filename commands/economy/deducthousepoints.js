@@ -30,10 +30,18 @@ module.exports = {
                 var picture = 'https://i.gyazo.com/9bfe2be2895083682c6b9278e37f3b97.png';
             }
 
+            var point = "points";
+            var point2 = "points";
+            if(amount === 1)
+                point = "point"; 
+            if(newBalance === 1)
+                point = "point"; 
+            
             const embed = new EmbedBuilder()
                 .setTitle('Tsk tsk tsk...')
+                .setThumbnail(picture)
                 .setColor(0xEBBCA2)
-                .setDescription(`✧ **House ${input.charAt(0).toUpperCase()}${input.slice(1)}** has lost ${amount} points.\n— Current standing: ${newBalance} points.`)
+                .setDescription(`✧ **House ${input.charAt(0).toUpperCase()}${input.slice(1)}** has lost ${amount} ${point}.\n— Current standing: ${newBalance} ${point2}.`)
                 .setFooter({text:`You better behave next time...`});
 
             await interaction.editReply({ embeds: [embed] });
