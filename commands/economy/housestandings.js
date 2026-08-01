@@ -16,7 +16,7 @@ module.exports = {
     
             const embed = new EmbedBuilder()
                 .setTitle('House Standings')
-                .setColor(0xCEA45A)
+                .setColor(0xB7B75F)
                 //.setDescription('🥇 ' + items.map(i => `**${i.house}** — *${i.points} points*`).join('\n'));
                 .setDescription(`🥇 **${items[0].house}** — *${items[0].points} points*\n🥈 **${items[1].house}** — *${items[1].points} points*\n🥉 **${items[2].house}** — *${items[2].points} points*`);
             await interaction.editReply({ embeds: [embed] });
