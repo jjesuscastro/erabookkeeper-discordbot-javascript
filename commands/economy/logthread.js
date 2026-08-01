@@ -212,8 +212,8 @@ module.exports = {
                 .sort((a, b) => b.words - a.words);
 
             const totalWords = results.reduce((sum, result) => sum + result.words, 0);
-            const lines = results.map((result, index) =>
-                `${index + 1}. **${result.name}** — @mun — ${result.words} words`
+            const lines = results.map((result) =>
+                `**${result.name}** — <@${userId}> — ${result.words} words`
             );
 
             let description = '';
