@@ -235,10 +235,11 @@ module.exports = {
                     { name: '', value: `**Total WC: **`+totalWords.toString()+' words'+'\n**Total Messages: **'+messages.length.toString()+' messages', inline: true },
                     
                     { name: '', value: '``` ```', inline: false},
-                    { name: 'LOG SUMMARY', value: description, inline: false},
+                    { name: 'LOG SUMMARY', value: '', inline: false},
                     { name: '', value: results.map((result) =>`**${result.name}**`).join('\n'), inline: true },
-                    { name: '', value: results.map((result) =>`— ${result.words} words`).join('\n'), inline: true },
-                    { name: '\u1CBC', value: '\u1CBC', inline: true },
+                    { name: '', value: '@mun', inline: true },
+                    { name: '', value: results.map((result) =>`— ${result.words} WC`).join('\n'), inline: true },
+                    
                     
                 )
                 //.setDescription(`\n${description}`);
