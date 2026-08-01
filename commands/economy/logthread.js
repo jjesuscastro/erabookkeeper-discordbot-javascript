@@ -213,7 +213,7 @@ module.exports = {
 
             const totalWords = results.reduce((sum, result) => sum + result.words, 0);
             const lines = results.map((result) =>
-                `\`${result.words} WC\` — **${result.name}** — <@${result.userId}>`
+                `\`${result.words.toString.padEnd(4, " ")} WC\` — **${result.name}** — <@${result.userId}>`
             );
 
             let description = '';
