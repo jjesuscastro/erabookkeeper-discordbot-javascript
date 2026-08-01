@@ -41,7 +41,7 @@ module.exports = {
             if(newBalance === 1)
                 edels = "edel"; 
 
-            var line = `Purchased ${quantity} **${shopItem.name}** for ${totalCost} edels!\n`;
+            var line = `Purchased x${quantity} **${shopItem.name}** for ${totalCost} edels!\n`;
             
             const embed = new EmbedBuilder()
             .setTitle('🛍️ Item bought!')
