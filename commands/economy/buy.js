@@ -31,7 +31,7 @@ module.exports = {
                 const embed = new EmbedBuilder()
                     .setTitle('❌ Uh oh...')
                     .setColor(0xEBBCA2)
-                    .setDescription(`**${itemName}** is not in the shop. Check out \`/shop\` to see our available items.`)
+                    .setDescription(`**${itemName}** not found. Check out \`/shop\` to see our available items.`)
 
                     return interaction.editReply({ embeds: [embed] });
             }
@@ -48,7 +48,7 @@ module.exports = {
                 const embed = new EmbedBuilder()
                     .setTitle('❌ Uh oh...')
                     .setColor(0xEBBCA2)
-                    .setDescription(`You don't have enough money! You only have ${balance} ${edels}`)
+                    .setDescription(`You don't have enough money! You only have ${balance} ${edels}.`)
 
                     return interaction.editReply({ embeds: [embed] });
             } 
