@@ -47,7 +47,7 @@ module.exports = {
             await setLastDaily(rowIndex, new Date().toISOString());
             const { characterName, balance } = await getUser(target.id);
             
-            var line = "Here's your daily **" + DAILY_AMOUNT + "** edels. Don\'t waste it!";
+            var line = "Claimed your daily **" + DAILY_AMOUNT + "** edels. Don\'t waste it!";
              const embed = new EmbedBuilder()
                 .setTitle('✨ Here\'s your allowance!')
                 .setColor(0xB7B75F)
