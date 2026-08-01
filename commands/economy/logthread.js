@@ -145,7 +145,7 @@ async function fetchRangeMessages(channel, startMessage, endMessage) {
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('logthread')
-        .setDescription('Count words in a thread or between two messages')
+        .setDescription('Log your RPs!')
         .addStringOption(opt =>
             opt.setName('thread').setDescription('Thread starter or reply message ID/link').setRequired(false))
         .addStringOption(opt =>
@@ -227,9 +227,13 @@ module.exports = {
             description += `\n\n${totalWords} total words · ${messages.length} messages scanned`;
 
             const embed = new EmbedBuilder()
-                .setTitle('Log Thread Word Count')
+                .setTitle('Log RP')
                 .setColor(0xB7B75F)
-                .setDescription(description);
+                .addFields(
+                    { name: '**start**',      value: startInput      || '—', inline: true },
+                    { name: '**end**', value: endInput || '—', inline: true },
+                )
+                .setDescription(`\n ${description}`);
 
             const reply = await interaction.editReply({ embeds: [embed], components: [buildButtons()] });
             const collector = reply.createMessageComponentCollector({
