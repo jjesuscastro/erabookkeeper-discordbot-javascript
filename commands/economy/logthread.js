@@ -234,11 +234,11 @@ module.exports = {
                     { name: '\u1CBC', value: '\u1CBC', inline: true },
                     { name: '', value: `**Total WC: **`+totalWords.toString()+' words'+'\n**Total Messages: **'+messages.length.toString()+' messages', inline: true },
                     
-                    //{ name: '', value: '', inline: true },
+                    { name: '', value: '┈┈・ ✦ ・┈┈', inline: false},
+                    { name: 'LOGS', value: description, inline: false},
+                    
                 )
-                //.setDescription(`**Start: **${startInput} \u1CBC\u1CBC **Total WC: **${totalWords} words\n**End: **${endInput} \u1CBC\u1CBC\u1CBC\u1CBC **Total Messages: **${messages.length} messages
-                //    \n${description}`);
-                .setDescription(`\n${description}`);
+                //.setDescription(`\n${description}`);
             const reply = await interaction.editReply({ embeds: [embed], components: [buildButtons()] });
             const collector = reply.createMessageComponentCollector({
                 filter: i => i.user.id === interaction.user.id,
