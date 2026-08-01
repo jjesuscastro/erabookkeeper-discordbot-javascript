@@ -39,7 +39,19 @@ module.exports = {
             const totalCost = shopItem.price * quantity;
 
             // Resolve character name before touching inventory
-            const { characterName } = await getUser(interaction.user.id);
+            const { characterName,balance } = await getUser(interaction.user.id);
+            if (balance < totalCost){
+                var edels = "edels";
+                if(balance === 1)
+                    edels = "edel"; 
+                
+                const embed = new EmbedBuilder()
+                    .setTitle('❌ Uh oh...')
+                    .setColor(0xEBBCA2)
+                    .setDescription(`You don't have enough money! You only have ${balance} ${edels}`)
+
+                    return interaction.editReply({ embeds: [embed] });
+            } 
             const newBalance = await deductBalance(interaction.user.id, totalCost);
             await addInventoryItem(characterName, shopItem.name, quantity);
             clearInventoryCache(interaction.user.id); // inventory changed — force fresh fetch on next autocomplete
