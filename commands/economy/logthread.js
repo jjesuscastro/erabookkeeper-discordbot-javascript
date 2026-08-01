@@ -237,7 +237,7 @@ module.exports = {
                 //     { name: '', value: '**Total Messages: **'+messages.length.toString()+' messages' || '—', inline: true },
                 //     { name: '', value: '', inline: true },
                 // )
-                .setDescription(`**Start: **${startInput}               **Total WC: **${totalWords} words\n**End: **${endInput}               **Total Messages: **${messages.length} messages
+                .setDescription(`**Start: **${startInput} \u1CBC\u1CBC **Total WC: **${totalWords} words\n**End: **${endInput} \u1CBC\u1CBC **Total Messages: **${messages.length} messages
                     \n${description}`);
 
             const reply = await interaction.editReply({ embeds: [embed], components: [buildButtons()] });
