@@ -233,7 +233,7 @@ module.exports = {
                     { name: '**Start**',      value: startInput      || '—', inline: true },
                     { name: '**End**', value: endInput || '—', inline: true },
                     { name: '**Total WC**', value: totalWords || '—', inline: true },
-                    { name: '**Total Messages**', value: messages.length || '—', inline: true },
+                    //{ name: '**Total Messages**', value: messages.length || '—', inline: true },
                 )
                 .setDescription(`\n ${description}`);
 
