@@ -213,7 +213,7 @@ module.exports = {
 
             const totalWords = results.reduce((sum, result) => sum + result.words, 0);
             const lines = results.map((result) =>
-                `**${result.name}** — <@${result.userId}> — ${result.words} WC`
+                `\`${result.words} WC\` — **${result.name}** — <@${result.userId}>`
             );
 
             let description = '';
@@ -224,8 +224,7 @@ module.exports = {
                 shown++;
             }
             if (shown < lines.length) description += `\n*...and ${lines.length - shown} more*`;
-            //description += `\n\n${totalWords} total words · ${messages.length} messages scanned`;
-
+            
             const embed = new EmbedBuilder()
                 .setTitle('Log RP')
                 .setColor(0xB7B75F)
@@ -236,6 +235,8 @@ module.exports = {
                     
                     { name: '', value: '``` ```', inline: false},
                     { name: 'LOG SUMMARY', value: description, inline: false},
+                    { name: '', value: '', inline: false},
+                    { name: 'EDELS', value: 'tba', inline: false},
                     
                 )
                 //.setDescription(`\n${description}`);
