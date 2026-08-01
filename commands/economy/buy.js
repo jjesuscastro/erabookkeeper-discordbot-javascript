@@ -47,7 +47,7 @@ module.exports = {
             .setTitle('🛍️ Item bought!')
             .setColor(0xB7B75F)
             .setDescription(line)
-            .setFooter(`— New balance: ${newBalance} ${edels}.`);
+            .setFooter({text:`— New balance: ${newBalance} ${edels}.`});
 
             await interaction.editReply({ embeds: [embed] });
 
