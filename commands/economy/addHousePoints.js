@@ -34,13 +34,16 @@ module.exports = {
 
             const newBalance = await addPoints(input, amount);
             var point = "points";
+            var point2 = "points";
             if(amount === 1)
+                point = "point"; 
+            if(newBalance === 1)
                 point = "point"; 
             const embed = new EmbedBuilder()
                 .setTitle('Congratulations!')
                 .setThumbnail(picture)
                 .setColor(color)
-                .setDescription(`✧ **House ${input.charAt(0).toUpperCase()}${input.slice(1)}** has gained **${amount}** ${point}!\n— Current standing: ${newBalance} points.`);
+                .setDescription(`✧ **House ${input.charAt(0).toUpperCase()}${input.slice(1)}** has gained **${amount}** ${point}!\n— Current standing: ${newBalance} ${point2}.`);
 
             await interaction.editReply({ embeds: [embed] });
         } catch (err) {
