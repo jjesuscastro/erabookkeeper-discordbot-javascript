@@ -238,7 +238,7 @@ module.exports = {
                     { name: 'LOG SUMMARY', value: description, inline: false},
                     { name: '', value: '', inline: false},
                     { name: 'EDELS', value: results.map((result) =>
-                        `\`${result.edels.toString().padEnd(parseInt(results[0].edels.toString().length), " ")} WC\` — <@${result.userId}>`), inline: false},
+                        `\`${result.edels.toString().padEnd(parseInt(results[0].edels.toString().length), " ")} WC\` — <@${result.userId}>`).join(`\n`), inline: false},
                     
                 )
                 //.setDescription(`\n${description}`);
