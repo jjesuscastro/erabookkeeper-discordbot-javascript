@@ -208,7 +208,7 @@ module.exports = {
                     userId,
                     name: memberMap.get(userId)?.displayName ?? userId,
                     words,
-                    edels: parseInt(words)/5,
+                    edels: words/5,
                 }))
                 .sort((a, b) => b.words - a.words);
 
