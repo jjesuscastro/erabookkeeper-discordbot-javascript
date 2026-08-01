@@ -213,7 +213,7 @@ module.exports = {
 
             const totalWords = results.reduce((sum, result) => sum + result.words, 0);
             const lines = results.map((result) =>
-                `**${result.name}** — <@${userId}> — ${result.words} words`
+                `**${result.name}** — <@${result.userId}> — ${result.words} WC`
             );
 
             let description = '';
@@ -232,7 +232,7 @@ module.exports = {
                 .addFields(
                     { name: '',      value: '**Start: **'+startInput+'\n**End: **'+endInput, inline: true },
                     { name: '\u1CBC', value: '\u1CBC', inline: true },
-                    { name: '', value: `**Total WC: **`+totalWords.toString()+' words'+'\n**Total Messages: **'+messages.length.toString()+' messages', inline: true },
+                    { name: '', value: `**Total WC: **`+totalWords.toString()+'\n**Total Messages: **'+messages.length.toString(), inline: true },
                     
                     { name: '', value: '``` ```', inline: false},
                     { name: 'LOG SUMMARY', value: description, inline: false},
