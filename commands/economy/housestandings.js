@@ -18,9 +18,7 @@ module.exports = {
                 .setTitle('House Standings')
                 .setColor(0xCEA45A)
                 //.setDescription('🥇 ' + items.map(i => `**${i.house}** — *${i.points} points*`).join('\n'));
-                .setDescription(`🥇 **${items[0].house}** — *${items[0].points} points*
-                                 🥈 **${items[1].house}** — *${items[1].points} points*
-                                 🥉 **${items[2].house}** — *${items[2].points} points*`);
+                .setDescription(`🥇 **${items[0].house}** — *${items[0].points} points*\n🥈 **${items[1].house}** — *${items[1].points} points*\n🥉 **${items[2].house}** — *${items[2].points} points*`);
             await interaction.editReply({ embeds: [embed] });
         } catch (err) {
             await interaction.editReply(`Error: ${err.message}`);
