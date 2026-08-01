@@ -238,7 +238,7 @@ module.exports = {
                     { name: 'LOG SUMMARY', value: description, inline: false},
                     { name: '', value: '', inline: false},
                     { name: 'EDELS', value: results.map((result) =>
-                        `\`${result.edels.toString().padEnd(parseInt(results[0].edels.toString().length), " ")} WC\` — <@${result.userId}>`).join(`\n`), inline: false},
+                        `\`${result.edels.toString().padEnd(parseInt(results[0].edels.toString().length), " ")} edels\` — <@${result.userId}>`).join(`\n`), inline: false},
                     
                 )
                 //.setDescription(`\n${description}`);
@@ -257,8 +257,8 @@ module.exports = {
                 const failed = [];
                 for (const result of results) {
                     try {
-                        await addBalance(result.userId, result.words);
-                        granted.push(`**${result.name}** +${result.words} edels`);
+                        await addBalance(result.userId, result.edels);
+                        granted.push(`**${result.name}** +${result.edels} edels`);
                     } catch {
                         failed.push(result.name);
                     }
