@@ -224,14 +224,16 @@ module.exports = {
                 shown++;
             }
             if (shown < lines.length) description += `\n*...and ${lines.length - shown} more*`;
-            description += `\n\n${totalWords} total words · ${messages.length} messages scanned`;
+            //description += `\n\n${totalWords} total words · ${messages.length} messages scanned`;
 
             const embed = new EmbedBuilder()
                 .setTitle('Log RP')
                 .setColor(0xB7B75F)
                 .addFields(
-                    { name: '**start**',      value: startInput      || '—', inline: true },
-                    { name: '**end**', value: endInput || '—', inline: true },
+                    { name: '**Start**',      value: startInput      || '—', inline: true },
+                    { name: '**End**', value: endInput || '—', inline: true },
+                    { name: '**Total WC**', value: totalWords || '—', inline: true },
+                    { name: '**Total Messages**', value: messages.length || '—', inline: true },
                 )
                 .setDescription(`\n ${description}`);
 
