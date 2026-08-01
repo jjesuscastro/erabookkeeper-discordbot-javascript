@@ -43,7 +43,8 @@ module.exports = {
                 .setTitle('Congratulations!')
                 .setThumbnail(picture)
                 .setColor(color)
-                .setDescription(`✧ **House ${input.charAt(0).toUpperCase()}${input.slice(1)}** has gained **${amount}** ${point}!\n— Current standing: ${newBalance} ${point2}.`);
+                .setDescription(`✧ **House ${input.charAt(0).toUpperCase()}${input.slice(1)}** has gained **${amount}** ${point}.\n— Current standing: ${newBalance} ${point2}.`)
+                .setFooter({text:`Keep up the good work!`});
 
             await interaction.editReply({ embeds: [embed] });
         } catch (err) {
