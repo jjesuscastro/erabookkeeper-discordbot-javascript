@@ -34,7 +34,7 @@ module.exports = {
                     var line = "Allowance already claimed! Come back " + formatTimeRemaining(next)+".";
                     const embed = new EmbedBuilder()
                         .setTitle('Wait a little more...')
-                        .setColor(0xB7B75F)
+                        .setColor(0xEBBCA2)
                         .setDescription(line);
 
                     return interaction.editReply({ embeds: [embed] });
