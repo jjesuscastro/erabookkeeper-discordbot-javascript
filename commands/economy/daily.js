@@ -47,14 +47,14 @@ module.exports = {
             await setLastDaily(rowIndex, new Date().toISOString());
             const { characterName, balance } = await getUser(target.id);
             
-            var line = "Claimed your daily **" + DAILY_AMOUNT + "**. Don\'t waste it! \n" + characterName + "\'s balance: " + newBalance +" edels";
+            var line = "Here's your daily **" + DAILY_AMOUNT + "** edels. Don\'t waste it!";
              const embed = new EmbedBuilder()
-                .setTitle('Here\'s your allowance!')
+                .setTitle('✨ Here\'s your allowance!')
                 .setColor(0xB7B75F)
-                .setDescription(line);
+                .setDescription(line)
+                .setFooter({text:`— ${characterName}'s balance: ${newBalance} ${edels}.`});
 
             await interaction.editReply({ embeds: [embed] });
-            //await interaction.editReply(`Claimed your daily **${DAILY_AMOUNT}**! Balance: **${newBalance}**`);
         } catch (err) {
             await interaction.editReply(`Error: ${err.message}`);
         }
