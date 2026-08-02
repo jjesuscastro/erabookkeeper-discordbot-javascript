@@ -31,7 +31,7 @@ module.exports = {
                 const { characterName } = await getUser(interaction.user.id);
                 items = await getInventory(characterName);
             }
-            return interaction.respond(items.map(i => ({ name: `${i.itemName} x${i.quantity}`, value: i.itemName })));
+            return interaction.respond(items.map(i => ({ name: `${i.itemName} (x${i.quantity})`, value: i.itemName })));
         }
     },
 
