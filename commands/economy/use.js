@@ -40,10 +40,23 @@ module.exports = {
                 .setDescription(`<@${target.id}> used x${quantity} **${itemName}**`);
 
             await interaction.editReply({ embeds: [embed] });
-
-            //await interaction.editReply(`Used **${quantity}x ${itemName}**.`);
         } catch (err) {
-            await interaction.editReply(`Error: ${err.message}`);
+            if(err.message === 'Item does not exist.'){
+                const embed = new EmbedBuilder()
+                    .setTitle('❌ Uh oh...')
+                    .setColor(0xEBBCA2)
+                    .setDescription(`**${itemName}** not found.`)
+                await interaction.editReply({ embeds: [embed] });
+            
+            }
+            else if(err.message === 'Insufficient quantity.'){
+                const embed = new EmbedBuilder()
+                    .setTitle('❌ Uh oh...')
+                    .setColor(0xEBBCA2)
+                    .setDescription(`You don't have enough **${itemName}** to transfer.`)
+                await interaction.editReply({ embeds: [embed] });
+            }
+            else await interaction.editReply(`Error: ${err.message}`);
         }
     },
 };
