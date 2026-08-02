@@ -18,12 +18,12 @@ function parseInput(channel, input, fallbackChannelId) {
     var linkMatch = trimmed.match(/channels\/(?:@me|\d+)\/(\d+)\/(\d+)/);
     if (linkMatch) return { channelId: linkMatch[1], messageId: linkMatch[2] };
     else if (/^\d+$/.test(trimmed)){
-        const msg = await channel.messages.fetch(trimmed);
-        const Link = msg.url;
-        linkMatch = Link.match(/channels\/(?:@me|\d+)\/(\d+)\/(\d+)/);
+        // const msg = await channel.messages.fetch(trimmed);
+        // const Link = msg.url;
+        // linkMatch = Link.match(/channels\/(?:@me|\d+)\/(\d+)\/(\d+)/);
     
-        if (linkMatch) return { channelId: linkMatch[1], messageId: linkMatch[2] };
-        //return { channelId: fallbackChannelId, messageId: trimmed };
+        // if (linkMatch) return { channelId: linkMatch[1], messageId: linkMatch[2] };
+        return { channelId: fallbackChannelId, messageId: trimmed };
     }
     return null;
 }
