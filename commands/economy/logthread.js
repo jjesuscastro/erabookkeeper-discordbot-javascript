@@ -225,12 +225,22 @@ module.exports = {
                 shown++;
             }
             if (shown < lines.length) description += `\n*...and ${lines.length - shown} more*`;
+            const startId = BigInt(startInput.id);
+            const endId = BigInt(endInput.id);
             
+            await channel.messages.fetch('startId')
+                .then(message => {
+                    const StartLink = message.url; 
+                })
+            await channel.messages.fetch('endId')
+                .then(message => {
+                    const EndLink = message.url; 
+                })
             const embed = new EmbedBuilder()
                 .setTitle('Log RP')
                 .setColor(0xB7B75F)
                 .addFields(
-                    { name: '',      value: '**Start: **'+startInput+'\n**End: **'+endInput, inline: true },
+                    { name: '',      value: '**Start: **'+StartLink+'\n**End: **'+EndLink, inline: true },
                     //{ name: ' ', value: ' ', inline: true },
                     { name: '', value: `**Total WC: **`+totalWords.toString()+'\n**Total Messages: **'+messages.length.toString(), inline: true },
                     
