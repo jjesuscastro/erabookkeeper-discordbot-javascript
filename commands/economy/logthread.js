@@ -236,7 +236,7 @@ module.exports = {
             }
             if (shown < lines.length) description += `\n*...and ${lines.length - shown} more*`;
             const embed = new EmbedBuilder()
-                .setTitle('Log RP')
+                .setTitle('🪶 Log RP')
                 .setColor(0xB7B75F)
                 .addFields(
                     { name: '',      value: '**Start: **'+StartLink+'\n**End: **'+EndLink, inline: true },
@@ -254,7 +254,7 @@ module.exports = {
             const reply = await interaction.editReply({ embeds: [embed], components: [buildButtons()] });
             const collector = reply.createMessageComponentCollector({
                 filter: i => i.user.id === interaction.user.id,
-                time: 120_000,
+                time: 300_000,
                 max: 1,
             });
 
