@@ -57,13 +57,28 @@ module.exports = {
             clearInventoryCache(target.discordId);
 
             const embed = new EmbedBuilder()
-                .setTitle('Item Transferred!')
-                .setColor(0xCEA45A)
+                .setTitle('🔁 Item Transferred!')
+                .setColor(0xB7B75F)
                 .setDescription(`Transferred x${quantity} **${itemName}** from <@${sender.id}> to <@${target.discordId}>`);
 
             await interaction.editReply({ embeds: [embed] });
         } catch (err) {
-            await interaction.editReply(`Error: ${err.message}`);
+            if(err.message === 'Item does not exist.'){
+                const embed = new EmbedBuilder()
+                    .setTitle('❌ Uh oh...')
+                    .setColor(0xEBBCA2)
+                    .setDescription(`**${itemName}** not found.`)
+                await interaction.editReply({ embeds: [embed] });
+            
+            }
+            else if(err.message === 'Insufficient quantity.'){
+                const embed = new EmbedBuilder()
+                    .setTitle('❌ Uh oh...')
+                    .setColor(0xEBBCA2)
+                    .setDescription(`You don't have enough **${itemName}** to transfer.`)
+                await interaction.editReply({ embeds: [embed] });
+            }
+            else await interaction.editReply(`Error: ${err.message}`);
         }
     },
 };
