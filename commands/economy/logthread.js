@@ -142,6 +142,22 @@ async function fetchRangeMessages(channel, startMessage, endMessage) {
     return [...messages.values()];
 }
 
+async function fetchMsgLinks(channel, startMessage, endMessage) {
+    const startId = BigInt(startMessage.id);
+    const endId = BigInt(endMessage.id);
+    
+    await channel.messages.fetch('startId')
+        .then(message => {
+            const StartLink = message.url; 
+        })
+    await channel.messages.fetch('endId')
+        .then(message => {
+            const EndLink = message.url; 
+        })
+    
+    return { StartLink, EndLink };
+}
+
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('logthread')
@@ -170,6 +186,8 @@ module.exports = {
         await interaction.deferReply();
         try {
             let messages;
+            let StartLink;
+            let EndLink;
 
             if (isThreadMode) {
                 const parsed = parseInput(threadInput, interaction.channel.id);
@@ -189,6 +207,7 @@ module.exports = {
                 const { channel, message: startMessage } = await fetchMessage(interaction.client, startParsed, 'start');
                 const { message: endMessage } = await fetchMessage(interaction.client, endParsed, 'end');
                 messages = await fetchRangeMessages(channel, startMessage, endMessage);
+                let { StartLink , EndLink } = await fetchMsgLinks(channel, startMessage, endMessage);
             }
 
             const wordMap = new Map();
@@ -225,17 +244,6 @@ module.exports = {
                 shown++;
             }
             if (shown < lines.length) description += `\n*...and ${lines.length - shown} more*`;
-            const startId = BigInt(startInput.id);
-            const endId = BigInt(endInput.id);
-            
-            await channel.messages.fetch('startId')
-                .then(message => {
-                    const StartLink = message.url; 
-                })
-            await channel.messages.fetch('endId')
-                .then(message => {
-                    const EndLink = message.url; 
-                })
             const embed = new EmbedBuilder()
                 .setTitle('Log RP')
                 .setColor(0xB7B75F)
