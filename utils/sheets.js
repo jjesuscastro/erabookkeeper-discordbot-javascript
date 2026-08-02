@@ -282,6 +282,7 @@ async function getAllProfiles() {
 
 module.exports = {
     getUser,
+    getUserID,
     getAllProfiles,
     setLastDaily,
     addBalance,
