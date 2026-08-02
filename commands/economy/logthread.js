@@ -207,7 +207,7 @@ module.exports = {
             for (const message of messages) {
                 const words = countWords(message.content);
                 if (words === 0) continue;
-                wordMap.set(message.author.id, (wordMap.get(message.author.id) ?? 0) + words);
+                wordMap.set(message.author.username, (wordMap.get(message.author.id) ?? 0) + words);
             }
 
             if (wordMap.size === 0) {
@@ -218,7 +218,8 @@ module.exports = {
             const results = [...wordMap.entries()]
                 .map(([userId, words]) => ({
                     userId,
-                    name: memberMap.get(userId)?.displayName ?? userId,
+                    //name: memberMap.get(userId)?.displayName ?? userId,
+                    name: userId,
                     words,
                     edels: Math.floor(parseInt(words)/5),
                 }))
@@ -250,6 +251,7 @@ module.exports = {
                     { name: '', value: '', inline: false},
                     { name: 'EDELS', value: results.map((result) =>
                         `\`${result.edels.toString().padEnd(parseInt(results[0].edels.toString().length), " ")} edels\` — <@${result.userId}>`).join(`\n`), inline: false},
+                    { name: '', value: '', inline: false},
                     { name: 'HOUSE POINTS', value: 'tba', inline: false},
                     
                 )
