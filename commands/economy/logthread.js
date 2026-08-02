@@ -218,13 +218,16 @@ module.exports = {
             const memberMap = await interaction.guild.members.fetch();
             const results = [...wordMap.entries()]
                 .map(([name, words]) => ({
-                    userId: await getUserID(name) ?? 'a',
+                    userId: 'a',
                     //name: memberMap.get(userId)?.displayName ?? userId,
                     name: name,
                     words,
                     edels: Math.floor(parseInt(words)/5),
                 }))
                 .sort((a, b) => b.words - a.words);
+            for(result of results){
+                result.userId = await getUserID(result.name);
+            }
 
             const totalWords = results.reduce((sum, result) => sum + result.words, 0);
             const lines = results.map((result) =>
