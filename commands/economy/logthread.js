@@ -223,8 +223,11 @@ module.exports = {
                     edels: Math.floor(parseInt(words)/5),
                 }))
                 .sort((a, b) => b.words - a.words);
+
+                const members = await interaction.guild.members.fetch();
+
             for (const result of results){
-                result.userId = await getUserID(result.name) ?? '';
+                result.userId = await getUserID(result.name) ?? members.find(m => m.displayName === result.name).id;
             }
 
             const totalWords = results.reduce((sum, result) => sum + result.words, 0);
