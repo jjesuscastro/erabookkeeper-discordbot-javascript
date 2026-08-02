@@ -207,7 +207,7 @@ module.exports = {
             for (const message of messages) {
                 const words = countWords(message.content);
                 if (words === 0) continue;
-                wordMap.set(message.author.id , (wordMap.get(message.author.id) ?? 0) + words, message.author.displayName);
+                wordMap.set(message.author.id , (wordMap.get(message.author.id) ?? 0) + words, message.member ? message.member.displayName : message.author.displayName);
             }
 
             if (wordMap.size === 0) {
