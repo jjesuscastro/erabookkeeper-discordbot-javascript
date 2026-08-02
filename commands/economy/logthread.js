@@ -218,7 +218,7 @@ module.exports = {
             const memberMap = await interaction.guild.members.fetch();
             const results = [...wordMap.entries()]
                 .map(([name, words]) => ({
-                    userId: getUserID(name) ?? memberMap.find(member => member.displayName === name).id,
+                    userId: getUserID(name) //?? memberMap.find(member => member.displayName === name).id,
                     //name: memberMap.get(userId)?.displayName ?? userId,
                     name: name,
                     words,
