@@ -207,33 +207,26 @@ module.exports = {
             for (const message of messages) {
                 const words = countWords(message.content);
                 if (words === 0) continue;
-                if (message.webhookId) wordMap.set(message.author.username , 
-                    {
-                    words: (wordMap.get(message.author.id) ?? 0) + words,
-                    id: message.author.id
-                    });
-                else wordMap.set(message.member.displayName , 
-                    {
-                    words: (wordMap.get(message.author.id) ?? 0) + words,
-                    id: message.author.id
-                    });
+                if (message.webhookId) wordMap.set(message.author.username , (wordMap.get(message.author.id) ?? 0) + words);
+                else wordMap.set(message.member.displayName , (wordMap.get(message.author.id) ?? 0) + words);
             }
 
             if (wordMap.size === 0) {
                 return interaction.editReply('No messages with words found.');
             }
 
+            const memberMap = await interaction.guild.members.fetch();
             const results = [...wordMap.entries()]
-                .map(([name, words, userId]) => ({
-                    userId,
+                .map(([name, words]) => ({
+                    userId: 'a',
                     name: name,
                     words,
                     edels: Math.floor(parseInt(words)/5),
                 }))
                 .sort((a, b) => b.words - a.words);
-            // for(result of results){
-            //     result.userId = await getUserID(result.name);
-            // }
+            for(const result of results){
+                result.userId = await getUserID(result.name);
+            }
 
             const totalWords = results.reduce((sum, result) => sum + result.words, 0);
             const lines = results.map((result) =>
