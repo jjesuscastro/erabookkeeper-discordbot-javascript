@@ -16,7 +16,7 @@ module.exports = {
 
     async autocomplete(interaction) {
         const items = getShopCache() ?? await getShopItems();
-        await interaction.respond(items.map(i => ({ name: `${i.name} (${i.price} coins)`, value: i.name })));
+        await interaction.respond(items.map(i => ({ name: `${i.name} — ${i.price}`, value: i.name })));
     },
 
     async execute(interaction) {
