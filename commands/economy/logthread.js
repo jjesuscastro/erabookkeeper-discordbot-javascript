@@ -236,8 +236,9 @@ module.exports = {
             }
 
             const totalWords = results.reduce((sum, result) => sum + result.words, 0);
-            const lines = results.map((result) =>
-                `\`${result.words.toString().padEnd(parseInt(results[0].words.toString().length), " ")} WC\` — **${result.name}** — <@${result.userId}>`
+            const lines = results.map((result) => result.registered === true ?
+                `\`${result.words.toString().padEnd(parseInt(results[0].words.toString().length), " ")} WC\` — **${result.name}** — <@${result.userId}>`:
+                ''
             );
 
             let description = '';
