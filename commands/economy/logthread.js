@@ -207,7 +207,7 @@ module.exports = {
                 const { channel, message: startMessage } = await fetchMessage(interaction.client, startParsed, 'start');
                 const { message: endMessage } = await fetchMessage(interaction.client, endParsed, 'end');
                 messages = await fetchRangeMessages(channel, startMessage, endMessage);
-                let { StartLink , EndLink } = await fetchMsgLinks(channel, startMessage, endMessage);
+                //let { StartLink , EndLink } = await fetchMsgLinks(channel, startMessage, endMessage);
             }
 
             const wordMap = new Map();
