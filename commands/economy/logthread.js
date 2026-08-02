@@ -143,8 +143,8 @@ async function fetchRangeMessages(channel, startMessage, endMessage) {
 }
 
 async function fetchMsgLinks(channel, startMessage, endMessage) {
-    const startId = BigInt(startMessage.id);
-    const endId = BigInt(endMessage.id);
+    const startId = startMessage.id;
+    const endId = endMessage.id;
     
     await channel.messages.fetch('startId')
         .then(message => {
@@ -207,7 +207,7 @@ module.exports = {
                 const { channel, message: startMessage } = await fetchMessage(interaction.client, startParsed, 'start');
                 const { message: endMessage } = await fetchMessage(interaction.client, endParsed, 'end');
                 messages = await fetchRangeMessages(channel, startMessage, endMessage);
-                //let { StartLink , EndLink } = await fetchMsgLinks(channel, startMessage, endMessage);
+                let { StartLink , EndLink } = await fetchMsgLinks(channel, startMessage, endMessage);
             }
 
             const wordMap = new Map();
