@@ -7,7 +7,7 @@ const {
     ButtonBuilder,
     ButtonStyle,
 } = require('discord.js');
-const { addBalance } = require('../../utils/sheets');
+const { addBalance, getUserID } = require('../../utils/sheets');
 
 class LogThreadError extends Error {}
 
@@ -217,10 +217,10 @@ module.exports = {
 
             //const memberMap = await interaction.guild.members.fetch({ user: [...wordMap.keys()] });
             const results = [...wordMap.entries()]
-                .map(([userId, words]) => ({
-                    userId,
+                .map(([name, words]) => ({
+                    userId: getUserID(name),
                     //name: memberMap.get(userId)?.displayName ?? userId,
-                    name: userId,
+                    name: name,
                     words,
                     edels: Math.floor(parseInt(words)/5),
                 }))
