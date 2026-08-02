@@ -11,7 +11,7 @@ const { addBalance } = require('../../utils/sheets');
 
 class LogThreadError extends Error {}
 
-function parseInput(input, fallbackChannelId) {
+function parseInput(client, input, fallbackChannelId) {
     if (!input) return null;
 
     const trimmed = input.trim();
@@ -189,8 +189,8 @@ module.exports = {
                 const { thread, starter } = await resolveThread(interaction.client, parsed);
                 messages = await fetchThreadMessages(thread, starter);
             } else {
-                const startParsed = parseInput(startInput, interaction.channel.id);
-                const endParsed = parseInput(endInput, interaction.channel.id);
+                const startParsed = parseInput(interaction.client, startInput, interaction.channel.id);
+                const endParsed = parseInput(interaction.client, endInput, interaction.channel.id);
                 if (!startParsed) throw new LogThreadError('Invalid start message ID or link.');
                 if (!endParsed) throw new LogThreadError('Invalid end message ID or link.');
                 if (startParsed.channelId !== endParsed.channelId) {
