@@ -229,7 +229,7 @@ module.exports = {
 
             for (const result of results){
                 result.userId = await getUserID(result.name);
-                if(!result.userId){
+                if(result.userId === null){
                     members.find(m => m.displayName === result.name).id;
                     result.registered = false;
                 }
