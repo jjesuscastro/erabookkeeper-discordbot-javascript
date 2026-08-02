@@ -30,8 +30,8 @@ module.exports = {
 
             if (target.discordId === sender.id) {
                 const embed = new EmbedBuilder()
-                    .setTitle('Uh oh...')
-                    .setColor(0xB7B75F)
+                    .setTitle('❌ Uh oh...')
+                    .setColor(0xEBBCA2)
                     .setDescription('You cannot transfer money to yourself!');
                 return interaction.editReply({ embeds: [embed] });
             }
@@ -39,10 +39,13 @@ module.exports = {
             const newBalance = await deductBalance(sender.id, amount);
             await addBalance(target.discordId, amount);
 
+            var edels = "edels";
+            if(amount === 1) edels = "edel"; 
+            
             const embed = new EmbedBuilder()
                 .setTitle('Edels Transferred!')
                 .setColor(0xB7B75F)
-                .setDescription(`Transferred **${amount}** edels from <@${sender.id}> to <@${target.discordId}>`);
+                .setDescription(`Transferred **${amount}** ${edels} from <@${sender.id}> to <@${target.discordId}>`);
 
             await interaction.editReply({ embeds: [embed] });
         } catch (err) {
