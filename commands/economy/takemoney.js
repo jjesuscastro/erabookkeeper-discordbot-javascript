@@ -44,7 +44,14 @@ module.exports = {
 
             await interaction.editReply({ embeds: [embed] });
         } catch (err) {
-            await interaction.editReply(`Error: ${err.message}`);
+            if(err.message === 'Insufficient funds.'){
+                const embed = new EmbedBuilder()
+                    .setTitle('❌ Uh oh...')
+                    .setColor(0xEBBCA2)
+                    .setDescription(`Insufficient funds!`)
+                await interaction.editReply({ embeds: [embed] });
+            }
+            else await interaction.editReply(`Error: ${err.message}`);
         }
     },
 };
