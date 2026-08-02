@@ -219,7 +219,7 @@ module.exports = {
                 .map(([userId, words, displayN]) => ({
                     userId,
                     //name: memberMap.get(userId)?.displayName ?? userId,
-                    name: userId,
+                    name: displayN,
                     words,
                     edels: Math.floor(parseInt(words)/5),
                 }))
