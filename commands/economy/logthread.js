@@ -231,7 +231,7 @@ module.exports = {
                 .setColor(0xB7B75F)
                 .addFields(
                     { name: '',      value: '**Start: **'+startInput+'\n**End: **'+endInput, inline: true },
-                    { name: '\u1CBC', value: '\u1CBC', inline: true },
+                    { name: ' ', value: ' ', inline: true },
                     { name: '', value: `**Total WC: **`+totalWords.toString()+'\n**Total Messages: **'+messages.length.toString(), inline: true },
                     
                     { name: '', value: '``` ```', inline: false},
