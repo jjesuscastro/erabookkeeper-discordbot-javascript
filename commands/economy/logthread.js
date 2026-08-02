@@ -207,19 +207,19 @@ module.exports = {
             for (const message of messages) {
                 const words = countWords(message.content);
                 if (words === 0) continue;
-                wordMap.set(message.author.id , (wordMap.get(message.author.id) ?? 0) + words, 'a');
+                wordMap.set(message.author.displayName , (wordMap.get(message.author.id) ?? 0) + words);
             }
 
             if (wordMap.size === 0) {
                 return interaction.editReply('No messages with words found.');
             }
 
-            const memberMap = await interaction.guild.members.fetch({ user: [...wordMap.keys()] });
+            //const memberMap = await interaction.guild.members.fetch({ user: [...wordMap.keys()] });
             const results = [...wordMap.entries()]
-                .map(([userId, words, displayN]) => ({
+                .map(([userId, words]) => ({
                     userId,
                     //name: memberMap.get(userId)?.displayName ?? userId,
-                    name: displayN,
+                    name: userId,
                     words,
                     edels: Math.floor(parseInt(words)/5),
                 }))
