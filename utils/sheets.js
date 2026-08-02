@@ -150,7 +150,7 @@ async function addBalance(userId, amount) {
 // Throws if the user doesn't have enough funds.
 async function deductBalance(userId, amount) {
     const { rowIndex, balance } = await getUser(userId);
-    if (balance < amount) throw new Error(`Insufficient funds. Balance: ${balance}`);
+    if (balance < amount) throw new Error(`Insufficient funds.`);
     const newBalance = balance - amount;
     await setBalance(rowIndex, newBalance);
     return newBalance;

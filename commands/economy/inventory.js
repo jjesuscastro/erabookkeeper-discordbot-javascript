@@ -30,7 +30,7 @@ module.exports = {
             
             const embed = new EmbedBuilder()
                 .setTitle(`📚 ${characterName}'s Inventory`)
-                .setColor(0xCEA45A)
+                .setColor(0xB7B75F)
                 .setDescription(line + inv);
 
             await interaction.editReply({ embeds: [embed] });
