@@ -22,7 +22,7 @@ function parseInput(channel, input, fallbackChannelId) {
         const Link = msg.url;
         linkMatch = Link.match(/channels\/(?:@me|\d+)\/(\d+)\/(\d+)/);
     
-        if (linkMatch) return { channelId: linkMatch[1], messageId: linkMatch[2] };
+        if (linkMatch) return { channelId: msg.channelId, messageId: trimmed };
         //return { channelId: fallbackChannelId, messageId: trimmed };
     }
     return null;
