@@ -207,19 +207,25 @@ module.exports = {
             for (const message of messages) {
                 const words = countWords(message.content);
                 if (words === 0) continue;
-                if (message.webhookId) wordMap.set(message.author.username , (wordMap.get(message.author.id) ?? 0) + words);
-                else wordMap.set(message.member.displayName , (wordMap.get(message.author.id) ?? 0) + words);
+                if (message.webhookId) wordMap.set(message.author.username , 
+                    {
+                    words: (wordMap.get(message.author.id) ?? 0) + words,
+                    id: message.author.id
+                    });
+                else wordMap.set(message.member.displayName , 
+                    {
+                    words: (wordMap.get(message.author.id) ?? 0) + words,
+                    id: message.author.id
+                    });
             }
 
             if (wordMap.size === 0) {
                 return interaction.editReply('No messages with words found.');
             }
 
-            const memberMap = await interaction.guild.members.fetch();
             const results = [...wordMap.entries()]
-                .map(([name, words]) => ({
-                    userId: 'a',
-                    //name: memberMap.get(userId)?.displayName ?? userId,
+                .map(([name, words, userId]) => ({
+                    userId,
                     name: name,
                     words,
                     edels: Math.floor(parseInt(words)/5),
