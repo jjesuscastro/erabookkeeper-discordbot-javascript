@@ -22,13 +22,18 @@ module.exports = {
             const items = allItems.filter(i => i.quantity > 0);
             setInventoryCache(target.id, items); // warm cache for /use and /transferitem autocomplete
             items.sort((a,b) => b.quantity - a.quantity );
-            if (items.length === 0) return interaction.editReply('Your inventory is empty.');
             const line = `**BALANCE**\n\`\`\`✧ ${balance} edels ✧\`\`\`\n**ITEMS**\n`;
-
+            
+            var inv = items.map(i => `\`x${i.quantity.toString().padStart(items[0].quantity.toString().length)}\` **${i.itemName}**`).join('\n');
+            
+            if (items.length === 0){
+                inv = "Your inventory is empty!"
+            } 
+            
             const embed = new EmbedBuilder()
-                .setTitle(`${characterName}'s Inventory`)
+                .setTitle(`📚 ${characterName}'s Inventory`)
                 .setColor(0xCEA45A)
-                .setDescription(line + items.map(i => `\`x${i.quantity.toString().padStart(items[0].quantity.toString().length)}\` **${i.itemName}**`).join('\n'));
+                .setDescription(line + inv);
 
             await interaction.editReply({ embeds: [embed] });
         } catch (err) {
