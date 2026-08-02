@@ -243,11 +243,17 @@ module.exports = {
                 `\`${result.edels.toString().padEnd(parseInt(results[0].edels.toString().length), " ")} edels\` — <@${result.userId}>`:''
             );
             let description = '';
+            let payouts = '';
+
             let shown = 0;
             for (const line of lines) {
                 if (description.length + line.length + 1 > 4000) break;
                 description += (description ? '\n' : '') + line;
                 shown++;
+            }
+            for (const line of edelpay) {
+                if (payouts.length + line.length + 1 > 4000) break;
+                payouts += (payouts ? '\n' : '') + line;
             }
             if (shown < lines.length) description += `\n*...and ${lines.length - shown} more*`;
             const embed = new EmbedBuilder()
@@ -261,7 +267,7 @@ module.exports = {
                     { name: '', value: '``` ```', inline: false},
                     { name: 'LOG SUMMARY', value: description, inline: false},
                     { name: '', value: '', inline: false},
-                    { name: 'EDELS', value: results.map(edelpay).join(`\n`), inline: false},
+                    { name: 'EDELS', value: payouts, inline: false},
                     { name: '', value: '', inline: false},
                     { name: 'HOUSE POINTS', value: 'tba', inline: false},
                     
