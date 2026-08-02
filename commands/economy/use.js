@@ -20,7 +20,7 @@ module.exports = {
             const { characterName } = await getUser(interaction.user.id);
             items = await getInventory(characterName);
         }
-        await interaction.respond(items.map(i => ({ name: `${i.itemName} x${i.quantity}`, value: i.itemName })));
+        await interaction.respond(items.map(i => ({ name: `${i.itemName} (x${i.quantity})`, value: i.itemName })));
     },
 
     async execute(interaction) {
@@ -36,7 +36,7 @@ module.exports = {
             
             const embed = new EmbedBuilder()
                 .setTitle('Item Used!')
-                .setColor(0xCEA45A)
+                .setColor(0xB7B75F)
                 .setDescription(`<@${target.id}> used x${quantity} **${itemName}**`);
 
             await interaction.editReply({ embeds: [embed] });
