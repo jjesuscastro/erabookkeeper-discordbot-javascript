@@ -183,7 +183,7 @@ module.exports = {
             let EndLink;
 
             if (isThreadMode) {
-                const parsed = parseInput(threadInput, interaction.channel.id);
+                const parsed = parseInput(interaction.client, threadInput, interaction.channel.id);
                 if (!parsed) throw new LogThreadError('Invalid thread message ID or link.');
 
                 const { thread, starter } = await resolveThread(interaction.client, parsed);
