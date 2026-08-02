@@ -11,17 +11,15 @@ const { addBalance } = require('../../utils/sheets');
 
 class LogThreadError extends Error {}
 
-function parseInput(client, input, fallbackChannelId) {
+function parseInput(channel, input, fallbackChannelId) {
     if (!input) return null;
 
     const trimmed = input.trim();
     var linkMatch = trimmed.match(/channels\/(?:@me|\d+)\/(\d+)\/(\d+)/);
     if (linkMatch) return { channelId: linkMatch[1], messageId: linkMatch[2] };
     else if (/^\d+$/.test(trimmed)){
-        const channel = await client.channels.fetch(fallbackChannelId);
         const msg = await channel.messages.fetch(trimmed);
         const Link = msg.url;
-    
         linkMatch = Link.match(/channels\/(?:@me|\d+)\/(\d+)\/(\d+)/);
     
         if (linkMatch) return { channelId: linkMatch[1], messageId: linkMatch[2] };
@@ -183,14 +181,14 @@ module.exports = {
             let EndLink;
 
             if (isThreadMode) {
-                const parsed = parseInput(interaction.client, threadInput, interaction.channel.id);
+                const parsed = parseInput(interaction.channel, threadInput, interaction.channel.id);
                 if (!parsed) throw new LogThreadError('Invalid thread message ID or link.');
 
                 const { thread, starter } = await resolveThread(interaction.client, parsed);
                 messages = await fetchThreadMessages(thread, starter);
             } else {
-                const startParsed = parseInput(interaction.client, startInput, interaction.channel.id);
-                const endParsed = parseInput(interaction.client, endInput, interaction.channel.id);
+                const startParsed = parseInput(interaction.channel, startInput, interaction.channel.id);
+                const endParsed = parseInput(interaction.channel, endInput, interaction.channel.id);
                 if (!startParsed) throw new LogThreadError('Invalid start message ID or link.');
                 if (!endParsed) throw new LogThreadError('Invalid end message ID or link.');
                 if (startParsed.channelId !== endParsed.channelId) {
