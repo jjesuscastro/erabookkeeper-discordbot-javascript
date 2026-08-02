@@ -255,8 +255,8 @@ async function addInventoryItem(characterName, itemName, quantity) {
 // Throws if the character doesn't own the item or has insufficient quantity.
 async function removeInventoryItem(characterName, itemName, quantity) {
     const existing = await getInventoryItem(characterName, itemName);
-    if (!existing) throw new Error(`You don't have any **${itemName}**.`);
-    if (existing.quantity < quantity) throw new Error(`Insufficient quantity. You have ${existing.quantity}x **${itemName}**.`);
+    if (!existing) throw new Error(`Item does not exist.`);
+    if (existing.quantity < quantity) throw new Error(`Insufficient quantity.`);
         await writeCell(`Inventory!C${existing.rowIndex}`, existing.quantity - quantity);
     if((existing.quantity-quantity) <= 0 )
         await deleteRow('1813590476',existing.rowIndex);
