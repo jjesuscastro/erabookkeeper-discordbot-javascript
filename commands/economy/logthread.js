@@ -142,21 +142,6 @@ async function fetchRangeMessages(channel, startMessage, endMessage) {
     return [...messages.values()];
 }
 
-async function fetchMsgLinks(channel, startMessage, endMessage) {
-    const startId = startMessage.id;
-    const endId = endMessage.id;
-    var EndLink;
-
-    const start = await channel.messages.fetch(startId);
-    const StartLink = start.url;
-    await channel.messages.fetch(endId)
-        .then(message => {
-            EndLink = message.url; 
-        })
-    
-    return { StartLink, EndLink };
-}
-
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('logthread')
@@ -206,9 +191,18 @@ module.exports = {
                 const { channel, message: startMessage } = await fetchMessage(interaction.client, startParsed, 'start');
                 const { message: endMessage } = await fetchMessage(interaction.client, endParsed, 'end');
                 messages = await fetchRangeMessages(channel, startMessage, endMessage);
-                let { StartLink , EndLink } = await fetchMsgLinks(channel, startMessage, endMessage);
-            }
 
+                const startId = startMessage.id;
+                const endId = endMessage.id;
+                
+                const start = await channel.messages.fetch(startId);
+                StartLink = start.url;
+                await channel.messages.fetch(endId)
+                    .then(message => {
+                        EndLink = message.url; 
+                    })
+            }
+            
             const wordMap = new Map();
             for (const message of messages) {
                 const words = countWords(message.content);
