@@ -224,7 +224,7 @@ module.exports = {
                 }))
                 .sort((a, b) => b.words - a.words);
             for (const result of results){
-                result.userId = await getUserID(result.name);
+                result.userId = await getUserID(result.name) ?? '';
             }
 
             const totalWords = results.reduce((sum, result) => sum + result.words, 0);
