@@ -11,7 +11,7 @@ const { addBalance } = require('../../utils/sheets');
 
 class LogThreadError extends Error {}
 
-function parseInput(channel, input, fallbackChannelId) {
+async function parseInput(channel, input, fallbackChannelId) {
     if (!input) return null;
 
     const trimmed = input.trim();
