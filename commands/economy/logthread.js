@@ -207,7 +207,7 @@ module.exports = {
             for (const message of messages) {
                 const words = countWords(message.content);
                 if (words === 0) continue;
-                wordMap.set(message.member.displayName , (wordMap.get(message.author.id) ?? 0) + words);
+                wordMap.set(message.author.id , (wordMap.get(message.author.id) ?? 0) + words, message.member.displayName);
             }
 
             if (wordMap.size === 0) {
@@ -216,7 +216,7 @@ module.exports = {
 
             const memberMap = await interaction.guild.members.fetch({ user: [...wordMap.keys()] });
             const results = [...wordMap.entries()]
-                .map(([userId, words]) => ({
+                .map(([userId, words, displayN]) => ({
                     userId,
                     //name: memberMap.get(userId)?.displayName ?? userId,
                     name: userId,
