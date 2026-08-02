@@ -250,6 +250,7 @@ module.exports = {
                     { name: '', value: '', inline: false},
                     { name: 'EDELS', value: results.map((result) =>
                         `\`${result.edels.toString().padEnd(parseInt(results[0].edels.toString().length), " ")} edels\` — <@${result.userId}>`).join(`\n`), inline: false},
+                    { name: 'HOUSE POINTS', value: 'tba', inline: false},
                     
                 )
                 //.setDescription(`\n${description}`);
