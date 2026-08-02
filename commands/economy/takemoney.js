@@ -29,10 +29,18 @@ module.exports = {
             const target = await resolveTarget(input);
             const newBalance = await deductBalance(target.discordId, amount);
 
+            var edels = "edels";
+            if(amount === 1)
+                edels = "edel"; 
+            var edels2 = "edels";
+            if(newBalance === 1)
+                edels2 = "edel"; 
+
             const embed = new EmbedBuilder()
                 .setTitle('Goodbye Edels...')
-                .setColor(0xF1CEB8)
-                .setDescription(`Took **${amount}** edels from <@${target.discordId}>\nNew balance: ${newBalance} edels`);
+                .setColor(0xEBBCA2)
+                .setDescription(`Took **${amount}** ${edels} from <@${target.discordId}>.`)
+                .setFooter({text:`— New balance: ${newBalance} ${edels2}.`});
 
             await interaction.editReply({ embeds: [embed] });
         } catch (err) {

@@ -26,9 +26,7 @@ module.exports = {
             
             var inv = items.map(i => `\`x${i.quantity.toString().padStart(items[0].quantity.toString().length)}\` **${i.itemName}**`).join('\n');
             
-            if (items.length === 0){
-                inv = "Your inventory is empty!"
-            } 
+            if (items.length === 0) inv = "Nothing inside :("
             
             const embed = new EmbedBuilder()
                 .setTitle(`📚 ${characterName}'s Inventory`)

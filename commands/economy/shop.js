@@ -18,7 +18,7 @@ module.exports = {
 
             const embed = new EmbedBuilder()
                 .setTitle('Eirenhel Services')
-                .setColor(0xCEA45A)
+                .setColor(0xB7B75F)
                 .setDescription(items.map(i => `**${i.name}** — *${i.price} edels* \n > ${i.itemdesc} \n`).join('\n'));
 
             await interaction.editReply({ embeds: [embed] });

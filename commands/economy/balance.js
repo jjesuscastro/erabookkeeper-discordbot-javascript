@@ -30,11 +30,15 @@ module.exports = {
             }
 
             const { characterName, balance } = await getUser(userId);
-
+            
+            var edels = "edels";
+            if(balance === 1)
+                edels = "edel"; 
+        
             const embed = new EmbedBuilder()
                 .setTitle(`🪙 ${characterName}'s balance`)
                 .setColor(0xB7B75F)
-                .setDescription(`\`\`\`✧ ${balance} edels ✧\`\`\``);
+                .setDescription(`\`\`\`✧ ${balance} ${edels} ✧\`\`\``);
 
             await interaction.editReply({ embeds: [embed] });
         } catch (err) {
