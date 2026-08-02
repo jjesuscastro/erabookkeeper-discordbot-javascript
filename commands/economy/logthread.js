@@ -224,9 +224,9 @@ module.exports = {
                     edels: Math.floor(parseInt(words)/5),
                 }))
                 .sort((a, b) => b.words - a.words);
-            for(const result of results){
-                result.userId = await getUserID(result.name);
-            }
+            // for(const result of results){
+            //     result.userId = await getUserID(result.name);
+            // }
 
             const totalWords = results.reduce((sum, result) => sum + result.words, 0);
             const lines = results.map((result) =>
