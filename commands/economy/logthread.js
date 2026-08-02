@@ -20,9 +20,9 @@ function parseInput(channel, input, fallbackChannelId) {
     else if (/^\d+$/.test(trimmed)){
         const msg = await channel.messages.fetch(trimmed);
         const Link = msg.url;
-        linkMatch = Link.match(/channels\/(?:@me|\d+)\/(\d+)\/(\d+)/);
+        //linkMatch = Link.match(/channels\/(?:@me|\d+)\/(\d+)\/(\d+)/);
     
-        if (linkMatch) return { channelId: msg.channelId, messageId: trimmed };
+        return { channelId: msg.channelId, messageId: trimmed };
         //return { channelId: fallbackChannelId, messageId: trimmed };
     }
     return null;
