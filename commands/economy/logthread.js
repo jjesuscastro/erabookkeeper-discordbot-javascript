@@ -146,11 +146,11 @@ async function fetchMsgLinks(channel, startMessage, endMessage) {
     const startId = startMessage.id;
     const endId = endMessage.id;
     
-    await channel.messages.fetch('startId')
+    await channel.messages.fetch(startId)
         .then(message => {
             const StartLink = message.url; 
         })
-    await channel.messages.fetch('endId')
+    await channel.messages.fetch(endId)
         .then(message => {
             const EndLink = message.url; 
         })
