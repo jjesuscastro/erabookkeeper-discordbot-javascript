@@ -215,10 +215,10 @@ module.exports = {
                 return interaction.editReply('No messages with words found.');
             }
 
-            //const memberMap = await interaction.guild.members.fetch({ user: [...wordMap.keys()] });
+            const memberMap = await interaction.guild.members.fetch({ user: [...wordMap.keys()] });
             const results = [...wordMap.entries()]
                 .map(([name, words]) => ({
-                    userId: getUserID(name),
+                    userId: getUserID(name) ?? memberMap.find(member => member.displayName === name).id,
                     //name: memberMap.get(userId)?.displayName ?? userId,
                     name: name,
                     words,
