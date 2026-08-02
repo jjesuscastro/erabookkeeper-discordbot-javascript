@@ -145,13 +145,10 @@ async function fetchRangeMessages(channel, startMessage, endMessage) {
 async function fetchMsgLinks(channel, startMessage, endMessage) {
     const startId = startMessage.id;
     const endId = endMessage.id;
-    var StartLink;
     var EndLink;
 
-    await channel.messages.fetch(startId)
-        .then(message => {
-            StartLink = message.url; 
-        })
+    const start = await channel.messages.fetch(startId);
+    const StartLink = start.url;
     await channel.messages.fetch(endId)
         .then(message => {
             EndLink = message.url; 
