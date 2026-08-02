@@ -115,7 +115,7 @@ async function fetchRangeMessages(channel, startMessage, endMessage) {
 
     if (startId === endId) return [startMessage];
 
-    const messages = new Map([[endMessage.id, endMessage, endMessage.author.displayName]]);
+    const messages = new Map([[endMessage.id, endMessage]]);
     let before = endMessage.id;
 
     while (true) {
@@ -129,7 +129,7 @@ async function fetchRangeMessages(channel, startMessage, endMessage) {
                 reachedStart = true;
                 continue;
             }
-            messages.set(message.id, message, message.author.displayName);
+            messages.set(message.id, message);
             if (id === startId) reachedStart = true;
         }
 
@@ -207,7 +207,7 @@ module.exports = {
             for (const message of messages) {
                 const words = countWords(message.content);
                 if (words === 0) continue;
-                wordMap.set(message.author.displayName, (wordMap.get(message.author.id) ?? 0) + words);
+                wordMap.set(message.author.id, (wordMap.get(message.author.id) ?? 0) + words);
             }
 
             if (wordMap.size === 0) {
