@@ -254,7 +254,7 @@ module.exports = {
             const reply = await interaction.editReply({ embeds: [embed], components: [buildButtons()] });
             const collector = reply.createMessageComponentCollector({
                 filter: i => i.user.id === interaction.user.id,
-                time: 60_000,
+                time: 120_000,
                 max: 1,
             });
 
