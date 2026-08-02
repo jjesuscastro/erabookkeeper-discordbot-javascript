@@ -134,7 +134,7 @@ async function getUserID(name) {
     const rows = await readRange('Profiles!A:K');
     for (let i = 1; i < rows.length; i++) { // skip header row
         if (rows[i][COL.NAME] === name) {
-            return rows[i+1][COL.DISCORD_ID]; 
+            return parseInt(rows[i+1][COL.DISCORD_ID]); 
         }
     }
     return null;
