@@ -11,19 +11,14 @@ const { addBalance } = require('../../utils/sheets');
 
 class LogThreadError extends Error {}
 
-async function parseInput(channel, input, fallbackChannelId) {
+function parseInput(input, fallbackChannelId) {
     if (!input) return null;
 
     const trimmed = input.trim();
     var linkMatch = trimmed.match(/channels\/(?:@me|\d+)\/(\d+)\/(\d+)/);
     if (linkMatch) return { channelId: linkMatch[1], messageId: linkMatch[2] };
     else if (/^\d+$/.test(trimmed)){
-        const msg = await channel.messages.fetch(trimmed);
-        const Link = msg.url;
-        //linkMatch = Link.match(/channels\/(?:@me|\d+)\/(\d+)\/(\d+)/);
-    
-        return { channelId: msg.channelId, messageId: trimmed };
-        //return { channelId: fallbackChannelId, messageId: trimmed };
+        return { channelId: fallbackChannelId, messageId: trimmed };
     }
     return null;
 }
@@ -181,14 +176,14 @@ module.exports = {
             let EndLink;
 
             if (isThreadMode) {
-                const parsed = await parseInput(interaction.channel, threadInput, interaction.channel.id);
+                const parsed = await parseInput(threadInput, interaction.channel.id);
                 if (!parsed) throw new LogThreadError('Invalid thread message ID or link.');
 
                 const { thread, starter } = await resolveThread(interaction.client, parsed);
                 messages = await fetchThreadMessages(thread, starter);
             } else {
-                const startParsed = await parseInput(interaction.channel, startInput, interaction.channel.id);
-                const endParsed = await parseInput(interaction.channel, endInput, interaction.channel.id);
+                const startParsed = await parseInput(startInput, interaction.channel.id);
+                const endParsed = await parseInput(endInput, interaction.channel.id);
                 if (!startParsed) throw new LogThreadError('Invalid start message ID or link.');
                 if (!endParsed) throw new LogThreadError('Invalid end message ID or link.');
                 if (startParsed.channelId !== endParsed.channelId) {
