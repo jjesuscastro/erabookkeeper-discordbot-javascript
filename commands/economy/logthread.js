@@ -221,13 +221,18 @@ module.exports = {
                     name: name,
                     words,
                     edels: Math.floor(parseInt(words)/5),
+                    registered: true,
                 }))
                 .sort((a, b) => b.words - a.words);
 
                 const members = await interaction.guild.members.fetch();
 
             for (const result of results){
-                result.userId = await getUserID(result.name) ?? members.find(m => m.displayName === result.name).id;
+                result.userId = await getUserID(result.name);
+                if(!result.userId){
+                    members.find(m => m.displayName === result.name).id;
+                    result.registered = false;
+                }
             }
 
             const totalWords = results.reduce((sum, result) => sum + result.words, 0);
