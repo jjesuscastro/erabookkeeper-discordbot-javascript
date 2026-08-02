@@ -15,7 +15,7 @@ function parseInput(input, fallbackChannelId) {
     if (!input) return null;
 
     const trimmed = input.trim();
-    const linkMatch = trimmed.match(/channels\/(?:@me|\d+)\/(\d+)\/(\d+)/);
+    var linkMatch = trimmed.match(/channels\/(?:@me|\d+)\/(\d+)\/(\d+)/);
     if (linkMatch) return { channelId: linkMatch[1], messageId: linkMatch[2] };
     else if (/^\d+$/.test(trimmed)){
         const msg = await channel.messages.fetch(trimmed);
