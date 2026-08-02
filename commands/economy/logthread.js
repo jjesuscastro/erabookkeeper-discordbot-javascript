@@ -197,10 +197,8 @@ module.exports = {
                 
                 const start = await channel.messages.fetch(startId);
                 StartLink = start.url;
-                await channel.messages.fetch(endId)
-                    .then(message => {
-                        EndLink = message.url; 
-                    })
+                const end = await channel.messages.fetch(endId);
+                EndLink = end.url;
             }
             
             const wordMap = new Map();
