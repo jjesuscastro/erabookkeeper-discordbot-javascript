@@ -227,21 +227,28 @@ module.exports = {
 
                 const members = await interaction.guild.members.fetch();
 
+            const lines = new Array();
+            const edelpay = new Array();
             for (const result of results){
                 result.userId = await getUserID(result.name);
+                if(result.userId){
+                    lines.push(`\`${result.words.toString().padEnd(parseInt(results[0].words.toString().length), " ")} WC\` — **${result.name}** — <@${result.userId}>`);
+                    edelpay.push(`\`${result.edels.toString().padEnd(parseInt(results[0].edels.toString().length), " ")} edels\` — <@${result.userId}>`);
+                }
                 if(result.userId === null){
-                    result.userId = members.find(m => m.displayName === result.name).id;
+                    //result.userId = members.find(m => m.displayName === result.name).id;
                     result.registered = false;
                 }
             }
 
             const totalWords = results.reduce((sum, result) => sum + result.words, 0);
-            const lines = results.map((result) => result.registered === true ?
-                `\`${result.words.toString().padEnd(parseInt(results[0].words.toString().length), " ")} WC\` — **${result.name}** — <@${result.userId}>`:''
-            );
-            const edelpay = results.map((result) => result.registered === true ?
-                `\`${result.edels.toString().padEnd(parseInt(results[0].edels.toString().length), " ")} edels\` — <@${result.userId}>`:''
-            );
+
+            // const lines = results.map((result) => result.registered === true ?
+            //     `\`${result.words.toString().padEnd(parseInt(results[0].words.toString().length), " ")} WC\` — **${result.name}** — <@${result.userId}>`:''
+            // );
+            // const edelpay = results.map((result) => result.registered === true ?
+            //     `\`${result.edels.toString().padEnd(parseInt(results[0].edels.toString().length), " ")} edels\` — <@${result.userId}>`:''
+            // );
             let description = '';
             let payouts = '';
 
