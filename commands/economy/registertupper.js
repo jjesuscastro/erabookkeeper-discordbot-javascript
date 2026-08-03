@@ -1,6 +1,7 @@
 // adds new tupper in the sheets
 const { SlashCommandBuilder, EmbedBuilder, PermissionFlagsBits } = require('discord.js');
 const { addTupper } = require('../../utils/sheets');
+const { resolveTarget, autocompleteProfiles } = require('../../utils/resolver');
 
 module.exports = {
     data: new SlashCommandBuilder()
