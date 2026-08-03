@@ -31,7 +31,14 @@ module.exports = {
 
             await interaction.editReply({ embeds: [embed] });
         } catch (err) {
-            await interaction.editReply(`Error: ${err.message}`);
+            if(err.message === 'Already added.'){
+                const embed = new EmbedBuilder()
+                    .setTitle('❌ Uh oh...')
+                    .setColor(0xEBBCA2)
+                    .setDescription(`**${tupperName}** already exists. Please use a different name.`)
+                await interaction.editReply({ embeds: [embed] });
+            }
+            else await interaction.editReply(`Error: ${err.message}`);
         }
     },
 };
