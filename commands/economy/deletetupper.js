@@ -18,7 +18,7 @@ module.exports = {
             const userId = target.id;
             const tupper = await getTupper(tupperName);
 
-            if( tupper.tupperuser == userId){
+            if( tupper.tupperuser != userId){
                 const embed = new EmbedBuilder()
                 .setTitle('❌ Uh oh...')
                 .setColor(0xEBBCA2)
@@ -32,7 +32,7 @@ module.exports = {
             const embed = new EmbedBuilder()
                 .setTitle('📜 OC Deleted!')
                 .setColor(0xB7B75F)
-                .setDescription(`**${tupperName}** deleted from list. \nSee \`/tupperlist\` to view all your tuppers.\ndebug: ${userId} - ${tupper.tupperuser}`);
+                .setDescription(`**${tupperName}** deleted from list. \nSee \`/tupperlist\` to view all your tuppers.`);
 
             await interaction.editReply({ embeds: [embed] });
         } catch (err) {
