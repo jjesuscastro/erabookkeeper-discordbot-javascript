@@ -1,6 +1,6 @@
 // adds new tupper in the sheets
 const { SlashCommandBuilder, EmbedBuilder, PermissionFlagsBits } = require('discord.js');
-const { deleteTupper } = require('../../utils/sheets');
+const { deleteTupper, getTupper } = require('../../utils/sheets');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -16,17 +16,31 @@ module.exports = {
         await interaction.deferReply();
         try {
             const userId = target.id;
-            
+            const { tupperuser } = await getTupper(tupperName);
+            if( tupperuser === userId){
+                const embed = new EmbedBuilder()
+                .setTitle('❌ Uh oh...')
+                .setColor(0xEBBCA2)
+                .setDescription(`**${tupperName}** belongs to <@${tupperuser}>,\nYou can only delete your own tuppers.`);
+            }
+
             await deleteTupper(tupperName);
 
             const embed = new EmbedBuilder()
                 .setTitle('📜 OC Deleted!')
                 .setColor(0xB7B75F)
-                .setDescription(`**${tupperName}** deleted from list. See \`/tupperlist\` to view all your tuppers.`);
+                .setDescription(`**${tupperName}** deleted from list. \nSee \`/tupperlist\` to view all your tuppers.`);
 
             await interaction.editReply({ embeds: [embed] });
         } catch (err) {
-            await interaction.editReply(`Error: ${err.message}`);
+            if(err.message === 'Tupper not found.'){
+                const embed = new EmbedBuilder()
+                    .setTitle('❌ Uh oh...')
+                    .setColor(0xEBBCA2)
+                    .setDescription(`We couldn't find the tupper **${tupperName}**.`)
+                await interaction.editReply({ embeds: [embed] });
+            }
+            else await interaction.editReply(`Error: ${err.message}`);
         }
     },
 };
