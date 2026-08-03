@@ -237,11 +237,11 @@ module.exports = {
                 }
                 if(result.userId === null){
                     //result.userId = members.find(m => m.displayName === result.name).id;
-                    lines.push(`\`${result.words.toString().padEnd(parseInt(results[0].words.toString().length), " ")} WC\` — **${result.name}** — unregistered`);
+                    lines.push(`\`${result.words.toString().padEnd(parseInt(results[0].words.toString().length), " ")} WC\` — **${result.name}**`);
                     result.registered = false;
                 }
             }
-
+            
             const totalWords = results.reduce((sum, result) => sum + result.words, 0);
 
             // const lines = results.map((result) => result.registered === true ?
@@ -299,7 +299,7 @@ module.exports = {
                         await addBalance(result.userId, result.edels);
                         granted.push(`**<@${result.userId}>** — +${result.edels} edels`);
                     } catch {
-                        failed.push(result.name);
+                        failed.push(result.userId);
                     }
                 }
 
