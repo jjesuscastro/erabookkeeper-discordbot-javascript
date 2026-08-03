@@ -22,6 +22,8 @@ module.exports = {
                 .setTitle('❌ Uh oh...')
                 .setColor(0xEBBCA2)
                 .setDescription(`**${tupperName}** belongs to <@${tupperuser}>,\nYou can only delete your own tuppers.`);
+
+                return interaction.editReply({ embeds: [embed] });
             }
 
             await deleteTupper(tupperName);
