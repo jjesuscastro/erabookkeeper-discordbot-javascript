@@ -7,18 +7,34 @@ module.exports = {
         .setName('registertupper')
         .setDescription('add a new tupper to your roster')
         .addStringOption(opt =>
+            opt.setName('user').setDescription('Who owns the OC (default: you)').setRequired(false).setAutocomplete(true))
+        .addStringOption(opt =>
             opt.setName('name').setDescription('make sure its exactly the same as your tupper!').setRequired(true))
         .addBooleanOption(opt =>
             opt.setName('pc').setDescription('false if npc').setRequired(true)),
-        
+    
+    async autocomplete(interaction) {
+        const focused = interaction.options.getFocused();
+        const choices = await autocompleteProfiles(focused);
+        await interaction.respond(choices);
+    },
+
     async execute(interaction) {
         const tupperName = interaction.options.getString('name');
         const playerChara = interaction.options.getBoolean('pc');
-
+        const input = interaction.options.getString('user');
+        
         await interaction.deferReply();
         try {
+            let userId;
+            if (input) {
+                const target = await resolveTarget(input);
+                userId = target.discordId;
+            } else {
+                userId = interaction.user.id;
+            }
             
-            await addTupper(interaction.user.id, tupperName, playerChara);
+            await addTupper(userId, tupperName, playerChara);
 
             const embed = new EmbedBuilder()
                 .setTitle('OC Added!')
