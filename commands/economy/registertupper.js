@@ -8,7 +8,7 @@ module.exports = {
         .addStringOption(opt =>
             opt.setName('tupper name').setDescription('make sure its exactly the same as your tupper!').setRequired(true))
         .addBooleanOption(opt =>
-            opt.setName('player character').setDescription('false if npc').setMinValue(1).setRequired(true)),
+            opt.setName('player character').setDescription('false if npc').setRequired(true)),
         
     async execute(interaction) {
         const tupperName = interaction.options.getString('tupper name');
