@@ -7,14 +7,8 @@ module.exports = {
     data: new SlashCommandBuilder()
         .setName('tupperlist')
         .setDescription('see all registered tuppers under a user')
-        .addStringOption(opt =>
-            opt.setName('user').setDescription('Who owns the OC (default: you)').setRequired(false).setAutocomplete(true)),
-    
-    async autocomplete(interaction) {
-        const focused = interaction.options.getFocused();
-        const choices = await autocompleteProfiles(focused);
-        await interaction.respond(choices);
-    },
+        .addUserOption(opt =>
+            opt.setName('user').setDescription('user to check (default: you)').setRequired(false)),
 
     async execute(interaction) {
         const target = interaction.options.getUser('user') ?? interaction.user;
