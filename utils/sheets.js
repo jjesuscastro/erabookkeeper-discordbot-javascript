@@ -230,6 +230,14 @@ async function getTupper(name) {
                 playerChara:    '',
             };
 }
+async function addTupper(tupperuser, tupperName, playerChara) {
+    const existing = await getTupper(tupperName);
+    if (existing !== '') {
+        throw new Error(`Already added.`);
+    } else {
+        await appendRow('Tuppers', [tupperuser, tupperName, playerChara]);
+    }
+}
 
 // ── Shop ──────────────────────────────────────────────────────────────────────
 // Columns: A=ITEM, B=PRICE, C = description
@@ -313,6 +321,7 @@ module.exports = {
     addPoints,
     deductPoints,
     getTupper,
+    addTupper,
     getShopItems,
     getInventory,
     addInventoryItem,
