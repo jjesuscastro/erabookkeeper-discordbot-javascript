@@ -21,9 +21,9 @@ module.exports = {
             await addTupper(interaction.user.id, tupperName, playerChara);
 
             const embed = new EmbedBuilder()
-                .setTitle('Congratulations!')
+                .setTitle('OC Added!')
                 .setColor(0xB7B75F)
-                .setDescription(`tupper registered`);
+                .setDescription(`📜 New tupper: ${tupperName}`);
 
             await interaction.editReply({ embeds: [embed] });
         } catch (err) {
