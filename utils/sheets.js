@@ -240,11 +240,11 @@ async function addTupper(user, tupperName, playerChara) {
     }
 }
 async function deleteTupper(tupperName) {
-    const {tupperuser, rowIndex} = await getTupper(tupperName);
-    if (tupperuser === '') {
+    const tupper = await getTupper(tupperName);
+    if (tupper.tupperuser === '') {
         throw new Error(`Tupper not found.`);
     } else {
-        await deleteRow('331950769',rowIndex);
+        await deleteRow('331950769', tupper.rowIndex);
     }
 }
 
