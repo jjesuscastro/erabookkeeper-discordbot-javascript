@@ -18,7 +18,8 @@ module.exports = {
 
     async execute(interaction) {
         const target = interaction.options.getUser('user') ?? interaction.user;
-        
+        const { characterName } = await getUser(target.id);
+            
         await interaction.deferReply();
         try {
             const allTuppers = await getTupperList(target.id);
@@ -30,7 +31,7 @@ module.exports = {
             if (allTuppers.length === 0) list = "No tuppers registered :("
             
             const embed = new EmbedBuilder()
-                .setTitle(`📜 ${target.characterName}'s Tuppers`)
+                .setTitle(`📜 ${characterName}'s Tuppers`)
                 .setColor(0xB7B75F)
                 .setDescription(list);
 
