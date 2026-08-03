@@ -210,6 +210,24 @@ async function deductPoints(houseID, amount) {
     throw new Error("House not found.");
 }
 
+// ── TUPPERS ──────────────────────────────────────────────────────────────────────
+// Columns: A=USERID, B=TUPPER, C=PC
+async function getTupper(name) {
+    const rows = await readRange('Tuppers!A:C');
+    for (let i = 1; i < rows.length; i++) { // skip header row
+            if (rows[i][COL.NAME] === name) {
+            return {
+                rowIndex: i + 1, // 1-based for Sheets API write calls
+                userId:        rows[i][0] || '',
+                characterName: rows[i][1] || '',
+                playerChara:   rows[i][2] || '',
+            };
+            //return parseInt(rows[i][COL.DISCORD_ID]); 
+        }
+    }
+    return null;
+}
+
 // ── Shop ──────────────────────────────────────────────────────────────────────
 // Columns: A=ITEM, B=PRICE, C = description
 
@@ -291,6 +309,7 @@ module.exports = {
     getHousePoints,
     addPoints,
     deductPoints,
+    getTupper,
     getShopItems,
     getInventory,
     addInventoryItem,

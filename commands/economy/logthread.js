@@ -7,7 +7,7 @@ const {
     ButtonBuilder,
     ButtonStyle,
 } = require('discord.js');
-const { addBalance, getUserID } = require('../../utils/sheets');
+const { addBalance, getUserID, getTupper } = require('../../utils/sheets');
 
 class LogThreadError extends Error {}
 
@@ -230,12 +230,14 @@ module.exports = {
             const lines = new Array();
             const edelpay = new Array();
             for (const result of results){
-                result.userId = await getUserID(result.name);
-                if(result.userId !== null){
+                const { tupperuser, tupper, pc } = await getTupper(result.name);
+            
+                //result.userId = await getUserID(result.name);
+                if(tupperuser !== null){
                     lines.push(`\`${result.words.toString().padEnd(parseInt(results[0].words.toString().length), " ")} WC\` — **${result.name}** — <@${result.userId}>`);
                     edelpay.push(`\`${result.edels.toString().padEnd(parseInt(results[0].edels.toString().length), " ")} edels\` — <@${result.userId}>`);
                 }
-                if(result.userId === null){
+                if(tupperuser === null){
                     //result.userId = members.find(m => m.displayName === result.name).id;
                     lines.push(`\`${result.words.toString().padEnd(parseInt(results[0].words.toString().length), " ")} WC\` — **${result.name}**`);
                     result.registered = false;

@@ -29,3 +29,8 @@
 | NAME | POINTS |
 | *data* | *data* | 
 
+## Tuppers
+| A | B | C |
+|-|-|-|
+| USERID | TUPPER | PC |
+| *data* | *data* | *data* |
