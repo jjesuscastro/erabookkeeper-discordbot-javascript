@@ -22,8 +22,7 @@ module.exports = {
             const embed = new EmbedBuilder()
                 .setTitle('Congratulations!')
                 .setColor(0xB7B75F)
-                .setDescription(`tupper registered`)
-                //.setFooter({text:`Keep up the good work!`});
+                .setDescription(`tupper registered`);
 
             await interaction.editReply({ embeds: [embed] });
         } catch (err) {
