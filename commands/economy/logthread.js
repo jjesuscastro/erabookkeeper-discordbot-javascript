@@ -230,12 +230,12 @@ module.exports = {
             const lines = new Array();
             const edelpay = new Array();
             for (const result of results){
-                const { tupperuser, tupper, pc } = await getTupper(result.name);
+                const { tupperuser, tupperName, playerChara } = await getTupper(result.name);
             
                 //result.userId = await getUserID(result.name);
                 if(tupperuser !== null){
                     lines.push(`\`${result.words.toString().padEnd(parseInt(results[0].words.toString().length), " ")} WC\` — **${result.name}** — <@${tupperuser}>`);
-                    edelpay.push(`\`${result.edels.toString().padEnd(parseInt(results[0].edels.toString().length), " ")} edels\` — <@${result.userId}>`);
+                    edelpay.push(`\`${result.edels.toString().padEnd(parseInt(results[0].edels.toString().length), " ")} edels\` — <@${tupperuser}>`);
                 }
                 if(tupperuser === null){
                     //result.userId = members.find(m => m.displayName === result.name).id;
