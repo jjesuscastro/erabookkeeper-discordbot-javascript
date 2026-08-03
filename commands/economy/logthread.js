@@ -301,14 +301,20 @@ module.exports = {
 
                 const granted = [];
                 const failed = [];
+
+                const payMap = new Map();
                 for (const result of results) {
+                    payMap.set(result.userId, (payMap.get(result.user) ?? 0) + result.edels);
+                }
+
+                for (const [id, edels] of payMap) {
                     try {
-                        if(result.registered){
-                            await addBalance(result.userId, result.edels);
-                            granted.push(`**<@${result.userId}>** — +${result.edels} edels`);
+                        if(id !== null){
+                            await addBalance(id, edels);
+                            granted.push(`**<@${id}>** — +${edels} edels`);
                         }
                     } catch {
-                        failed.push(result.name);
+                        failed.push(id);
                     }
                 }
 
