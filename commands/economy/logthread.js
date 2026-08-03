@@ -208,7 +208,7 @@ module.exports = {
                 const words = countWords(message.content);
                 if (words === 0) continue;
                 if (message.webhookId) wordMap.set(message.author.username , (wordMap.get(message.author.id) ?? 0) + words);
-                else wordMap.set(message.member ? message.member.displayName : message.author.displayName , (wordMap.get(message.author.id) ?? 0) + words);
+                else wordMap.set(message.member ? message.member.displayName : message.author.username , (wordMap.get(message.author.id) ?? 0) + words);
             }
 
             if (wordMap.size === 0) {
@@ -231,12 +231,12 @@ module.exports = {
             const edelpay = new Array();
             for (const result of results){
                 result.userId = await getUserID(result.name);
-                //if(result.userId !== null){
+                if(result.userId !== null){
                     lines.push(`\`${result.words.toString().padEnd(parseInt(results[0].words.toString().length), " ")} WC\` — **${result.name}** — <@${result.userId}>`);
                     edelpay.push(`\`${result.edels.toString().padEnd(parseInt(results[0].edels.toString().length), " ")} edels\` — <@${result.userId}>`);
-                //}
+                }
                 if(result.userId === null){
-                    //result.userId = members.find(m => m.displayName === result.name).id;
+                    result.userId = members.find(m => m.displayName === result.name).id;
                     result.registered = false;
                 }
             }
