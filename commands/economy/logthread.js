@@ -236,7 +236,8 @@ module.exports = {
                     edelpay.push(`\`${result.edels.toString().padEnd(parseInt(results[0].edels.toString().length), " ")} edels\` — <@${result.userId}>`);
                 }
                 if(result.userId === null){
-                    result.userId = members.find(m => m.displayName === result.name).id;
+                    //result.userId = members.find(m => m.displayName === result.name).id;
+                    result.userId = 'unregistered';
                     result.registered = false;
                 }
             }
