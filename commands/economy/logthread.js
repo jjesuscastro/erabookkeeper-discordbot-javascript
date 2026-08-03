@@ -234,7 +234,7 @@ module.exports = {
             
                 //result.userId = await getUserID(result.name);
                 if(tupperuser !== null){
-                    if(playerChara)
+                    if(playerChara == 'TRUE')
                         lines.push(`\`${result.words.toString().padEnd(parseInt(results[0].words.toString().length), " ")} WC\` — **${result.name}** — <@${tupperuser}>`);
                     else
                         lines.push(`\`${result.words.toString().padEnd(parseInt(results[0].words.toString().length), " ")} WC\` — \`NPC\` **${result.name}** — <@${tupperuser}>`);    
