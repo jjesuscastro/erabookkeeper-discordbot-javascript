@@ -218,9 +218,9 @@ async function getTupper(name) {
             if (rows[i][COL.NAME] === name) {
             return {
                 rowIndex: i + 1, // 1-based for Sheets API write calls
-                userId:        rows[i][0] || '',
-                characterName: rows[i][1] || '',
-                playerChara:   rows[i][2] || '',
+                tupperuser:     rows[i][0] || '',
+                tupperName:     rows[i][1] || '',
+                playerChara:    rows[i][2] || '',
             };
             //return parseInt(rows[i][COL.DISCORD_ID]); 
         }
