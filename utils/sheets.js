@@ -231,8 +231,8 @@ async function getTupper(name) {
             };
 }
 async function addTupper(tupperuser, tupperName, playerChara) {
-    const existing = await getTupper(tupperName);
-    if (existing !== '') {
+    const {tupperuser} = await getTupper(tupperName);
+    if (tupperuser !== '') {
         throw new Error(`Already added.`);
     } else {
         await appendRow('Tuppers', [tupperuser, tupperName, playerChara]);
