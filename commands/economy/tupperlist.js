@@ -1,6 +1,6 @@
 // adds new tupper in the sheets
 const { SlashCommandBuilder, EmbedBuilder, PermissionFlagsBits } = require('discord.js');
-const { getTupperList } = require('../../utils/sheets');
+const { getTupperList, getUser } = require('../../utils/sheets');
 const { resolveTarget, autocompleteProfiles } = require('../../utils/resolver');
 
 module.exports = {
@@ -22,7 +22,8 @@ module.exports = {
         await interaction.deferReply();
         try {
             const allTuppers = await getTupperList(target.id);
-            
+            const user = await getUser(target.id); 
+
             allTuppers.sort((a,b) => b.tupperName - a.tupperName );
             
             var list = allTuppers.map(i => `**x${i.tupperName}** -`+ i.playerChara ? `\`PLAYER CHARACTER\``:`\`NPC\``).join('\n');
@@ -30,7 +31,7 @@ module.exports = {
             if (allTuppers.length === 0) list = "No tuppers registered :("
             
             const embed = new EmbedBuilder()
-                .setTitle(`📜 ${characterName}'s Tuppers`)
+                .setTitle(`📜 ${user.characterName}'s Tuppers`)
                 .setColor(0xB7B75F)
                 .setDescription(list);
 
