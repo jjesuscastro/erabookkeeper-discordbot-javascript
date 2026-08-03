@@ -232,13 +232,15 @@ module.exports = {
             for (const result of results){
                 const { tupperuser, tupperName, playerChara } = await getTupper(result.name);
             
-                //result.userId = await getUserID(result.name);
+                result.userId = tupperuser;
                 if(tupperuser !== null){
                     if(playerChara == 'TRUE')
                         lines.push(`\`${result.words.toString().padEnd(parseInt(results[0].words.toString().length), " ")} WC\` — **${result.name}** — <@${tupperuser}>`);
-                    else
+                    else{
                         lines.push(`\`${result.words.toString().padEnd(parseInt(results[0].words.toString().length), " ")} WC\` — \`NPC\` **${result.name}** — <@${tupperuser}>`);    
-                    edelpay.push(`\`${result.edels.toString().padEnd(parseInt(results[0].edels.toString().length), " ")} edels\` — <@${tupperuser}>`);
+                        result.edels = result.edels * 5 / 20;
+                    }
+                    edelpay.push(`\`${result.edels.toString().padEnd(parseInt(results[0].edels.toString().length), " ")} edels\` — ${result.name}`);
                 }
                 if(tupperuser === null){
                     //result.userId = members.find(m => m.displayName === result.name).id;
