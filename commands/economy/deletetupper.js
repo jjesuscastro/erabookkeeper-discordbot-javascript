@@ -16,8 +16,8 @@ module.exports = {
         await interaction.deferReply();
         try {
             const userId = target.id;
-            const { tupperuser } = await getTupper(tupperName);
-            if( tupperuser === userId){
+            const tupper = await getTupper(tupperName);
+            if( tupper.tupperuser == userId){
                 const embed = new EmbedBuilder()
                 .setTitle('❌ Uh oh...')
                 .setColor(0xEBBCA2)
