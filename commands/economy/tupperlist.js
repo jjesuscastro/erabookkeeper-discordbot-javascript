@@ -18,10 +18,10 @@ module.exports = {
 
     async execute(interaction) {
         const target = interaction.options.getUser('user') ?? interaction.user;
-        const { characterName } = await getUser(target.id);
             
         await interaction.deferReply();
         try {
+            const { characterName } = await getUser(target.id);
             const allTuppers = await getTupperList(target.id);
 
             allTuppers.sort((a,b) => b.tupperName - a.tupperName );
