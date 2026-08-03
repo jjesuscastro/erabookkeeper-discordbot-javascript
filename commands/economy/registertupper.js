@@ -5,6 +5,7 @@ const { addTupper } = require('../../utils/sheets');
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('registertupper')
+        .setDescription('add a new tupper to your roster')
         .addStringOption(opt =>
             opt.setName('name').setDescription('make sure its exactly the same as your tupper!').setRequired(true))
         .addBooleanOption(opt =>
