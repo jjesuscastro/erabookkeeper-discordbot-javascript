@@ -233,8 +233,8 @@ module.exports = {
             for (const result of results){
                 const { tupperuser, tupperName, playerChara } = await getTupper(result.name);
             
-                result.userId = tupperuser ?? {};
-                if(tupperuser !== null){
+                result.userId = tupperuser ?? '';
+                if(tupperuser !== ''){
                     if(playerChara == 'TRUE')
                         lines.push(`\`${result.words.toString().padEnd(parseInt(results[0].words.toString().length), " ")} WC\` — **${result.name}** — <@${tupperuser}>`);
                     else{
@@ -243,7 +243,7 @@ module.exports = {
                     }
                     edelpay.push(`\`${result.edels.toString().padEnd(parseInt(results[0].edels.toString().length), " ")} edels\` — ${result.name}`);
                 }
-                if(tupperuser === null){
+                if(tupperuser === ''){
                     //result.userId = members.find(m => m.displayName === result.name).id;
                     lines.push(`\`${result.words.toString().padEnd(parseInt(results[0].words.toString().length), " ")} WC\` — **${result.name}**`);
                     result.registered = false;
