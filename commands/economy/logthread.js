@@ -299,7 +299,7 @@ module.exports = {
                         await addBalance(result.userId, result.edels);
                         granted.push(`**<@${result.userId}>** — +${result.edels} edels`);
                     } catch {
-                        failed.push(result.userId);
+                        failed.push(result.name);
                     }
                 }
 

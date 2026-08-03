@@ -111,7 +111,7 @@ async function getSheetId(sheetName) {
 async function getUser(userId) {
     const rows = await readRange('Profiles!A:K');
     for (let i = 1; i < rows.length; i++) { // skip header row
-        if (rows[i][COL.DISCORD_ID] === userId) {
+        if (rows[i][COL.DISCORD_ID] == userId) {
             return {
                 rowIndex: i + 1, // 1-based for Sheets API write calls
                 characterName: rows[i][COL.NAME] || '',
