@@ -217,6 +217,7 @@ async function getTupper(name) {
     for (let i = 1; i < rows.length; i++) { // skip header row
             if (rows[i][COL.NAME] === name) {
             return {
+                rpwIndex:       i + 1,
                 tupperuser:     rows[i][0] || '',
                 tupperName:     rows[i][1] || '',
                 playerChara:    rows[i][2] || '',
@@ -236,6 +237,14 @@ async function addTupper(user, tupperName, playerChara) {
         throw new Error(`Already added.`);
     } else {
         await appendRow('Tuppers', [user, tupperName, playerChara]);
+    }
+}
+async function deleteTupper(tupperName) {
+    const {tupperuser, rowIndex} = await getTupper(tupperName);
+    if (tupperuser === '') {
+        throw new Error(`Tupper not found.`);
+    } else {
+        await deleteRow('331950769',rowIndex);
     }
 }
 
@@ -338,6 +347,7 @@ module.exports = {
     getTupper,
     addTupper,
     getTupperList,
+    deleteTupper,
     getShopItems,
     getInventory,
     addInventoryItem,
