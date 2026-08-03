@@ -40,7 +40,7 @@ module.exports = {
             const embed = new EmbedBuilder()
                 .setTitle('📜 OC Added!')
                 .setColor(0xB7B75F)
-                .setDescription(`New tupper: **${tupperName}** for <@${userId}>`);
+                .setDescription(`Tupper Name: **${tupperName}** \nMun: <@${userId}>`);
 
             await interaction.editReply({ embeds: [embed] });
         } catch (err) {
