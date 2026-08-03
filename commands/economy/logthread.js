@@ -208,7 +208,7 @@ module.exports = {
                 const words = countWords(message.content);
                 if (words === 0) continue;
                 if (message.webhookId) wordMap.set(message.author.username , (wordMap.get(message.author.id) ?? 0) + words);
-                else wordMap.set(message.member.displayName ?? message.author.username , (wordMap.get(message.author.id) ?? 0) + words);
+                else wordMap.set(message.member ? message.member.displayName : message.author.username , (wordMap.get(message.author.id) ?? 0) + words);
             }
 
             if (wordMap.size === 0) {
