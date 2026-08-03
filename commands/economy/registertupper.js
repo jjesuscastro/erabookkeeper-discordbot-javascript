@@ -37,9 +37,9 @@ module.exports = {
             await addTupper(userId, tupperName, playerChara);
 
             const embed = new EmbedBuilder()
-                .setTitle('OC Added!')
+                .setTitle('📜 OC Added!')
                 .setColor(0xB7B75F)
-                .setDescription(`📜 New tupper: ${tupperName}`);
+                .setDescription(`New tupper: ${tupperName}`);
 
             await interaction.editReply({ embeds: [embed] });
         } catch (err) {
