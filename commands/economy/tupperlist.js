@@ -22,7 +22,6 @@ module.exports = {
         await interaction.deferReply();
         try {
             const allTuppers = await getTupperList(target.id);
-            const user = await getUser(target.id); 
 
             allTuppers.sort((a,b) => b.tupperName - a.tupperName );
             
@@ -31,7 +30,7 @@ module.exports = {
             if (allTuppers.length === 0) list = "No tuppers registered :("
             
             const embed = new EmbedBuilder()
-                .setTitle(`📜 ${user.characterName}'s Tuppers`)
+                .setTitle(`📜 ${target.characterName}'s Tuppers`)
                 .setColor(0xB7B75F)
                 .setDescription(list);
 
