@@ -7,12 +7,12 @@ module.exports = {
         .setName('registertupper')
         .addStringOption(opt =>
             opt.setName('name').setDescription('make sure its exactly the same as your tupper!').setRequired(true))
-        .addBooleanOption(opt =>
+        .addStringOption(opt =>
             opt.setName('pc').setDescription('false if npc').setRequired(true)),
         
     async execute(interaction) {
         const tupperName = interaction.options.getString('name');
-        const playerChara = interaction.options.getBoolean('pc');
+        const playerChara = interaction.options.getString('pc');
 
         await interaction.deferReply();
         try {
