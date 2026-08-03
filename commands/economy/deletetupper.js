@@ -19,10 +19,13 @@ module.exports = {
             const tupper = await getTupper(tupperName);
 
             if( tupper.tupperuser != userId){
+                if(tupper.tupperuser === '')
+                    throw new Error(`Tupper not found.`);
+                 
                 const embed = new EmbedBuilder()
                 .setTitle('❌ Uh oh...')
                 .setColor(0xEBBCA2)
-                .setDescription(`**${tupperName}** belongs to <@${tupper.tupperuser}>,\nYou can only delete your own tuppers.`);
+                .setDescription(`**${tupperName}** belongs to <@${tupper.tupperuser}>\nYou can only delete your own tuppers.`);
 
                 return interaction.editReply({ embeds: [embed] });
             }
