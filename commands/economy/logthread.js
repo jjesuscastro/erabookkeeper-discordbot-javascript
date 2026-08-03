@@ -296,8 +296,10 @@ module.exports = {
                 const failed = [];
                 for (const result of results) {
                     try {
-                        await addBalance(result.userId, result.edels);
-                        granted.push(`**<@${result.userId}>** — +${result.edels} edels`);
+                        if(result.registered){
+                            await addBalance(result.userId, result.edels);
+                            granted.push(`**<@${result.userId}>** — +${result.edels} edels`);
+                        }
                     } catch {
                         failed.push(result.name);
                     }
