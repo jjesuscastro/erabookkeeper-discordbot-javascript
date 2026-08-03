@@ -310,7 +310,7 @@ module.exports = {
 
                 for (const [id, edels] of payMap) {
                     try {
-                        if(id !== null){
+                        if(id !== ''){
                             await addBalance(id, edels);
                             granted.push(`**<@${id}>** — +${edels} edels`);
                         }
