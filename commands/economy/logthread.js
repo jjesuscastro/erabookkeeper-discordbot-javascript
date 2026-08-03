@@ -304,7 +304,7 @@ module.exports = {
 
                 const payMap = new Map();
                 for (const result of results) {
-                    payMap.set(result.userId, (payMap.get(result.user) ?? 0) + result.edels);
+                    payMap.set(result.userId, (payMap.get(result.userId) ?? 0) + result.edels);
                 }
 
                 for (const [id, edels] of payMap) {
