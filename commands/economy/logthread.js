@@ -234,7 +234,10 @@ module.exports = {
             
                 //result.userId = await getUserID(result.name);
                 if(tupperuser !== null){
-                    lines.push(`\`${result.words.toString().padEnd(parseInt(results[0].words.toString().length), " ")} WC\` — **${result.name}** — <@${tupperuser}>`);
+                    if(playerChara)
+                        lines.push(`\`${result.words.toString().padEnd(parseInt(results[0].words.toString().length), " ")} WC\` — **${result.name}** — <@${tupperuser}>`);
+                    else
+                        lines.push(`\`${result.words.toString().padEnd(parseInt(results[0].words.toString().length), " ")} WC\` — \`NPC\` **${result.name}** — <@${tupperuser}>`);    
                     edelpay.push(`\`${result.edels.toString().padEnd(parseInt(results[0].edels.toString().length), " ")} edels\` — <@${tupperuser}>`);
                 }
                 if(tupperuser === null){
