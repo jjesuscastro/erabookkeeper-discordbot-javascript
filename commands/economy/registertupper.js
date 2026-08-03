@@ -6,13 +6,13 @@ module.exports = {
     data: new SlashCommandBuilder()
         .setName('registertupper')
         .addStringOption(opt =>
-            opt.setName('tupper name').setDescription('make sure its exactly the same as your tupper!').setRequired(true))
+            opt.setName('name').setDescription('make sure its exactly the same as your tupper!').setRequired(true))
         .addBooleanOption(opt =>
-            opt.setName('player character').setDescription('false if npc').setRequired(true)),
+            opt.setName('pc').setDescription('false if npc').setRequired(true)),
         
     async execute(interaction) {
-        const tupperName = interaction.options.getString('tupper name');
-        const playerChara = interaction.options.getBoolean('player character');
+        const tupperName = interaction.options.getString('name');
+        const playerChara = interaction.options.getBoolean('pc');
 
         await interaction.deferReply();
         try {
