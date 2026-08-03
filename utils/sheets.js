@@ -239,6 +239,21 @@ async function addTupper(user, tupperName, playerChara) {
     }
 }
 
+async function getTupperList(user) {
+    const rows = await readRange('Tuppers!A:C');
+    const result = [];
+    for (let i = 1; i < rows.length; i++) {
+        if (rows[i][0] === user) {
+            result.push({
+                tupperuser:     rows[i][0] || '',
+                tupperName:     rows[i][1] || '',
+                playerChara:    rows[i][2] || '',
+            });
+        }
+    }
+    return result;
+}
+
 // ── Shop ──────────────────────────────────────────────────────────────────────
 // Columns: A=ITEM, B=PRICE, C = description
 
@@ -322,6 +337,7 @@ module.exports = {
     deductPoints,
     getTupper,
     addTupper,
+    getTupperList,
     getShopItems,
     getInventory,
     addInventoryItem,

@@ -1,6 +1,6 @@
 // adds new tupper in the sheets
 const { SlashCommandBuilder, EmbedBuilder, PermissionFlagsBits } = require('discord.js');
-const { addTupper } = require('../../utils/sheets');
+const { getTupperList } = require('../../utils/sheets');
 const { resolveTarget, autocompleteProfiles } = require('../../utils/resolver');
 
 module.exports = {
@@ -17,23 +17,22 @@ module.exports = {
     },
 
     async execute(interaction) {
-        const input = interaction.options.getString('user');
+        const target = interaction.options.getUser('user') ?? interaction.user;
         
         await interaction.deferReply();
         try {
-            let userId;
-            if (input) {
-                const target = await resolveTarget(input);
-                userId = target.discordId;
-            } else {
-                userId = interaction.user.id;
-            }
+            const allTuppers = await getTupperList(target.id);
             
+            allTuppers.sort((a,b) => b.tupperName - a.tupperName );
+            
+            var list = allTuppers.map(i => `**x${i.tupperName}** -`+ i.playerChara ? `\`PLAYER CHARACTER\``:`\`NPC\``).join('\n');
+            
+            if (allTuppers.length === 0) list = "No tuppers registered :("
             
             const embed = new EmbedBuilder()
-                .setTitle('📜 OC Added!')
+                .setTitle(`📜 ${characterName}'s Tuppers`)
                 .setColor(0xB7B75F)
-                .setDescription(`New tupper: **${tupperName}** for <@${userId}>`);
+                .setDescription(list);
 
             await interaction.editReply({ embeds: [embed] });
         } catch (err) {
