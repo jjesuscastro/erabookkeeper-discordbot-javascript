@@ -243,7 +243,7 @@ module.exports = {
                     }
                     edelpay.push(`\`${result.edels.toString().padEnd(parseInt(results[0].edels.toString().length), " ")} edels\` — ${result.name}`);
                 }
-                if(tupperuser === undefined){
+                if(tupperuser === null){
                     //result.userId = members.find(m => m.displayName === result.name).id;
                     lines.push(`\`${result.words.toString().padEnd(parseInt(results[0].words.toString().length), " ")} WC\` — **${result.name}**`);
                     result.registered = false;
@@ -310,7 +310,7 @@ module.exports = {
 
                 for (const [id, edels] of payMap) {
                     try {
-                        if(id !== undefined){
+                        if(id !== null){
                             await addBalance(id, edels);
                             granted.push(`**<@${id}>** — +${edels} edels`);
                         }
