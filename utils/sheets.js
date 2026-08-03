@@ -217,7 +217,7 @@ async function getTupper(name) {
     for (let i = 1; i < rows.length; i++) { // skip header row
             if (rows[i][COL.NAME] === name) {
             return {
-                rpwIndex:       i + 1,
+                rowIndex:       i + 1,
                 tupperuser:     rows[i][0] || '',
                 tupperName:     rows[i][1] || '',
                 playerChara:    rows[i][2] || '',
