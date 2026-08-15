@@ -13,6 +13,10 @@ function loadHelpers() {
             resolveThread,
             fetchThreadMessages,
             fetchRangeMessages,
+            PERIOD_MULTIPLIERS,
+            applyPeriodMultiplier,
+            isAdminInteraction,
+            buildPayMap,
         };`;
 
     class Builder {
@@ -23,10 +27,14 @@ function loadHelpers() {
         setLabel() { return this; }
         setStyle() { return this; }
         setDisabled() { return this; }
+        setPlaceholder() { return this; }
+        setValue() { return this; }
+        setDefault() { return this; }
         setTitle() { return this; }
         setColor() { return this; }
         addStringOption(callback) { callback(new Builder()); return this; }
         addComponents() { return this; }
+        addOptions() { return this; }
     }
 
     const module = { exports: {} };
@@ -40,10 +48,18 @@ function loadHelpers() {
                     EmbedBuilder: Builder,
                     ActionRowBuilder: Builder,
                     ButtonBuilder: Builder,
+                    StringSelectMenuBuilder: Builder,
+                    StringSelectMenuOptionBuilder: Builder,
                     ButtonStyle: { Success: 1, Secondary: 2 },
+                    PermissionFlagsBits: { Administrator: 8n },
                 };
             }
-            if (request === '../../utils/sheets') return { addBalance: async () => {} };
+            if (request === '../../utils/sheets') {
+                return {
+                    addBalance: async () => {},
+                    getTupper: async () => ({ tupperuser: '', tupperName: '', playerChara: '' }),
+                };
+            }
             throw new Error(`Unexpected import: ${request}`);
         },
         Map,
@@ -97,6 +113,36 @@ test('counts whitespace-separated text content', () => {
     assert.equal(helpers.countWords(' one\n two   three '), 3);
     assert.equal(helpers.countWords(''), 0);
     assert.equal(helpers.countWords(null), 0);
+});
+
+test('period multipliers are ready for monthly and annual payouts', () => {
+    assert.equal(helpers.PERIOD_MULTIPLIERS.Monthly, 1);
+    assert.equal(helpers.PERIOD_MULTIPLIERS.Annual, 1);
+    assert.equal(helpers.applyPeriodMultiplier(25, 'Monthly'), 25);
+    assert.equal(helpers.applyPeriodMultiplier(25, 'Annual'), 25);
+});
+
+test('admin approval check uses Administrator permission', () => {
+    assert.equal(
+        helpers.isAdminInteraction({ memberPermissions: { has: permission => permission === 8n } }),
+        true,
+    );
+    assert.equal(
+        helpers.isAdminInteraction({ memberPermissions: { has: () => false } }),
+        false,
+    );
+    assert.equal(helpers.isAdminInteraction({}), false);
+});
+
+test('payout grouping combines multiple tuppers owned by the same user', () => {
+    const payMap = helpers.buildPayMap([
+        { userId: '123', edels: 10 },
+        { userId: '456', edels: 5 },
+        { userId: '123', edels: 7 },
+    ]);
+
+    assert.equal(payMap.get('123'), 17);
+    assert.equal(payMap.get('456'), 5);
 });
 
 test('range scan is inclusive and supports a single-message range', async () => {

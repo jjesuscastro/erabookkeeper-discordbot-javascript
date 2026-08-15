@@ -1,25 +1,32 @@
-// /logthread — count words per user in a whole thread or an inclusive message range
-// Accepts message IDs (uses current channel) or full Discord message links
+// /logthread - count words per user in a whole thread or an inclusive message range
+// Accepts message IDs (uses current channel) or full Discord message links.
 const {
     SlashCommandBuilder,
     EmbedBuilder,
     ActionRowBuilder,
     ButtonBuilder,
     ButtonStyle,
+    StringSelectMenuBuilder,
+    StringSelectMenuOptionBuilder,
+    PermissionFlagsBits,
 } = require('discord.js');
-const { addBalance, getUserID, getTupper } = require('../../utils/sheets');
+const { addBalance, getTupper } = require('../../utils/sheets');
 
 class LogThreadError extends Error {}
+
+const PERIOD_MULTIPLIERS = {
+    Monthly: 1,
+    Annual: 1,
+};
+const DEFAULT_PERIOD = 'Monthly';
 
 function parseInput(input, fallbackChannelId) {
     if (!input) return null;
 
     const trimmed = input.trim();
-    var linkMatch = trimmed.match(/channels\/(?:@me|\d+)\/(\d+)\/(\d+)/);
+    const linkMatch = trimmed.match(/channels\/(?:@me|\d+)\/(\d+)\/(\d+)/);
     if (linkMatch) return { channelId: linkMatch[1], messageId: linkMatch[2] };
-    else if (/^\d+$/.test(trimmed)){
-        return { channelId: fallbackChannelId, messageId: trimmed };
-    }
+    if (/^\d+$/.test(trimmed)) return { channelId: fallbackChannelId, messageId: trimmed };
     return null;
 }
 
@@ -28,11 +35,36 @@ function countWords(content) {
     return content.trim().split(/\s+/).filter(w => w.length > 0).length;
 }
 
-function buildButtons(disabled = false) {
-    return new ActionRowBuilder().addComponents(
+function applyPeriodMultiplier(edels, period) {
+    return edels * (PERIOD_MULTIPLIERS[period] ?? PERIOD_MULTIPLIERS[DEFAULT_PERIOD]);
+}
+
+function isAdminInteraction(interaction) {
+    return Boolean(interaction.memberPermissions?.has(PermissionFlagsBits.Administrator));
+}
+
+function buildSubmitComponents(selectedPeriod = DEFAULT_PERIOD, disabled = false) {
+    const periodSelect = new ActionRowBuilder().addComponents(
+        new StringSelectMenuBuilder()
+            .setCustomId('logthread_period')
+            .setPlaceholder('Select log period')
+            .setDisabled(disabled)
+            .addOptions(
+                new StringSelectMenuOptionBuilder()
+                    .setLabel('Monthly')
+                    .setValue('Monthly')
+                    .setDefault(selectedPeriod === 'Monthly'),
+                new StringSelectMenuOptionBuilder()
+                    .setLabel('Annual')
+                    .setValue('Annual')
+                    .setDefault(selectedPeriod === 'Annual'),
+            ),
+    );
+
+    const buttons = new ActionRowBuilder().addComponents(
         new ButtonBuilder()
-            .setCustomId('logthread_grant')
-            .setLabel('Grant Edels')
+            .setCustomId('logthread_submit')
+            .setLabel('Submit')
             .setStyle(ButtonStyle.Success)
             .setDisabled(disabled),
         new ButtonBuilder()
@@ -41,6 +73,91 @@ function buildButtons(disabled = false) {
             .setStyle(ButtonStyle.Secondary)
             .setDisabled(disabled),
     );
+
+    return [periodSelect, buttons];
+}
+
+function buildReviewButtons(disabled = false) {
+    return new ActionRowBuilder().addComponents(
+        new ButtonBuilder()
+            .setCustomId('logthread_grant')
+            .setLabel('Grant Edels')
+            .setStyle(ButtonStyle.Success)
+            .setDisabled(disabled),
+        new ButtonBuilder()
+            .setCustomId('logthread_review_cancel')
+            .setLabel('Cancel')
+            .setStyle(ButtonStyle.Secondary)
+            .setDisabled(disabled),
+    );
+}
+
+function buildPayMap(results) {
+    const payMap = new Map();
+    for (const result of results) {
+        payMap.set(result.userId, (payMap.get(result.userId) ?? 0) + result.edels);
+    }
+    return payMap;
+}
+
+async function grantEdels(results) {
+    const granted = [];
+    const failed = [];
+
+    for (const [id, edels] of buildPayMap(results)) {
+        try {
+            if (id !== '') {
+                await addBalance(id, edels);
+                granted.push(`**<@${id}>** - +${edels} edels`);
+            }
+        } catch {
+            failed.push(id);
+        }
+    }
+
+    let grantDesc = granted.join('\n') || 'No registered payouts found.';
+    if (failed.length > 0) {
+        grantDesc += `\n\nNo profile found for: ${failed.map(name => `**${name}**`).join(', ')}`;
+    }
+
+    return new EmbedBuilder()
+        .setTitle('Edels Granted!')
+        .setColor(0xB7B75F)
+        .setDescription(grantDesc);
+}
+
+function buildLogEmbed({ startLink, endLink, totalWords, messageCount, description, payouts, period }) {
+    return new EmbedBuilder()
+        .setTitle('Log RP')
+        .setColor(0xB7B75F)
+        .addFields(
+            { name: '', value: `**Start: **${startLink ?? 'N/A'}\n**End: **${endLink ?? 'N/A'}`, inline: true },
+            { name: '', value: `**Total WC: **${totalWords}\n**Total Messages: **${messageCount}`, inline: true },
+            { name: '', value: `**Period: **${period}`, inline: true },
+            { name: '', value: '``` ```', inline: false },
+            { name: 'LOG SUMMARY', value: description, inline: false },
+            { name: '', value: '', inline: false },
+            { name: 'EDELS', value: payouts, inline: false },
+            { name: '', value: '', inline: false },
+            { name: 'HOUSE POINTS', value: 'tba', inline: false },
+        );
+}
+
+async function fetchReviewChannel(client) {
+    const channelId = process.env.LOGTHREAD_REVIEW_CHANNEL_ID;
+    if (!channelId) throw new LogThreadError('LOGTHREAD_REVIEW_CHANNEL_ID is not configured.');
+
+    let channel;
+    try {
+        channel = await client.channels.fetch(channelId);
+    } catch {
+        throw new LogThreadError('Could not access the logthread review channel.');
+    }
+
+    if (!channel?.isTextBased()) {
+        throw new LogThreadError('The logthread review channel is not text-based.');
+    }
+    return channel;
 }
 
 async function fetchMessage(client, parsed, label) {
@@ -172,18 +289,20 @@ module.exports = {
         await interaction.deferReply();
         try {
             let messages;
-            let StartLink;
-            let EndLink;
+            let startLink;
+            let endLink;
 
             if (isThreadMode) {
-                const parsed = await parseInput(threadInput, interaction.channel.id);
+                const parsed = parseInput(threadInput, interaction.channel.id);
                 if (!parsed) throw new LogThreadError('Invalid thread message ID or link.');
 
                 const { thread, starter } = await resolveThread(interaction.client, parsed);
                 messages = await fetchThreadMessages(thread, starter);
+                startLink = starter.url;
+                endLink = starter.url;
             } else {
-                const startParsed = await parseInput(startInput, interaction.channel.id);
-                const endParsed = await parseInput(endInput, interaction.channel.id);
+                const startParsed = parseInput(startInput, interaction.channel.id);
+                const endParsed = parseInput(endInput, interaction.channel.id);
                 if (!startParsed) throw new LogThreadError('Invalid start message ID or link.');
                 if (!endParsed) throw new LogThreadError('Invalid end message ID or link.');
                 if (startParsed.channelId !== endParsed.channelId) {
@@ -193,23 +312,19 @@ module.exports = {
                 const { channel, message: startMessage } = await fetchMessage(interaction.client, startParsed, 'start');
                 const { message: endMessage } = await fetchMessage(interaction.client, endParsed, 'end');
                 messages = await fetchRangeMessages(channel, startMessage, endMessage);
-
-                const startId = startMessage.id;
-                const endId = endMessage.id;
-                
-                const start = await channel.messages.fetch(startId);
-                StartLink = start.url;
-                const end = await channel.messages.fetch(endId);
-                EndLink = end.url;
+                startLink = startMessage.url;
+                endLink = endMessage.url;
             }
-            
+
             const wordMap = new Map();
             for (const message of messages) {
                 const words = countWords(message.content);
                 if (words === 0) continue;
-                if (message.webhookId) wordMap.set(message.author.username , (wordMap.get(message.author.username) ?? 0) + words);
-                else wordMap.set(message.member ? message.member.displayName : message.author.username , 
-                    (wordMap.get(message.member ? message.member.displayName : message.author.username) ?? 0) + words);
+
+                const name = message.webhookId
+                    ? message.author.username
+                    : (message.member ? message.member.displayName : message.author.username);
+                wordMap.set(name, (wordMap.get(name) ?? 0) + words);
             }
 
             if (wordMap.size === 0) {
@@ -217,124 +332,137 @@ module.exports = {
             }
 
             const results = [...wordMap.entries()]
-                .map(([name, words, userId]) => ({
-                    userId,
-                    name: name,
+                .map(([name, words]) => ({
+                    userId: '',
+                    name,
                     words,
-                    edels: Math.floor(parseInt(words)/5),
+                    edels: Math.floor(parseInt(words) / 5),
                     registered: true,
                 }))
                 .sort((a, b) => b.words - a.words);
 
-                const members = await interaction.guild.members.fetch();
+            const lines = [];
+            const wordWidth = results[0].words.toString().length;
+            for (const result of results) {
+                const { tupperuser, playerChara } = await getTupper(result.name);
 
-            const lines = new Array();
-            const edelpay = new Array();
-            for (const result of results){
-                const { tupperuser, tupperName, playerChara } = await getTupper(result.name);
-            
                 result.userId = tupperuser ?? '';
-                if(result.userId !== ''){
-                    if(playerChara == 'TRUE')
-                        lines.push(`\`${result.words.toString().padEnd(parseInt(results[0].words.toString().length), " ")} WC\` — **${result.name}** — <@${tupperuser}>`);
-                    else{
-                        lines.push(`\`${result.words.toString().padEnd(parseInt(results[0].words.toString().length), " ")} WC\` — \`NPC\` **${result.name}** — <@${tupperuser}>`);    
+                if (result.userId !== '') {
+                    if (playerChara == 'TRUE') {
+                        lines.push(`\`${result.words.toString().padEnd(wordWidth, ' ')} WC\` - **${result.name}** - <@${tupperuser}>`);
+                    } else {
+                        lines.push(`\`${result.words.toString().padEnd(wordWidth, ' ')} WC\` - \`NPC\` **${result.name}** - <@${tupperuser}>`);
                         result.edels = result.edels * 5 / 20;
                     }
-                    edelpay.push(`\`${result.edels.toString().padEnd(parseInt(results[0].edels.toString().length), " ")} edels\` — ${result.name}`);
-                }
-                if(result.userId === ''){
-                    //result.userId = members.find(m => m.displayName === result.name).id;
-                    lines.push(`\`${result.words.toString().padEnd(parseInt(results[0].words.toString().length), " ")} WC\` — **${result.name}**`);
+                } else {
+                    lines.push(`\`${result.words.toString().padEnd(wordWidth, ' ')} WC\` - **${result.name}**`);
                     result.registered = false;
                 }
             }
-            
-            const totalWords = results.reduce((sum, result) => sum + result.words, 0);
 
-            // const lines = results.map((result) => result.registered === true ?
-            //     `\`${result.words.toString().padEnd(parseInt(results[0].words.toString().length), " ")} WC\` — **${result.name}** — <@${result.userId}>`:''
-            // );
-            // const edelpay = results.map((result) => result.registered === true ?
-            //     `\`${result.edels.toString().padEnd(parseInt(results[0].edels.toString().length), " ")} edels\` — <@${result.userId}>`:''
-            // );
             let description = '';
-            let payouts = '';
-
             let shown = 0;
             for (const line of lines) {
                 if (description.length + line.length + 1 > 4000) break;
                 description += (description ? '\n' : '') + line;
                 shown++;
             }
-            for (const line of edelpay) {
-                if (payouts.length + line.length + 1 > 4000) break;
-                payouts += (payouts ? '\n' : '') + line;
-            }
             if (shown < lines.length) description += `\n*...and ${lines.length - shown} more*`;
-            const embed = new EmbedBuilder()
-                .setTitle('🪶 Log RP')
-                .setColor(0xB7B75F)
-                .addFields(
-                    { name: '',      value: '**Start: **'+StartLink+'\n**End: **'+EndLink, inline: true },
-                    //{ name: ' ', value: ' ', inline: true },
-                    { name: '', value: `**Total WC: **`+totalWords.toString()+'\n**Total Messages: **'+messages.length.toString(), inline: true },
-                    
-                    { name: '', value: '``` ```', inline: false},
-                    { name: 'LOG SUMMARY', value: description, inline: false},
-                    { name: '', value: '', inline: false},
-                    { name: 'EDELS', value: payouts, inline: false},
-                    { name: '', value: '', inline: false},
-                    { name: 'HOUSE POINTS', value: 'tba', inline: false},
-                    
-                )
-                //.setDescription(`\n${description}`);
-            const reply = await interaction.editReply({ embeds: [embed], components: [buildButtons()] });
+
+            const totalWords = results.reduce((sum, result) => sum + result.words, 0);
+            let selectedPeriod = DEFAULT_PERIOD;
+            const buildPayoutSnapshot = period => results.map(result => ({
+                ...result,
+                edels: applyPeriodMultiplier(result.edels, period),
+            }));
+            const buildPayoutText = snapshot => {
+                const registered = snapshot.filter(result => result.userId !== '');
+                const width = registered.reduce((max, result) => Math.max(max, result.edels.toString().length), 1);
+                let text = '';
+
+                for (const result of registered) {
+                    const line = `\`${result.edels.toString().padEnd(width, ' ')} edels\` - ${result.name}`;
+                    if (text.length + line.length + 1 > 4000) break;
+                    text += (text ? '\n' : '') + line;
+                }
+
+                return text || 'No registered payouts.';
+            };
+            const buildCurrentEmbed = (period, snapshot = buildPayoutSnapshot(period)) => buildLogEmbed({
+                startLink,
+                endLink,
+                totalWords,
+                messageCount: messages.length,
+                description,
+                payouts: buildPayoutText(snapshot),
+                period,
+            });
+
+            const reply = await interaction.editReply({
+                embeds: [buildCurrentEmbed(selectedPeriod)],
+                components: buildSubmitComponents(selectedPeriod),
+            });
             const collector = reply.createMessageComponentCollector({
-                filter: i => i.user.id === interaction.user.id,
+                filter: i => i.user.id === interaction.user.id && ['logthread_period', 'logthread_submit', 'logthread_cancel'].includes(i.customId),
                 time: 300_000,
-                max: 1,
             });
 
             collector.on('collect', async i => {
-                await i.update({ components: [buildButtons(true)] });
+                if (i.customId === 'logthread_period') {
+                    selectedPeriod = i.values[0];
+                    await i.update({
+                        embeds: [buildCurrentEmbed(selectedPeriod)],
+                        components: buildSubmitComponents(selectedPeriod),
+                    });
+                    return;
+                }
+
+                const finalPeriod = selectedPeriod;
+                const payoutSnapshot = buildPayoutSnapshot(finalPeriod);
+                const finalEmbed = buildCurrentEmbed(finalPeriod, payoutSnapshot);
+                await i.update({ embeds: [finalEmbed], components: buildSubmitComponents(finalPeriod, true) });
+                collector.stop(i.customId);
                 if (i.customId === 'logthread_cancel') return;
 
-                const granted = [];
-                const failed = [];
-
-                const payMap = new Map();
-                for (const result of results) {
-                    payMap.set(result.userId, (payMap.get(result.userId) ?? 0) + result.edels);
+                let reviewChannel;
+                let reviewMessage;
+                try {
+                    reviewChannel = await fetchReviewChannel(interaction.client);
+                    reviewMessage = await reviewChannel.send({
+                        content: `Log submitted by <@${interaction.user.id}>`,
+                        embeds: [finalEmbed],
+                        components: [buildReviewButtons()],
+                    });
+                } catch (err) {
+                    const message = err instanceof LogThreadError ? err.message : `Error: ${err.message}`;
+                    await interaction.followUp({ content: message, ephemeral: true });
+                    return;
                 }
 
-                for (const [id, edels] of payMap) {
-                    try {
-                        if(id !== ''){
-                            await addBalance(id, edels);
-                            granted.push(`**<@${id}>** — +${edels} edels`);
-                        }
-                    } catch {
-                        failed.push(id);
+                await interaction.followUp({ content: `Submitted for admin review in <#${reviewChannel.id}>.` });
+
+                const reviewCollector = reviewMessage.createMessageComponentCollector({
+                    filter: action => ['logthread_grant', 'logthread_review_cancel'].includes(action.customId),
+                });
+
+                reviewCollector.on('collect', async action => {
+                    if (!isAdminInteraction(action)) {
+                        await action.reply({ content: 'Only administrators can approve logthread payouts.', ephemeral: true });
+                        return;
                     }
-                }
 
-                let grantDesc = granted.join('\n');
-                if (failed.length > 0) {
-                    grantDesc += `\n\nNo profile found for: ${failed.map(name => `**${name}**`).join(', ')}`;
-                }
+                    await action.update({ components: [buildReviewButtons(true)] });
+                    reviewCollector.stop(action.customId);
+                    if (action.customId === 'logthread_review_cancel') return;
 
-                const grantEmbed = new EmbedBuilder()
-                    .setTitle('Edels Granted!')
-                    .setColor(0xB7B75F)
-                    .setDescription(grantDesc);
-
-                await interaction.followUp({ embeds: [grantEmbed] });
+                    const grantEmbed = await grantEdels(payoutSnapshot);
+                    await reviewChannel.send({ embeds: [grantEmbed] });
+                });
             });
 
             collector.on('end', (_, reason) => {
                 if (reason === 'time') {
-                    interaction.editReply({ components: [buildButtons(true)] }).catch(() => {});
+                    interaction.editReply({ components: buildSubmitComponents(selectedPeriod, true) }).catch(() => {});
                 }
             });
         } catch (err) {
