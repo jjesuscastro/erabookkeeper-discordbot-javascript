@@ -61,6 +61,7 @@ CLIENT_ID=                   # Discord application ID
 SPREADSHEET_ID=              # Google Sheets spreadsheet ID
 GOOGLE_SERVICE_ACCOUNT_EMAIL= # Service account email
 GOOGLE_PRIVATE_KEY=          # Service account private key (include the full key with newlines)
+LOGTHREAD_REVIEW_CHANNEL_ID=  # Channel ID where logthread submissions go for admin approval
 ```
 
 ### Docker / Portainer
