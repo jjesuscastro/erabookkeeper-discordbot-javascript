@@ -156,7 +156,7 @@ function buildLogEmbed({ startLink, endLink, totalWords, messageCount, descripti
             { name: 'LOG SUMMARY', value: description, inline: false },
             { name: '', value: '', inline: false },
             { name: 'EDELS', value: payouts, inline: false },
-            { name: 'Bonus Edels', value: `\`+ ${bonus}\` edels!`, inline: false },
+            { name: 'BONUS', value: bonus ? `\`+ ${bonus}\` edels!` : `No event bonuses.`, inline: false },
             { name: '', value: '', inline: false },
             { name: 'HOUSE POINTS', value: 'tba', inline: false },
         );
@@ -390,7 +390,7 @@ module.exports = {
                         lines.push(`\`${result.words.toString().padEnd(wordWidth, ' ')} WC\` - **${result.name}** - <@${tupperuser}>`);
                     } else {
                         lines.push(`\`${result.words.toString().padEnd(wordWidth, ' ')} WC\` - \`NPC\` **${result.name}** - <@${tupperuser}>`);
-                        result.edels = result.edels * 5 / 20;
+                        result.edels = Math.round(result.edels * 5 / 20);
                     }
                 } else {
                     lines.push(`\`${result.words.toString().padEnd(wordWidth, ' ')} WC\` - **${result.name}**`);
