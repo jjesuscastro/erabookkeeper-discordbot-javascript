@@ -57,16 +57,16 @@ function buildSubmitComponents(selectedPeriod = DEFAULT_PERIOD, disabled = false
                     .setDefault(selectedPeriod === 'None'),
                 new StringSelectMenuOptionBuilder()
                     .setLabel('Monthly Event')
-                    .setValue('Monthly')
+                    .setValue('Monthly Event')
                     .setDefault(selectedPeriod === 'Monthly'),
                 new StringSelectMenuOptionBuilder()
-                    .setLabel('QTE Event')
-                    .setValue('qte')
-                    .setDefault(selectedPeriod === 'qte'),
+                    .setLabel('Quick Time Event')
+                    .setValue('QTE')
+                    .setDefault(selectedPeriod === 'Quick Time Event'),
                 new StringSelectMenuOptionBuilder()
                     .setLabel('School Assignment')
                     .setValue('Assignment')
-                    .setDefault(selectedPeriod === 'assignment'),
+                    .setDefault(selectedPeriod === 'School Assignment'),
             ),
     );
 
