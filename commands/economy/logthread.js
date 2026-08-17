@@ -28,6 +28,8 @@ function parseInput(input, fallbackChannelId) {
     const trimmed = input.trim();
     const linkMatch = trimmed.match(/channels\/(?:@me|\d+)\/(\d+)\/(\d+)/);
     if (linkMatch) return { channelId: linkMatch[1], messageId: linkMatch[2] };
+    const channelLinkMatch = trimmed.match(/channels\/(?:@me|\d+)\/(\d+)$/);
+    if (channelLinkMatch) return { channelId: channelLinkMatch[1], messageId: null, channelOnly: true };
     if (/^\d+$/.test(trimmed)) return { channelId: fallbackChannelId, messageId: trimmed };
     return null;
 }
@@ -199,6 +201,10 @@ async function fetchReviewChannel(client, period) {
 }
 
 async function fetchMessage(client, parsed, label) {
+    if (!parsed.messageId) {
+        throw new LogThreadError(`Invalid ${label} message ID or link.`);
+    }
+
     let channel;
     try {
         channel = await client.channels.fetch(parsed.channelId);
@@ -218,6 +224,28 @@ async function fetchMessage(client, parsed, label) {
 }
 
 async function resolveThread(client, parsed) {
+    if (parsed.channelOnly) {
+        let thread;
+        try {
+            thread = await client.channels.fetch(parsed.channelId);
+        } catch {
+            throw new LogThreadError('Could not access the thread.');
+        }
+
+        if (!thread?.isTextBased() || !thread.isThread()) {
+            throw new LogThreadError('The supplied link is not a thread.');
+        }
+
+        let starter;
+        try {
+            starter = await thread.fetchStarterMessage();
+        } catch {
+            throw new LogThreadError('Could not find or access this thread\'s starter message.');
+        }
+
+        return { thread, starter };
+    }
+
     const { channel, message } = await fetchMessage(client, parsed, 'thread');
 
     if (channel.isThread()) {
