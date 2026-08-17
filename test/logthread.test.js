@@ -103,6 +103,10 @@ test('parses message links and resolves bare IDs against the current channel', (
         { channelId: '22', messageId: '333' },
     );
     assert.deepEqual(
+        { ...helpers.parseInput('https://discordapp.com/channels/1/333', '99') },
+        { channelId: '333', messageId: null, channelOnly: true },
+    );
+    assert.deepEqual(
         { ...helpers.parseInput(' 444 ', '99') },
         { channelId: '99', messageId: '444' },
     );
@@ -116,12 +120,12 @@ test('counts whitespace-separated text content', () => {
 });
 
 test('period multipliers match the logthread bonus options', () => {
-    assert.equal(helpers.PERIOD_MULTIPLIERS.None, 1);
-    assert.equal(helpers.PERIOD_MULTIPLIERS['Monthly Event'], 1);
-    assert.equal(helpers.PERIOD_MULTIPLIERS.QTE, 1);
-    assert.equal(helpers.PERIOD_MULTIPLIERS.Assignment, 1);
+    assert.equal(helpers.PERIOD_MULTIPLIERS.None, 0);
+    assert.equal(helpers.PERIOD_MULTIPLIERS['Monthly Event'], 100);
+    assert.equal(helpers.PERIOD_MULTIPLIERS.QTE, 100);
+    assert.equal(helpers.PERIOD_MULTIPLIERS.Assignment, 100);
     assert.equal(helpers.applyPeriodMultiplier(25, 'None'), 25);
-    assert.equal(helpers.applyPeriodMultiplier(25, 'QTE'), 25);
+    assert.equal(helpers.applyPeriodMultiplier(25, 'QTE'), 125);
 });
 
 test('admin approval check uses Administrator permission', () => {
@@ -203,6 +207,22 @@ test('thread resolution accepts a reply inside a thread', async () => {
     const resolved = await helpers.resolveThread(
         { channels: { fetch: async () => thread } },
         { channelId: 'thread-channel', messageId: reply.id },
+    );
+    assert.equal(resolved.thread, thread);
+    assert.equal(resolved.starter, starter);
+});
+
+test('thread resolution accepts a direct thread channel link', async () => {
+    const starter = message(900);
+    const thread = {
+        isTextBased: () => true,
+        isThread: () => true,
+        fetchStarterMessage: async () => starter,
+    };
+
+    const resolved = await helpers.resolveThread(
+        { channels: { fetch: async id => assert.equal(id, 'thread-channel') || thread } },
+        { channelId: 'thread-channel', messageId: null, channelOnly: true },
     );
     assert.equal(resolved.thread, thread);
     assert.equal(resolved.starter, starter);
