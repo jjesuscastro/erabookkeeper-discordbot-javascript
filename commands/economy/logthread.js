@@ -15,10 +15,10 @@ const { addBalance, getTupper } = require('../../utils/sheets');
 class LogThreadError extends Error {}
 
 const PERIOD_MULTIPLIERS = {
-    None: 1,
-    'Monthly Event': 1,
-    QTE: 1,
-    Assignment: 1,
+    None: 0,
+    'Monthly Event': 100,
+    QTE: 100,
+    Assignment: 100,
 };
 const DEFAULT_PERIOD = 'None';
 
@@ -38,7 +38,7 @@ function countWords(content) {
 }
 
 function applyPeriodMultiplier(edels, period) {
-    return edels * (PERIOD_MULTIPLIERS[period] ?? PERIOD_MULTIPLIERS[DEFAULT_PERIOD]);
+    return edels + (PERIOD_MULTIPLIERS[period] ?? PERIOD_MULTIPLIERS[DEFAULT_PERIOD]);
 }
 
 function isAdminInteraction(interaction) {
@@ -142,8 +142,7 @@ function buildLogEmbed({ startLink, endLink, totalWords, messageCount, descripti
         .setColor(0xB7B75F)
         .addFields(
             { name: '', value: `**Start: **${startLink ?? 'N/A'}\n**End: **${endLink ?? 'N/A'}`, inline: true },
-            { name: '', value: `**Total WC: **${totalWords}\n**Total Messages: **${messageCount}`, inline: true },
-            { name: '', value: `**Bonus: **${period}`, inline: true },
+            { name: '', value: `**Total WC: **${totalWords}\n**Total Messages: **${messageCount}\n**Bonus: **${period}`, inline: true },
             { name: '', value: '``` ```', inline: false },
             { name: 'LOG SUMMARY', value: description, inline: false },
             { name: '', value: '', inline: false },
@@ -163,7 +162,8 @@ function buildLogEmbed({ startLink, endLink, totalWords, messageCount, descripti
 }
 
 async function fetchReviewChannel(client) {
-    const channelId = process.env.LOGTHREAD_REVIEW_CHANNEL_ID;
+    //const channelId = process.env.LOGTHREAD_REVIEW_CHANNEL_ID;
+    const channelId = 1517194272846118993;
     if (!channelId) throw new LogThreadError('LOGTHREAD_REVIEW_CHANNEL_ID is not configured.');
 
     let channel;
