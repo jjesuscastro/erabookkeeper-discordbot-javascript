@@ -31,7 +31,7 @@ module.exports = {
             } 
             else if (munp){
                 const target2 = interaction.options.getUser('mun');
-                userId = target.id;
+                userId = target2.id;
             }
             else {
                 userId = interaction.user.id;
