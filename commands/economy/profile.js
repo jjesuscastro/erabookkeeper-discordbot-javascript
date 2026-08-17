@@ -21,7 +21,7 @@ module.exports = {
 
     async execute(interaction) {
         const input = interaction.options.getString('character');
-        const mun = interaction.options.getString('mun');
+        const munp = interaction.options.getString('mun');
         await interaction.deferReply();
         try {
             let userId;
@@ -29,9 +29,9 @@ module.exports = {
                 const target = await resolveTarget(input);
                 userId = target.discordId;
             } 
-            else if (mun){
+            else if (munp){
                 const target = interaction.options.getUser('mun');
-                const userId = target.id;
+                userId = target.id;
             }
             else {
                 userId = interaction.user.id;
