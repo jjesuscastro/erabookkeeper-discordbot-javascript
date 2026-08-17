@@ -16,9 +16,10 @@ class LogThreadError extends Error {}
 
 const PERIOD_MULTIPLIERS = {
     Monthly: 1,
-    Annual: 1,
+    qte: 1,
+    assignment: 1,
 };
-const DEFAULT_PERIOD = 'Monthly';
+const DEFAULT_PERIOD = 'None';
 
 function parseInput(input, fallbackChannelId) {
     if (!input) return null;
@@ -47,17 +48,25 @@ function buildSubmitComponents(selectedPeriod = DEFAULT_PERIOD, disabled = false
     const periodSelect = new ActionRowBuilder().addComponents(
         new StringSelectMenuBuilder()
             .setCustomId('logthread_period')
-            .setPlaceholder('Select log period')
+            .setPlaceholder('Event Bonuses')
             .setDisabled(disabled)
             .addOptions(
                 new StringSelectMenuOptionBuilder()
-                    .setLabel('Monthly')
+                    .setLabel('None')
+                    .setValue('None')
+                    .setDefault(selectedPeriod === 'None'),
+                new StringSelectMenuOptionBuilder()
+                    .setLabel('Monthly Event')
                     .setValue('Monthly')
                     .setDefault(selectedPeriod === 'Monthly'),
                 new StringSelectMenuOptionBuilder()
-                    .setLabel('Annual')
-                    .setValue('Annual')
-                    .setDefault(selectedPeriod === 'Annual'),
+                    .setLabel('QTE Event')
+                    .setValue('qte')
+                    .setDefault(selectedPeriod === 'qte'),
+                new StringSelectMenuOptionBuilder()
+                    .setLabel('School Assignment')
+                    .setValue('Assignment')
+                    .setDefault(selectedPeriod === 'assignment'),
             ),
     );
 
@@ -133,7 +142,7 @@ function buildLogEmbed({ startLink, endLink, totalWords, messageCount, descripti
         .addFields(
             { name: '', value: `**Start: **${startLink ?? 'N/A'}\n**End: **${endLink ?? 'N/A'}`, inline: true },
             { name: '', value: `**Total WC: **${totalWords}\n**Total Messages: **${messageCount}`, inline: true },
-            { name: '', value: `**Period: **${period}`, inline: true },
+            { name: '', value: `**Bonus: **${period}`, inline: true },
             { name: '', value: '``` ```', inline: false },
             { name: 'LOG SUMMARY', value: description, inline: false },
             { name: '', value: '', inline: false },
