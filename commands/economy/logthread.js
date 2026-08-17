@@ -137,6 +137,15 @@ async function grantEdels(results) {
 }
 
 function buildLogEmbed({ startLink, endLink, totalWords, messageCount, description, payouts, unmatched, period }) {
+    let bonus;
+
+    if(period === 'Monthly Event')
+        bonus = 100;
+    if(period === 'QTE')
+        bonus = 100;
+    if(period == 'Assignment')
+        bonus = 100;
+
     const embed = new EmbedBuilder()
         .setTitle('Log RP')
         .setColor(0xB7B75F)
@@ -147,6 +156,7 @@ function buildLogEmbed({ startLink, endLink, totalWords, messageCount, descripti
             { name: 'LOG SUMMARY', value: description, inline: false },
             { name: '', value: '', inline: false },
             { name: 'EDELS', value: payouts, inline: false },
+            { name: 'Bonus Edels', value: `\`+ ${bonus}\` edels!`, inline: false },
             { name: '', value: '', inline: false },
             { name: 'HOUSE POINTS', value: 'tba', inline: false },
         );
@@ -154,17 +164,26 @@ function buildLogEmbed({ startLink, endLink, totalWords, messageCount, descripti
     if (unmatched) {
         embed.addFields(
             { name: '', value: '', inline: false },
-            { name: 'UNMATCHED', value: unmatched, inline: false },
+            { name: 'NO PAYOUTS', value: unmatched, inline: false },
         );
     }
 
     return embed;
 }
 
-async function fetchReviewChannel(client) {
+async function fetchReviewChannel(client, period) {
     //const channelId = process.env.LOGTHREAD_REVIEW_CHANNEL_ID;
-    const channelId = '1517194272846118993';
-    if (!channelId) throw new LogThreadError('LOGTHREAD_REVIEW_CHANNEL_ID is not configured.');
+    let channelId = '1513952869273829438';
+
+    if(period === 'Monthly Event')
+        channelId = '1517194272846118993';
+    if(period === 'QTE')
+        channelId = '1517194272846118993';
+    if(period == 'Assignment')
+        channelId = '1538799518118584392';
+    
+    //const channelId = '1517194272846118993';
+    //if (!channelId) throw new LogThreadError('LOGTHREAD_REVIEW_CHANNEL_ID is not configured.');
 
     let channel;
     try {
@@ -463,7 +482,7 @@ module.exports = {
                 let reviewChannel;
                 let reviewMessage;
                 try {
-                    reviewChannel = await fetchReviewChannel(interaction.client);
+                    reviewChannel = await fetchReviewChannel(interaction.client, finalPeriod);
                     reviewMessage = await reviewChannel.send({
                         content: `Log submitted by <@${interaction.user.id}>`,
                         embeds: [finalEmbed],
