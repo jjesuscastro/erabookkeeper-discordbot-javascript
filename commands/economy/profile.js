@@ -29,7 +29,7 @@ module.exports = {
                 const target = await resolveTarget(input);
                 userId = target.discordId;
             } 
-            if (mun){
+            else if (mun){
                 const target = interaction.options.getUser('mun');
                 const userId = target.id;
             }
