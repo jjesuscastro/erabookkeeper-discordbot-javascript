@@ -9,7 +9,9 @@ module.exports = {
         .setName('profile')
         .setDescription("View a character's profile")
         .addStringOption(opt =>
-            opt.setName('user').setDescription('Character name or @mention (default: you)').setRequired(false).setAutocomplete(true)),
+            opt.setName('character').setDescription('Character name (default: your OC)').setRequired(false).setAutocomplete(true))
+        .addUserOption(opt =>
+            opt.setName('mun').setDescription('Mun name (default: you)').setRequired(false)),
 
     async autocomplete(interaction) {
         const focused = interaction.options.getFocused();
@@ -18,14 +20,20 @@ module.exports = {
     },
 
     async execute(interaction) {
-        const input = interaction.options.getString('user');
+        const input = interaction.options.getString('character');
+        const mun = interaction.options.getString('mun');
         await interaction.deferReply();
         try {
             let userId;
             if (input) {
                 const target = await resolveTarget(input);
                 userId = target.discordId;
-            } else {
+            } 
+            if (mun){
+                const target = interaction.options.getUser('mun');
+                const userId = target.id;
+            }
+            else {
                 userId = interaction.user.id;
             }
 
