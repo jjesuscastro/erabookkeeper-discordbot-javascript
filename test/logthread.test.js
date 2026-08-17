@@ -115,11 +115,13 @@ test('counts whitespace-separated text content', () => {
     assert.equal(helpers.countWords(null), 0);
 });
 
-test('period multipliers are ready for monthly and annual payouts', () => {
-    assert.equal(helpers.PERIOD_MULTIPLIERS.Monthly, 1);
-    assert.equal(helpers.PERIOD_MULTIPLIERS.Annual, 1);
-    assert.equal(helpers.applyPeriodMultiplier(25, 'Monthly'), 25);
-    assert.equal(helpers.applyPeriodMultiplier(25, 'Annual'), 25);
+test('period multipliers match the logthread bonus options', () => {
+    assert.equal(helpers.PERIOD_MULTIPLIERS.None, 1);
+    assert.equal(helpers.PERIOD_MULTIPLIERS['Monthly Event'], 1);
+    assert.equal(helpers.PERIOD_MULTIPLIERS.QTE, 1);
+    assert.equal(helpers.PERIOD_MULTIPLIERS.Assignment, 1);
+    assert.equal(helpers.applyPeriodMultiplier(25, 'None'), 25);
+    assert.equal(helpers.applyPeriodMultiplier(25, 'QTE'), 25);
 });
 
 test('admin approval check uses Administrator permission', () => {

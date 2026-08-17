@@ -15,9 +15,10 @@ const { addBalance, getTupper } = require('../../utils/sheets');
 class LogThreadError extends Error {}
 
 const PERIOD_MULTIPLIERS = {
-    Monthly: 1,
-    qte: 1,
-    assignment: 1,
+    None: 1,
+    'Monthly Event': 1,
+    QTE: 1,
+    Assignment: 1,
 };
 const DEFAULT_PERIOD = 'None';
 
@@ -135,8 +136,8 @@ async function grantEdels(results) {
         .setDescription(grantDesc);
 }
 
-function buildLogEmbed({ startLink, endLink, totalWords, messageCount, description, payouts, period }) {
-    return new EmbedBuilder()
+function buildLogEmbed({ startLink, endLink, totalWords, messageCount, description, payouts, unmatched, period }) {
+    const embed = new EmbedBuilder()
         .setTitle('Log RP')
         .setColor(0xB7B75F)
         .addFields(
@@ -150,6 +151,15 @@ function buildLogEmbed({ startLink, endLink, totalWords, messageCount, descripti
             { name: '', value: '', inline: false },
             { name: 'HOUSE POINTS', value: 'tba', inline: false },
         );
+
+    if (unmatched) {
+        embed.addFields(
+            { name: '', value: '', inline: false },
+            { name: 'UNMATCHED', value: unmatched, inline: false },
+        );
+    }
+
+    return embed;
 }
 
 async function fetchReviewChannel(client) {
@@ -397,6 +407,22 @@ module.exports = {
 
                 return text || 'No registered payouts.';
             };
+            const buildUnmatchedText = snapshot => {
+                const unmatched = snapshot.filter(result => result.userId === '');
+                let text = '';
+
+                for (const result of unmatched) {
+                    const line = `\`${result.words} WC\` - ${result.name}`;
+                    if (text.length + line.length + 1 > 1000) break;
+                    text += (text ? '\n' : '') + line;
+                }
+
+                if (unmatched.length > 0 && text.split('\n').length < unmatched.length) {
+                    text += `\n*...and ${unmatched.length - text.split('\n').length} more*`;
+                }
+
+                return text;
+            };
             const buildCurrentEmbed = (period, snapshot = buildPayoutSnapshot(period)) => buildLogEmbed({
                 startLink,
                 endLink,
@@ -404,6 +430,7 @@ module.exports = {
                 messageCount: messages.length,
                 description,
                 payouts: buildPayoutText(snapshot),
+                unmatched: buildUnmatchedText(snapshot),
                 period,
             });
 
