@@ -163,7 +163,7 @@ function buildLogEmbed({ startLink, endLink, totalWords, messageCount, descripti
 
 async function fetchReviewChannel(client) {
     //const channelId = process.env.LOGTHREAD_REVIEW_CHANNEL_ID;
-    const channelId = 1517194272846118993;
+    const channelId = '1517194272846118993';
     if (!channelId) throw new LogThreadError('LOGTHREAD_REVIEW_CHANNEL_ID is not configured.');
 
     let channel;
