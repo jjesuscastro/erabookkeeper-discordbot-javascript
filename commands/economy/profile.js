@@ -30,8 +30,7 @@ module.exports = {
                 userId = target.discordId;
             } 
             else if (munp){
-                const target2 = interaction.options.getUser('mun');
-                userId = target2.id;
+                userId = munp.id;
             }
             else {
                 userId = interaction.user.id;
