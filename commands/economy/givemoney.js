@@ -9,7 +9,7 @@ module.exports = {
         .setName('givemoney')
         .setDescription('free money (mod use only)')
         .addUserOption(opt =>
-            opt.setName('mun').setDescription('Mun name (default: you)').setRequired(true))
+            opt.setName('user').setDescription('Mun name').setRequired(true))
         .addIntegerOption(opt =>
             opt.setName('amount').setDescription('Amount to give').setMinValue(1).setRequired(true))
         .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
