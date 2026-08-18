@@ -29,7 +29,7 @@ module.exports = {
             if (items.length === 0) inv = "Nothing inside :("
             
             const embed = new EmbedBuilder()
-                .setTitle(`📚 ${characterName}'s Inventory`)
+                .setTitle(`📚 ${target.username}'s Inventory`)
                 .setColor(0xB7B75F)
                 .setDescription(line + inv);
 

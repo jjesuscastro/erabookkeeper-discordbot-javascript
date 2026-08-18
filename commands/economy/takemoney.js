@@ -8,8 +8,8 @@ module.exports = {
     data: new SlashCommandBuilder()
         .setName('takemoney')
         .setDescription("give us your money (mod only)")
-        .addStringOption(opt =>
-            opt.setName('user').setDescription('Character name or @mention').setRequired(true).setAutocomplete(true))
+        .addUserOption(opt =>
+            opt.setName('user').setDescription('Mun name').setRequired(true))
         .addIntegerOption(opt =>
             opt.setName('amount').setDescription('Amount to take').setMinValue(1).setRequired(true))
         .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
@@ -26,7 +26,7 @@ module.exports = {
 
         await interaction.deferReply();
         try {
-            const target = await resolveTarget(input);
+            const target = await resolveTarget(`<@${input.id}>`);
             const newBalance = await deductBalance(target.discordId, amount);
 
             var edels = "edels";

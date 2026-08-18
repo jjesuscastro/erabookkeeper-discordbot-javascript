@@ -8,8 +8,10 @@ module.exports = {
     data: new SlashCommandBuilder()
         .setName('balance')
         .setDescription("Check a user's balance")
-        .addStringOption(opt =>
-            opt.setName('user').setDescription('Character name or @mention (default: you)').setRequired(false).setAutocomplete(true)),
+        .addUserOption(opt =>
+            opt.setName('user').setDescription('Mun name').setRequired(true)),
+        //.addStringOption(opt =>
+        //    opt.setName('user').setDescription('Character name or @mention (default: you)').setRequired(false).setAutocomplete(true)),
 
     async autocomplete(interaction) {
         const focused = interaction.options.getFocused();
@@ -23,7 +25,8 @@ module.exports = {
         try {
             let userId;
             if (input) {
-                const target = await resolveTarget(input);
+                const target = await resolveTarget(`<@${input.id}>`);
+                //const target = await resolveTarget(input);
                 userId = target.discordId;
             } else {
                 userId = interaction.user.id;
