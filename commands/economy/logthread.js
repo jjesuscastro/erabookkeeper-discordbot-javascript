@@ -138,7 +138,7 @@ async function grantEdels(results) {
         .setDescription(grantDesc);
 }
 
-function buildLogEmbed({ startLink, endLink, totalWords, messageCount, description, payouts, unmatched, period }) {
+function buildLogEmbed({ startLink, endLink, totalWords, messageCount, description, payouts, unmatched, period, housepay }) {
     let bonus;
 
     if(period === 'Monthly Event')
@@ -160,7 +160,7 @@ function buildLogEmbed({ startLink, endLink, totalWords, messageCount, descripti
             { name: 'EDELS', value: payouts, inline: false },
             { name: 'BONUS', value: bonus ? `\`+ ${bonus}\` edels!` : `No event bonuses.`, inline: false },
             { name: '', value: '', inline: false },
-            { name: 'HOUSE POINTS', value: 'tba', inline: false },
+            { name: 'HOUSE POINTS', value: housepay, inline: false },
         );
 
     //if (unmatched) {
@@ -470,15 +470,14 @@ module.exports = {
 
                 return text || 'No registered payouts.';
             };
-            const buildHouseText = snapshot => {
-                let text = '';
+            let housepay = '';
 
-                if( astra + luna + solis > 0 ){
-                    text = `\`+${astra}\` - **Astra** :astra:\n\`+${luna}\` - **Luna** :luna:\n\`+${solis}\` - **Solis** :solis:`
-                }
-                
-                return text || 'No house points given.';
-            };
+            if( astra + luna + solis > 0 ){
+                housepay = `\`+${astra}\` - **Astra** :astra:\n\`+${luna}\` - **Luna** :luna:\n\`+${solis}\` - **Solis** :solis:`
+            }
+            
+            else housepay = 'No house points given.';
+            
             const buildUnmatchedText = snapshot => {
                 const unmatched = snapshot.filter(result => result.userId === '');
                 let text = '';
@@ -504,6 +503,7 @@ module.exports = {
                 payouts: buildPayoutText(snapshot),
                 unmatched: buildUnmatchedText(snapshot),
                 period,
+                housepay,
             });
 
             const reply = await interaction.editReply({
