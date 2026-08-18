@@ -511,9 +511,9 @@ module.exports = {
                         .setColor(0xEBBCA2)
                         .setDescription(`See you next time!`);
 
-                    await interaction.update({ embeds: [cancelembed] });
+                    await interaction.update({ embeds: [cancelembed], components: [] });
                     return;
-                } 
+                }
                 let reviewChannel;
                 let reviewMessage;
                 try {

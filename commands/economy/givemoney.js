@@ -8,8 +8,8 @@ module.exports = {
     data: new SlashCommandBuilder()
         .setName('givemoney')
         .setDescription('free money (mod use only)')
-        .addStringOption(opt =>
-            opt.setName('user').setDescription('Character name or @mention').setRequired(true).setAutocomplete(true))
+        .addUserOption(opt =>
+            opt.setName('mun').setDescription('Mun name (default: you)').setRequired(true))
         .addIntegerOption(opt =>
             opt.setName('amount').setDescription('Amount to give').setMinValue(1).setRequired(true))
         .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
@@ -21,7 +21,7 @@ module.exports = {
     },
 
     async execute(interaction) {
-        const input = interaction.options.getString('user');
+        const input = interaction.options.getUser('user');
         const amount = interaction.options.getInteger('amount');
 
         await interaction.deferReply();
