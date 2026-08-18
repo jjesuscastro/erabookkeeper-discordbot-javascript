@@ -163,12 +163,12 @@ function buildLogEmbed({ startLink, endLink, totalWords, messageCount, descripti
             { name: 'HOUSE POINTS', value: 'tba', inline: false },
         );
 
-    if (unmatched) {
-        embed.addFields(
-            { name: '', value: '', inline: false },
-            { name: 'NO PAYOUTS', value: unmatched, inline: false },
-        );
-    }
+    //if (unmatched) {
+    //    embed.addFields(
+    //        { name: '', value: '', inline: false },
+    //        { name: 'NO PAYOUTS', value: unmatched, inline: false },
+    //    );
+    //}
 
     return embed;
 }
@@ -332,7 +332,7 @@ module.exports = {
         .setName('logthread')
         .setDescription('Log your RPs!')
         .addStringOption(opt =>
-            opt.setName('thread').setDescription('Thread starter or reply message ID/link').setRequired(false))
+            opt.setName('thread').setDescription('Thread link or thread starter/reply message ID').setRequired(false))
         .addStringOption(opt =>
             opt.setName('start').setDescription('Start message ID or link').setRequired(false))
         .addStringOption(opt =>
@@ -522,7 +522,13 @@ module.exports = {
                     return;
                 }
 
-                await interaction.followUp({ content: `Submitted for admin review in <#${reviewChannel.id}>.` });
+                const submission = new EmbedBuilder()
+                    .setTitle(`Log Submitted!`)
+                    .setColor(0xB7B75F)
+                    .setDescription(`Submitted for mod review in <#${reviewChannel.id}>!`);
+
+                //await interaction.followUp({ content: `Submitted for mod review in <#${reviewChannel.id}>!` });
+                await interaction.followUp({ embeds: [submission] });
 
                 const reviewCollector = reviewMessage.createMessageComponentCollector({
                     filter: action => ['logthread_grant', 'logthread_review_cancel'].includes(action.customId),
