@@ -10,7 +10,7 @@ const {
     StringSelectMenuOptionBuilder,
     PermissionFlagsBits,
 } = require('discord.js');
-const { addBalance, getTupper } = require('../../utils/sheets');
+const { getUser, addBalance, getTupper } = require('../../utils/sheets');
 
 class LogThreadError extends Error {}
 
@@ -407,6 +407,10 @@ module.exports = {
                 }))
                 .sort((a, b) => b.words - a.words);
 
+            const astra;
+            const luna;
+            const solis;
+            
             const lines = [];
             const wordWidth = results[0].words.toString().length;
             for (const result of results) {
@@ -415,7 +419,16 @@ module.exports = {
                 result.userId = tupperuser ?? '';
                 if (result.userId !== '') {
                     if (playerChara == 'TRUE') {
+                        const { house } = await getUser(tupperuser);
+                        if(house == 'Astra')
+                            astra++;
+                        if(house == 'Luna')
+                            luna++;
+                        if(house == 'Solis')
+                            solis++;
+
                         lines.push(`\`${result.words.toString().padEnd(wordWidth, ' ')} WC\` - **${result.name}** - <@${tupperuser}>`);
+                        
                     } else {
                         lines.push(`\`${result.words.toString().padEnd(wordWidth, ' ')} WC\` - \`NPC\` **${result.name}** - <@${tupperuser}>`);
                         result.edels = Math.round(result.edels * 5 / 20);
@@ -425,6 +438,9 @@ module.exports = {
                     result.registered = false;
                 }
             }
+            astra*=5;
+            luna*=5;
+            solis*=5;
 
             let description = '';
             let shown = 0;
@@ -453,6 +469,15 @@ module.exports = {
                 }
 
                 return text || 'No registered payouts.';
+            };
+            const buildHouseText = snapshot => {
+                let text = '';
+
+                if( astra + luna + solis > 0 ){
+                    text = `\`+${astra}\` - **Astra** :astra:\n\`+${luna}\` - **Luna** :luna:\n\`+${solis}\` - **Solis** :solis:`
+                }
+                
+                return text || 'No house points given.';
             };
             const buildUnmatchedText = snapshot => {
                 const unmatched = snapshot.filter(result => result.userId === '');
