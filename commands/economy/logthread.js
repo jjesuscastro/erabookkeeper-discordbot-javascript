@@ -407,9 +407,9 @@ module.exports = {
                 }))
                 .sort((a, b) => b.words - a.words);
 
-            const astra = 0;
-            const luna = 0;
-            const solis = 0;
+            var astra = 0;
+            var luna = 0;
+            var solis = 0;
             
             const lines = [];
             const wordWidth = results[0].words.toString().length;
