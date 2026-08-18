@@ -505,8 +505,16 @@ module.exports = {
                 const finalEmbed = buildCurrentEmbed(finalPeriod, payoutSnapshot);
                 await i.update({ embeds: [finalEmbed], components: buildSubmitComponents(finalPeriod, true) });
                 collector.stop(i.customId);
-                if (i.customId === 'logthread_cancel') return;
-
+                if (i.customId === 'logthread_cancel'){
+                     const cancelembed = new EmbedBuilder()
+                        .setTitle(`❌ Submission Cancelled`)
+                        .setColor(0xEBBCA2)
+                        .setDescription(`See you next time!`);
+                    await i.update({
+                        embeds: [cancelembed],
+                    });
+                    return;
+                } 
                 let reviewChannel;
                 let reviewMessage;
                 try {
