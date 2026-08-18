@@ -26,7 +26,7 @@ module.exports = {
 
         await interaction.deferReply();
         try {
-            const target = await resolveTarget(input);
+            const target = await resolveTarget(`<@${input.id}>`);
             const newBalance = await addBalance(target.discordId, amount);
             var edels = "edels";
             if(amount === 1)
