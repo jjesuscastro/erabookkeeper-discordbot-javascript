@@ -8,8 +8,10 @@ module.exports = {
     data: new SlashCommandBuilder()
         .setName('transfermoney')
         .setDescription('Transfer money to another user')
-        .addStringOption(opt =>
-            opt.setName('user').setDescription('Character name or @mention').setRequired(true).setAutocomplete(true))
+        .addUserOption(opt =>
+            opt.setName('user').setDescription('Mun name').setRequired(true))
+        //.addStringOption(opt =>
+        //    opt.setName('user').setDescription('Character name or @mention').setRequired(true).setAutocomplete(true))
         .addIntegerOption(opt =>
             opt.setName('amount').setDescription('Amount to transfer').setMinValue(1).setRequired(true)),
 
@@ -26,7 +28,8 @@ module.exports = {
 
         await interaction.deferReply();
         try {
-            const target = await resolveTarget(input);
+            const target = await resolveTarget(`<@${input.id}>`);
+            // const target = await resolveTarget(input);
 
             if (target.discordId === sender.id) {
                 const embed = new EmbedBuilder()

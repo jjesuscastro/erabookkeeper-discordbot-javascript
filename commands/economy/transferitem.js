@@ -10,8 +10,10 @@ module.exports = {
     data: new SlashCommandBuilder()
         .setName('transferitem')
         .setDescription('Give an item from your inventory to another user')
-        .addStringOption(opt =>
-            opt.setName('user').setDescription('Character name or @mention').setRequired(true).setAutocomplete(true))
+        .addUserOption(opt =>
+            opt.setName('user').setDescription('Mun name').setRequired(true))
+        //.addStringOption(opt =>
+        //    opt.setName('user').setDescription('Character name or @mention').setRequired(true).setAutocomplete(true))
         .addStringOption(opt =>
             opt.setName('item').setDescription('Item name').setRequired(true).setAutocomplete(true))
         .addIntegerOption(opt =>
@@ -43,7 +45,8 @@ module.exports = {
 
         await interaction.deferReply();
         try {
-            const target = await resolveTarget(input);
+            const target = await resolveTarget(`<@${input.id}>`);
+            //const target = await resolveTarget(input);
 
             if (target.discordId === sender.id) {
                 return interaction.editReply('You cannot transfer items to yourself.');
