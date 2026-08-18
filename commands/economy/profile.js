@@ -21,7 +21,7 @@ module.exports = {
 
     async execute(interaction) {
         const input = interaction.options.getString('character');
-        const munp = interaction.options.getString('mun');
+        const munp = interaction.options.getUser('mun');
         await interaction.deferReply();
         try {
             let userId;
