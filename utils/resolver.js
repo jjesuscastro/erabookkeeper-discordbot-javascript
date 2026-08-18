@@ -25,8 +25,7 @@ async function autocompleteProfiles(focusedValue) {
 
 // Resolves a string (character name or <@id> mention) to { discordId, characterName }
 async function resolveTarget(input) {
-    //const mentionMatch = input.match(/^<@!?(\d+)>$/);
-    const mentionMatch = input.id;
+    const mentionMatch = input.match(/^<@!?(\d+)>$/);
     const profiles = await getProfiles();
 
     if (mentionMatch) {
