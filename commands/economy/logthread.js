@@ -511,7 +511,7 @@ module.exports = {
                         .setColor(0xEBBCA2)
                         .setDescription(`See you next time!`);
 
-                    await interaction.followUp({ embeds: [cancelembed] });
+                    await interaction.update({ embeds: [cancelembed] });
                     return;
                 } 
                 let reviewChannel;
