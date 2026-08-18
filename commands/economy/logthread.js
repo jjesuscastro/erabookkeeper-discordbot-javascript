@@ -510,9 +510,8 @@ module.exports = {
                         .setTitle(`❌ Submission Cancelled`)
                         .setColor(0xEBBCA2)
                         .setDescription(`See you next time!`);
-                    await i.update({
-                        embeds: [cancelembed],
-                    });
+
+                    await action.reply({ embeds: [cancelembed], ephemeral: true });
                     return;
                 } 
                 let reviewChannel;
@@ -544,7 +543,7 @@ module.exports = {
 
                 reviewCollector.on('collect', async action => {
                     if (!isAdminInteraction(action)) {
-                        await action.reply({ content: 'Only administrators can approve logthread payouts.', ephemeral: true });
+                        await action.reply({ content: 'Only mods can approve logthread payouts.', ephemeral: true });
                         return;
                     }
 
