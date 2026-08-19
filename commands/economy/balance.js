@@ -24,11 +24,14 @@ module.exports = {
         await interaction.deferReply();
         try {
             let userId;
+            let username;
             if (input) {
                 const target = await resolveTarget(`<@${input.id}>`);
                 //const target = await resolveTarget(input);
                 userId = target.discordId;
+                username = target.username;
             } else {
+                username = interaction.user.username;
                 userId = interaction.user.id;
             }
 
@@ -39,7 +42,7 @@ module.exports = {
                 edels = "edel"; 
         
             const embed = new EmbedBuilder()
-                .setTitle(`🪙 ${target.username}'s balance`)
+                .setTitle(`🪙 ${username}'s balance`)
                 .setColor(0xB7B75F)
                 .setDescription(`\`\`\`✧ ${balance} ${edels} ✧\`\`\``);
 
