@@ -15,7 +15,7 @@ module.exports = {
             const diceRegex = /\{\{(\d+)[d](\d+)(\-?\+?)(\d?)(k?)(\d?)\}\}/;
             const match = input.match(diceRegex);
 
-            if (match) {
+            if (match != null) {
                 const numDice = parseInt(match[1]);
                 const sideDice = parseInt(match[2]);
                 const diceModifier = match[3];
