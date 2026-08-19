@@ -142,7 +142,7 @@ async function grantEdels(results, astra, solis, luna) {
     
 
     let grantDesc = granted.join('\n') || 'No registered payouts found.';
-    grantDesc += `\n`;
+    grantDesc += `\n\n`;
     if (astra > 0)
         grantDesc += `\`+${astra}\` - **Astra** ★\n`;
     if (luna > 0)

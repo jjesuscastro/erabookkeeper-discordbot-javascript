@@ -130,6 +130,11 @@ async function getUser(userId) {
     throw new Error("You don't have a profile set up. Contact an admin.");
 }
 
+async function getAllBalances() {
+    const rows = await readRange('Profiles!A:K');
+    return rows.slice(1).map(r => ({ mun: r[0], character: r[1], balance: parseInt(r[6] || '0', 10)}));
+}
+
 async function getUserID(name) {
     const rows = await readRange('Profiles!A:K');
     for (let i = 1; i < rows.length; i++) { // skip header row
