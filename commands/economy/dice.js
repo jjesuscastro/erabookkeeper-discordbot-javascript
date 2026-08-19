@@ -5,7 +5,7 @@ module.exports = {
         .setName('dice')
         .setDescription('roll the dice!')
         .addStringOption(opt =>
-            opt.setName('roll').setDescription('2d20, 2d20+1, 2d20k1').setRequired(true)),
+            opt.setName('roll').setDescription('2d20, 2d20+1').setRequired(true)),
         
     async execute(interaction) {
         const input = interaction.options.getString('roll');
@@ -32,7 +32,7 @@ module.exports = {
                     total+=roll;
                 }
                 
-                if(keep){
+                /*if(keep){
                     if(keep.toString() == "k"){
                         total = 0;
                         var tempRolls = rolls2.slice();
@@ -45,7 +45,7 @@ module.exports = {
                             rolls2[maxindex] = rolls[maxindex]+"d";
                         }
                     }
-                }
+                }*/
 
                 if(diceModifier){
                     if (diceModifier.toString() == "+"){

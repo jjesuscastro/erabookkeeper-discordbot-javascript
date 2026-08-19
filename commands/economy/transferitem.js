@@ -11,7 +11,7 @@ module.exports = {
         .setName('transferitem')
         .setDescription('Give an item from your inventory to another user')
         .addUserOption(opt =>
-            opt.setName('user').setDescription('Mun name').setRequired(true))
+            opt.setName('user').setDescription('Mun too transfer to').setRequired(true))
         //.addStringOption(opt =>
         //    opt.setName('user').setDescription('Character name or @mention').setRequired(true).setAutocomplete(true))
         .addStringOption(opt =>
