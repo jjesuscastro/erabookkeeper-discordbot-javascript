@@ -16,13 +16,13 @@ class LogThreadError extends Error {}
 
 const PERIOD_MULTIPLIERS = {
     None: 0,
-    'Monthly Event': 100,
-    QTE: 100,
+    'Monthly Event': 200,
+    QTE: 50,
     Assignment: 100,
 };
 const POINTS_MULTIPLIERS = {
     None: 5,
-    'Monthly Event': 15,
+    'Monthly Event': 20,
     QTE: 5,
     Assignment: 10,
 };
