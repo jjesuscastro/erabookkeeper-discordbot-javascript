@@ -20,7 +20,7 @@ module.exports = {
     },
 
     async execute(interaction) {
-        const input = interaction.options.getString('user');
+        const input = interaction.options.getUser('user');
         await interaction.deferReply();
         try {
             let userId;
