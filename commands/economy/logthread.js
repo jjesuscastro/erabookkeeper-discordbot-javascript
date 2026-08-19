@@ -483,6 +483,10 @@ module.exports = {
 
                 return text || 'No registered payouts.';
             };
+            var astra2 = 0;
+            var luna2 = 0;
+            var solis2 = 0;
+            
             const buildHouseText = snapshot => {
                 const registered = snapshot.filter(result => result.userId !== '');
                 const width = registered.reduce((max, result) => Math.max(max, result.edels.toString().length), 1);
@@ -492,9 +496,9 @@ module.exports = {
                 for (const result of registered) {
                     multiplier = result.house;
                 }
-                let astra2 = astra * multiplier;
-                let solis2 = solis * multiplier;
-                let luna2  = luna * multiplier;
+                astra2 = astra * multiplier;
+                solis2 = solis * multiplier;
+                luna2  = luna * multiplier;
                     
                 if( astra + luna + solis > 0 ){
                     if (astra > 0)
