@@ -88,7 +88,7 @@ module.exports = {
                 //     text += "-" + numModifier;
                 // }
                 // text += " ➜ " + total;
-                await interaction.editReply({ embeds: [embed] });
+                 return interaction.editReply({ embeds: [embed] });
             }
             throw new Error(`Wrong dice expression!`);
         } catch (err) {
