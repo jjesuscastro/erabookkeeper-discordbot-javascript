@@ -464,6 +464,7 @@ module.exports = {
             const buildPayoutSnapshot = period => results.map(result => ({
                 ...result,
                 edels: applyPeriodMultiplier(result.edels, period),
+                house: applyHouseMultiplier(result.house, period),
             }));
             const buildPayoutText = snapshot => {
                 const registered = snapshot.filter(result => result.userId !== '');
