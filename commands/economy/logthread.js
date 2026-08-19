@@ -10,7 +10,7 @@ const {
     StringSelectMenuOptionBuilder,
     PermissionFlagsBits,
 } = require('discord.js');
-const { getUser, addBalance, getTupper } = require('../../utils/sheets');
+const { getUser, addBalance, getTupper, addPoints } = require('../../utils/sheets');
 
 class LogThreadError extends Error {}
 
@@ -24,7 +24,7 @@ const POINTS_MULTIPLIERS = {
     None: 5,
     'Monthly Event': 15,
     QTE: 5,
-    Assignment: 5,
+    Assignment: 10,
 };
 const DEFAULT_PERIOD = 'None';
 
@@ -122,7 +122,7 @@ function buildPayMap(results) {
     return payMap;
 }
 
-async function grantEdels(results) {
+async function grantEdels(results, astra, solis, luna) {
     const granted = [];
     const failed = [];
 
@@ -136,6 +136,10 @@ async function grantEdels(results) {
             failed.push(id);
         }
     }
+    await addPoints('Astra', astra);
+    await addPoints('Solis', solis);
+    await addPoints('Luna', luna);
+    
 
     let grantDesc = granted.join('\n') || 'No registered payouts found.';
     if (failed.length > 0) {
@@ -603,7 +607,7 @@ module.exports = {
                     reviewCollector.stop(action.customId);
                     if (action.customId === 'logthread_review_cancel') return;
 
-                    const grantEmbed = await grantEdels(payoutSnapshot);
+                    const grantEmbed = await grantEdels(payoutSnapshot, astra2, solis2, luna2);
                     await reviewChannel.send({ embeds: [grantEmbed] });
                 });
             });
