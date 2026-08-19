@@ -8,7 +8,7 @@ module.exports = {
             opt.setName('roll').setDescription('2d20, 2d20+1, 2d20k1').setRequired(true)),
         
     async execute(interaction) {
-        const input = interaction.options.getString('options');
+        const input = interaction.options.getString('roll');
 
         await interaction.deferReply();
         try {
