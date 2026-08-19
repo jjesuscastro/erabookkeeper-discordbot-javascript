@@ -71,7 +71,7 @@ module.exports = {
                 }
                 line2 += " ➜ " + total;
 
-                diceEmbed = new EmbedBuilder()
+                const embed = new EmbedBuilder()
                     .addFields(
                         { name: line1, value: line2 }
                     );
