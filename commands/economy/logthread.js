@@ -142,6 +142,14 @@ async function grantEdels(results, astra, solis, luna) {
     
 
     let grantDesc = granted.join('\n') || 'No registered payouts found.';
+    grantDesc += `\n`;
+    if (astra > 0)
+        grantDesc += `\`+${astra2}\` - **Astra** ★\n`;
+    if (luna > 0)
+        grantDesc += `\`+${luna2}\` - **Luna** ☾\n`;
+    if (solis > 0)
+        grantDesc += `\`+${solis2}\` - **Solis** ☀`;
+
     if (failed.length > 0) {
         grantDesc += `\n\nNo profile found for: ${failed.map(name => `**${name}**`).join(', ')}`;
     }
