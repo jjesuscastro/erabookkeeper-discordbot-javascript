@@ -33,7 +33,7 @@ module.exports = {
                 }
                 
                 if(keep){
-                    if(keep.toString() == "k"){
+                    //if(keep.toString() == "k"){
                         total = 0;
                         var tempRolls = rolls2.slice();
                         let tempMax = 0;
@@ -44,7 +44,7 @@ module.exports = {
                             tempRolls.splice(1,maxindex);
                             rolls2[maxindex] = rolls[maxindex].toString()+"d";
                         }
-                    }
+                    //}
                 }
 
                 if(diceModifier){
