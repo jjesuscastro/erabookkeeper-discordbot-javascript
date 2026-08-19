@@ -9,7 +9,7 @@ module.exports = {
         .setName('balance')
         .setDescription("Check a user's balance")
         .addUserOption(opt =>
-            opt.setName('user').setDescription('Mun name').setRequired(true)),
+            opt.setName('user').setDescription('Mun name').setRequired(false)),
         //.addStringOption(opt =>
         //    opt.setName('user').setDescription('Character name or @mention (default: you)').setRequired(false).setAutocomplete(true)),
 
@@ -39,7 +39,7 @@ module.exports = {
                 edels = "edel"; 
         
             const embed = new EmbedBuilder()
-                .setTitle(`🪙 ${characterName}'s balance`)
+                .setTitle(`🪙 ${target.username}'s balance`)
                 .setColor(0xB7B75F)
                 .setDescription(`\`\`\`✧ ${balance} ${edels} ✧\`\`\``);
 

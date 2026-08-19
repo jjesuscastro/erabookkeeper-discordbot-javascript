@@ -38,7 +38,7 @@ module.exports = {
     },
 
     async execute(interaction) {
-        const input = interaction.options.getString('user');
+        const input = interaction.options.getUser('user');
         const itemName = interaction.options.getString('item');
         const quantity = interaction.options.getInteger('quantity');
         const sender = interaction.user;
