@@ -17,7 +17,7 @@ module.exports = {
             const embed = new EmbedBuilder()
                 .setTitle('All Balances')
                 .setColor(0xB7B75F)
-                .setDescription(items.map((i, index ) => `**${index+1}**. **${i.character}** — *${i.balance} edels*`).join('\n'));
+                .setDescription(items.map((i, index ) => `${index+1}. **${i.character}** — *${i.balance} edels*`).join('\n'));
             await interaction.editReply({ embeds: [embed] });
         } catch (err) {
             await interaction.editReply(`Error: ${err.message}`);
