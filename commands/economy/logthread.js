@@ -21,10 +21,10 @@ const PERIOD_MULTIPLIERS = {
     Assignment: 100,
 };
 const POINTS_MULTIPLIERS = {
-    None: 1,
-    'Monthly Event': 3,
-    QTE: 1,
-    Assignment: 2,
+    None: 5,
+    'Monthly Event': 15,
+    QTE: 5,
+    Assignment: 5,
 };
 const DEFAULT_PERIOD = 'None';
 
@@ -50,7 +50,7 @@ function applyPeriodMultiplier(edels, period) {
 }
 
 function applyHouseMultiplier(points, period) {
-    return points * (POINTS_MULTIPLIERS[period] ?? POINTS_MULTIPLIERS[DEFAULT_PERIOD]);
+    return POINTS_MULTIPLIERS[period] ?? POINTS_MULTIPLIERS[DEFAULT_PERIOD];
 }
 
 function isAdminInteraction(interaction) {
@@ -488,9 +488,9 @@ module.exports = {
                 for (const result of registered) {
                     multiplier = result.house;
                 }
-                astra *= multiplier;
-                solis *= multiplier;
-                luna *= multiplier;
+                let astra2 = astra * multiplier;
+                let solis2 = solis * multiplier;
+                let luna2  = luna * multiplier;
                     
                 if( astra + luna + solis > 0 ){
                     if (astra > 0)
