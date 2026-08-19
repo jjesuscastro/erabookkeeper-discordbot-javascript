@@ -494,11 +494,11 @@ module.exports = {
                     
                 if( astra + luna + solis > 0 ){
                     if (astra > 0)
-                        housepay += `\`+${astra}\` - **Astra** ★\n`;
+                        housepay += `\`+${astra2}\` - **Astra** ★\n`;
                     if (luna > 0)
-                        housepay += `\`+${luna}\` - **Luna** ☾\n`;
+                        housepay += `\`+${luna2}\` - **Luna** ☾\n`;
                     if (solis > 0)
-                        housepay += `\`+${solis}\` - **Solis** ☀`;
+                        housepay += `\`+${solis2}\` - **Solis** ☀`;
                 }
             
                 else housepay = 'No house points given.';
