@@ -414,6 +414,7 @@ module.exports = {
                     words,
                     edels: Math.floor(parseInt(words) / 5),
                     registered: true,
+                    house: 5,
                 }))
                 .sort((a, b) => b.words - a.words);
 
@@ -448,9 +449,6 @@ module.exports = {
                     result.registered = false;
                 }
             }
-            astra*=5;
-            luna*=5;
-            solis*=5;
 
             let description = '';
             let shown = 0;
@@ -480,19 +478,31 @@ module.exports = {
 
                 return text || 'No registered payouts.';
             };
+            const buildHouseText = snapshot => {
+                const registered = snapshot.filter(result => result.userId !== '');
+                const width = registered.reduce((max, result) => Math.max(max, result.edels.toString().length), 1);
+                let housepay = '';
+                let multiplier = 1;
+                
+                for (const result of registered) {
+                    multiplier = result.house;
+                }
+                astra *= multiplier;
+                solis *= multiplier;
+                luna *= multiplier;
+                    
+                if( astra + luna + solis > 0 ){
+                    if (astra > 0)
+                        housepay += `\`+${astra}\` - **Astra** ★\n`;
+                    if (luna > 0)
+                        housepay += `\`+${luna}\` - **Luna** ☾\n`;
+                    if (solis > 0)
+                        housepay += `\`+${solis}\` - **Solis** ☀`;
+                }
             
-            let housepay = '';
-            astra = applyHouseMultiplier(astra, selectedPeriod);
-            if( astra + luna + solis > 0 ){
-                if (astra > 0)
-                    housepay += `\`+${astra}\` - **Astra** ★\n`;
-                if (luna > 0)
-                    housepay += `\`+${luna}\` - **Luna** ☾\n`;
-                if (solis > 0)
-                    housepay += `\`+${solis}\` - **Solis** ☀`;
-            }
-            
-            else housepay = 'No house points given.';
+                else housepay = 'No house points given.';
+                return housepay;
+            };
             
             const buildUnmatchedText = snapshot => {
                 const unmatched = snapshot.filter(result => result.userId === '');
@@ -519,7 +529,7 @@ module.exports = {
                 payouts: buildPayoutText(snapshot),
                 unmatched: buildUnmatchedText(snapshot),
                 period,
-                housepay,
+                housepay: buildHouseText(snapshot),
             });
 
             const reply = await interaction.editReply({
