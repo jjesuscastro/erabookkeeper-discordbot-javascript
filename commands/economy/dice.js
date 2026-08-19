@@ -12,7 +12,7 @@ module.exports = {
 
         await interaction.deferReply();
         try {
-            const diceRegex = /(\d+)[d](\d+)(\-?\+?)(\d?)(k?)(\d?)/;
+            const diceRegex = /\{\{(\d+)[d](\d+)(\-?\+?)(\d?)(k?)(\d?)\{\{/;
             const match = input.match(diceRegex);
 
             if (match) {
@@ -59,7 +59,7 @@ module.exports = {
                 rolls.push(`\`🎲${total}\``);
                     
                 const match2 = match[0].toString();
-                var diceRoll = match2.substring(2, match2.length-2);
+                var diceRoll = match2;
 
                 var line1 = "Rolled: " + diceRoll;
                 var line2 = "[" + rolls2 + "]";
