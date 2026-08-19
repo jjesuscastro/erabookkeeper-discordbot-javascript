@@ -345,6 +345,7 @@ module.exports = {
     setLastDaily,
     addBalance,
     deductBalance,
+    getAllBalances,
     getStandings,
     getHousePoints,
     addPoints,
