@@ -32,20 +32,20 @@ module.exports = {
                     total+=roll;
                 }
                 
-                // if(keep){
-                //     if(keep.toString() == "k"){
-                //         total = 0;
-                //         var tempRolls = rolls2.slice();
-                //         let tempMax = 0;
-                //         for(let i = 0; i < keepNum; i++){
-                //             tempMax = Math.max(tempRolls);
-                //             total += tempMax;
-                //             var maxindex = tempRolls.indexOf(tempMax);
-                //             tempRolls.splice(1,maxindex);
-                //             rolls2[maxindex] = rolls[maxindex].toString()+"d";
-                //         }
-                //     }
-                // }
+                if(keep){
+                    if(keep.toString() == "k"){
+                        total = 0;
+                        var tempRolls = rolls2.slice();
+                        let tempMax = 0;
+                        for(let i = 0; i < keepNum; i++){
+                            tempMax = Math.max(tempRolls);
+                            total += tempMax;
+                            var maxindex = tempRolls.indexOf(tempMax);
+                            tempRolls.splice(1,maxindex);
+                            rolls2[maxindex] = rolls[maxindex].toString()+"d";
+                        }
+                    }
+                }
 
                 if(diceModifier){
                     if (diceModifier.toString() == "+"){
