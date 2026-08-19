@@ -20,6 +20,12 @@ const PERIOD_MULTIPLIERS = {
     QTE: 100,
     Assignment: 100,
 };
+const POINTS_MULTIPLIERS = {
+    None: 1,
+    'Monthly Event': 3,
+    QTE: 1,
+    Assignment: 2,
+};
 const DEFAULT_PERIOD = 'None';
 
 function parseInput(input, fallbackChannelId) {
@@ -41,6 +47,10 @@ function countWords(content) {
 
 function applyPeriodMultiplier(edels, period) {
     return edels + (PERIOD_MULTIPLIERS[period] ?? PERIOD_MULTIPLIERS[DEFAULT_PERIOD]);
+}
+
+function applyHouseMultiplier(points, period) {
+    return points * (POINTS_MULTIPLIERS[period] ?? POINTS_MULTIPLIERS[DEFAULT_PERIOD]);
 }
 
 function isAdminInteraction(interaction) {
@@ -470,10 +480,16 @@ module.exports = {
 
                 return text || 'No registered payouts.';
             };
+            
             let housepay = '';
-
+            astra = applyHouseMultiplier(astra, selectedPeriod);
             if( astra + luna + solis > 0 ){
-                housepay = `\`+${astra}\` - **Astra** :astra:\n\`+${luna}\` - **Luna** :luna:\n\`+${solis}\` - **Solis** :solis:`
+                if (astra > 0)
+                    housepay += `\`+${astra}\` - **Astra** ★\n`;
+                if (luna > 0)
+                    housepay += `\`+${luna}\` - **Luna** ☾\n`;
+                if (solis > 0)
+                    housepay += `\`+${solis}\` - **Solis** ☀`;
             }
             
             else housepay = 'No house points given.';
