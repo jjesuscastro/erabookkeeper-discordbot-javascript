@@ -5,8 +5,8 @@ const { getAllBalances } = require('../../utils/sheets');
 
 module.exports = {
     data: new SlashCommandBuilder()
-        .setName('housestandings')
-        .setDescription('View the current ranks of each house'),
+        .setName('allbalances')
+        .setDescription('View all player balances.'),
 
     async execute(interaction) {
         await interaction.deferReply();
