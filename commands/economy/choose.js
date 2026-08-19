@@ -20,7 +20,7 @@ module.exports = {
             const embed = new EmbedBuilder()
                 .setTitle(`${choices[final-1]}`)
                 .setColor(0xB7B75F)
-                .setDescription(`${input}`);
+                .setDescription(`[ ${input} ]`);
 
             await interaction.editReply({ embeds: [embed] });
         } catch (err) {
