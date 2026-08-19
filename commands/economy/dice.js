@@ -58,8 +58,6 @@ module.exports = {
 
                 rolls.push(`\`🎲${total}\``);
                     
-                text = text.replace(diceRegex, rolls.join(' '));
-
                 const match2 = match[0].toString();
                 var diceRoll = match2.substring(2, match2.length-2);
 
