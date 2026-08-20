@@ -24,7 +24,7 @@ module.exports = {
             if (allTuppers.length === 0) list = "No tuppers registered :("
             
             const embed = new EmbedBuilder()
-                .setTitle(`📜 ${characterName}'s Tuppers`)
+                .setTitle(`📜 ${target.username}'s Tuppers`)
                 .setColor(0xB7B75F)
                 .setDescription(list);
 
