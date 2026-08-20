@@ -1,5 +1,6 @@
 // /use <item> <quantity> — consume items from your inventory
 // Autocomplete reads from inventory cache (warmed by /inventory); falls back to Sheets if cold
+/*
 const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 const { getUser, getInventory, removeInventoryItem } = require('../../utils/sheets');
 const { getInventoryCache, clearInventoryCache } = require('../../utils/cache');
@@ -60,3 +61,4 @@ module.exports = {
         }
     },
 };
+*/

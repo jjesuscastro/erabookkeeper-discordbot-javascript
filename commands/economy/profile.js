@@ -39,7 +39,7 @@ module.exports = {
             const { characterName, age, pronouns, height, profile, balance, lastDaily, house, birthday, picture } = await getUser(userId);
             
             const embed = new EmbedBuilder()
-                .setTitle(`✦ ${characterName}`)
+                .setTitle(`✧ ${characterName}`)
                 .setColor(0xB7B75F)
                 .setThumbnail(picture)
                 .addFields(

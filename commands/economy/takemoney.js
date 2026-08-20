@@ -21,7 +21,7 @@ module.exports = {
     },
 
     async execute(interaction) {
-        const input = interaction.options.getString('user');
+        const input = interaction.options.getUser('user');
         const amount = interaction.options.getInteger('amount');
 
         await interaction.deferReply();

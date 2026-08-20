@@ -9,7 +9,7 @@ module.exports = {
         .setName('balance')
         .setDescription("Check a user's balance")
         .addUserOption(opt =>
-            opt.setName('user').setDescription('Mun name').setRequired(true)),
+            opt.setName('user').setDescription('Mun name').setRequired(false)),
         //.addStringOption(opt =>
         //    opt.setName('user').setDescription('Character name or @mention (default: you)').setRequired(false).setAutocomplete(true)),
 
@@ -20,15 +20,18 @@ module.exports = {
     },
 
     async execute(interaction) {
-        const input = interaction.options.getString('user');
+        const input = interaction.options.getUser('user');
         await interaction.deferReply();
         try {
             let userId;
+            let username;
             if (input) {
                 const target = await resolveTarget(`<@${input.id}>`);
                 //const target = await resolveTarget(input);
                 userId = target.discordId;
+                username = input.username;
             } else {
+                username = interaction.user.username;
                 userId = interaction.user.id;
             }
 
@@ -39,7 +42,7 @@ module.exports = {
                 edels = "edel"; 
         
             const embed = new EmbedBuilder()
-                .setTitle(`🪙 ${characterName}'s balance`)
+                .setTitle(`🪙 ${username}'s balance`)
                 .setColor(0xB7B75F)
                 .setDescription(`\`\`\`✧ ${balance} ${edels} ✧\`\`\``);
 

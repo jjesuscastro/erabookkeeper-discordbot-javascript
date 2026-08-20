@@ -18,7 +18,7 @@ module.exports = {
             const final = Math.floor(Math.random() * size) + 1; 
 
             const embed = new EmbedBuilder()
-                .setTitle(`✦ ${choices[final-1]}`)
+                .setTitle(`✧ ${choices[final-1]}`)
                 .setColor(0xB7B75F)
                 .setDescription(`[ ${input} ]`);
 

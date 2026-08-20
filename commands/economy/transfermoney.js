@@ -9,7 +9,7 @@ module.exports = {
         .setName('transfermoney')
         .setDescription('Transfer money to another user')
         .addUserOption(opt =>
-            opt.setName('user').setDescription('Mun name').setRequired(true))
+            opt.setName('user').setDescription('Mun too transfer to').setRequired(true))
         //.addStringOption(opt =>
         //    opt.setName('user').setDescription('Character name or @mention').setRequired(true).setAutocomplete(true))
         .addIntegerOption(opt =>
@@ -22,7 +22,7 @@ module.exports = {
     },
 
     async execute(interaction) {
-        const input = interaction.options.getString('user');
+        const input = interaction.options.getUser('user');
         const amount = interaction.options.getInteger('amount');
         const sender = interaction.user;
 

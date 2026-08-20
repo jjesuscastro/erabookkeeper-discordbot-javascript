@@ -1,5 +1,6 @@
 // /shop — display all available items and their prices
 // Also warms the shop cache so /buy autocomplete works without hitting Sheets again
+/*
 const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 const { getShopItems } = require('../../utils/sheets');
 const { setShopCache } = require('../../utils/cache');
@@ -27,3 +28,4 @@ module.exports = {
         }
     },
 };
+*/

@@ -164,9 +164,9 @@ function buildLogEmbed({ startLink, endLink, totalWords, messageCount, descripti
     let bonus;
 
     if(period === 'Monthly Event')
-        bonus = 100;
+        bonus = 200;
     if(period === 'QTE')
-        bonus = 100;
+        bonus = 50;
     if(period == 'Assignment')
         bonus = 100;
 
@@ -197,14 +197,14 @@ function buildLogEmbed({ startLink, endLink, totalWords, messageCount, descripti
 
 async function fetchReviewChannel(client, period) {
     //const channelId = process.env.LOGTHREAD_REVIEW_CHANNEL_ID;
-    let channelId = '1513952869273829438';
+    let channelId = '1533869599630819368';
 
     if(period === 'Monthly Event')
-        channelId = '1517194272846118993';
+        channelId = '1533869525651689743';
     if(period === 'QTE')
-        channelId = '1517194272846118993';
+        channelId = '1533869599630819368';
     if(period == 'Assignment')
-        channelId = '1538799518118584392';
+        channelId = '1533869657692307497';
     
     //const channelId = '1517194272846118993';
     //if (!channelId) throw new LogThreadError('LOGTHREAD_REVIEW_CHANNEL_ID is not configured.');
