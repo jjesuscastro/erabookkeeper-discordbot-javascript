@@ -3,6 +3,14 @@ const { Client, Collection, GatewayIntentBits } = require('discord.js');
 const fs = require('fs');
 const path = require('path');
 
+process.on('unhandledRejection', err => {
+    console.error('Unhandled promise rejection:', err);
+});
+
+process.on('uncaughtException', err => {
+    console.error('Uncaught exception:', err);
+});
+
 // Book Keeper — main entry point
 // Loads all commands from /commands subfolders and routes Discord interactions
 
@@ -62,11 +70,15 @@ client.on('interactionCreate', async interaction => {
         await command.execute(interaction);
     } catch (err) {
         console.error(err);
-        const reply = { content: 'An error occurred while executing that command.', ephemeral: true };
-        if (interaction.deferred || interaction.replied) {
-            await interaction.editReply(reply);
-        } else {
-            await interaction.reply(reply);
+        try {
+            const reply = { content: 'An error occurred while executing that command.', ephemeral: true };
+            if (interaction.deferred || interaction.replied) {
+                await interaction.editReply(reply);
+            } else {
+                await interaction.reply(reply);
+            }
+        } catch (replyErr) {
+            console.error('Failed to send command error response:', replyErr);
         }
     }
 });
