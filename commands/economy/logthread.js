@@ -197,7 +197,7 @@ function buildLogEmbed({ startLink, endLink, totalWords, messageCount, descripti
 
 async function fetchReviewChannel(client, period) {
     //const channelId = process.env.LOGTHREAD_REVIEW_CHANNEL_ID;
-    let channelId = '1513952869273829438';
+    let channelId = '1533869599630819368';
 
     if(period === 'Monthly Event')
         channelId = '1533869525651689743';
