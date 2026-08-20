@@ -200,11 +200,11 @@ async function fetchReviewChannel(client, period) {
     let channelId = '1513952869273829438';
 
     if(period === 'Monthly Event')
-        channelId = '1517194272846118993';
+        channelId = '1533869525651689743';
     if(period === 'QTE')
-        channelId = '1517194272846118993';
+        channelId = '1533869599630819368';
     if(period == 'Assignment')
-        channelId = '1538799518118584392';
+        channelId = '1533869657692307497';
     
     //const channelId = '1517194272846118993';
     //if (!channelId) throw new LogThreadError('LOGTHREAD_REVIEW_CHANNEL_ID is not configured.');
