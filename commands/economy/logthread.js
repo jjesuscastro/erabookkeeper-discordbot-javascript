@@ -164,9 +164,9 @@ function buildLogEmbed({ startLink, endLink, totalWords, messageCount, descripti
     let bonus;
 
     if(period === 'Monthly Event')
-        bonus = 100;
+        bonus = 200;
     if(period === 'QTE')
-        bonus = 100;
+        bonus = 50;
     if(period == 'Assignment')
         bonus = 100;
 
