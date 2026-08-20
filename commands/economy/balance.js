@@ -29,8 +29,7 @@ module.exports = {
                 const target = await resolveTarget(`<@${input.id}>`);
                 //const target = await resolveTarget(input);
                 userId = target.discordId;
-                const user = await client.users.fetch(userId);
-                username = user.username;
+                username = input.username;
             } else {
                 username = interaction.user.username;
                 userId = interaction.user.id;
