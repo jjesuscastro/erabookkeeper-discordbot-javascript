@@ -574,7 +574,7 @@ module.exports = {
                 await i.update({ embeds: [finalEmbed], components: buildSubmitComponents(finalPeriod, true) });
                 collector.stop(i.customId);
                 if (i.customId === 'logthread_cancel'){
-                     const cancelembed = new EmbedBuilder()
+                    const cancelembed = new EmbedBuilder()
                         .setTitle(`❌ Submission Cancelled`)
                         .setColor(0xEBBCA2)
                         .setDescription(`See you next time!`);
@@ -617,7 +617,15 @@ module.exports = {
 
                     await action.update({ components: [buildReviewButtons(true)] });
                     reviewCollector.stop(action.customId);
-                    if (action.customId === 'logthread_review_cancel') return;
+                    if (action.customId === 'logthread_review_cancel'){
+                        const cancelembed = new EmbedBuilder()
+                        .setTitle(`❌ Review Rejected`)
+                        .setColor(0xEBBCA2)
+                        .setDescription(`See you next time!`);
+
+                        await interaction.editReply({ embeds: [cancelembed], components: [] });
+                        return;
+                    }
 
                     const grantEmbed = await grantEdels(payoutSnapshot, astra2, solis2, luna2);
                     await reviewChannel.send({ embeds: [grantEmbed] });
