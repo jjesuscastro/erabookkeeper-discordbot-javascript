@@ -2,6 +2,7 @@ require('dotenv').config();
 const { Client, Collection, GatewayIntentBits } = require('discord.js');
 const fs = require('fs');
 const path = require('path');
+const { logAutocompleteUsage, logCommandUsage, logInteractionError } = require('./utils/logger');
 
 process.on('unhandledRejection', err => {
     console.error('Unhandled promise rejection:', err);
@@ -57,7 +58,14 @@ client.on('interactionCreate', async interaction => {
     // Handle autocomplete before command execution so item dropdowns work
     if (interaction.isAutocomplete()) {
         const command = client.commands.get(interaction.commandName);
-        if (command?.autocomplete) await command.autocomplete(interaction);
+        logAutocompleteUsage(interaction);
+        if (command?.autocomplete) {
+            try {
+                await command.autocomplete(interaction);
+            } catch (err) {
+                logInteractionError('Autocomplete failed', err, interaction);
+            }
+        }
         return;
     }
 
@@ -67,9 +75,10 @@ client.on('interactionCreate', async interaction => {
     if (!command) return;
 
     try {
+        logCommandUsage(interaction);
         await command.execute(interaction);
     } catch (err) {
-        console.error(err);
+        logInteractionError('Command failed', err, interaction);
         try {
             const reply = { content: 'An error occurred while executing that command.', ephemeral: true };
             if (interaction.deferred || interaction.replied) {

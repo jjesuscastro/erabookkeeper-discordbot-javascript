@@ -11,6 +11,7 @@ const {
     PermissionFlagsBits,
 } = require('discord.js');
 const { getUser, addBalance, getTupper, addPoints } = require('../../utils/sheets');
+const { logInteractionError } = require('../../utils/logger');
 
 class LogThreadError extends Error {}
 
@@ -592,6 +593,16 @@ module.exports = {
                         components: [buildReviewButtons()],
                     });
                 } catch (err) {
+                    logInteractionError('Logthread review submission failed', err, i, {
+                        period: finalPeriod,
+                        submitterId: interaction.user.id,
+                        resultCount: results.length,
+                        messageCount: messages.length,
+                        totalWords,
+                        descriptionLength: description.length,
+                        payoutLength: buildPayoutText(payoutSnapshot).length,
+                        embedJson: finalEmbed.toJSON(),
+                    });
                     const message = err instanceof LogThreadError ? err.message : `Error: ${err.message}`;
                     await interaction.followUp({ content: message, ephemeral: true });
                     return;
@@ -619,8 +630,26 @@ module.exports = {
                     reviewCollector.stop(action.customId);
                     if (action.customId === 'logthread_review_cancel') return;
 
-                    const grantEmbed = await grantEdels(payoutSnapshot, astra2, solis2, luna2);
-                    await reviewChannel.send({ embeds: [grantEmbed] });
+                    try {
+                        const grantEmbed = await grantEdels(payoutSnapshot, astra2, solis2, luna2);
+                        await reviewChannel.send({ embeds: [grantEmbed] });
+                    } catch (err) {
+                        logInteractionError('Logthread grant failed', err, action, {
+                            period: finalPeriod,
+                            resultCount: payoutSnapshot.length,
+                            astra: astra2,
+                            solis: solis2,
+                            luna: luna2,
+                        });
+                        await action.followUp({ content: `Error: ${err.message}`, ephemeral: true });
+                    }
+                });
+
+                reviewCollector.on('error', err => {
+                    logInteractionError('Logthread review collector failed', err, interaction, {
+                        period: finalPeriod,
+                        reviewMessageId: reviewMessage?.id,
+                    });
                 });
             });
 
@@ -630,6 +659,12 @@ module.exports = {
                 }
             });
         } catch (err) {
+            logInteractionError('Logthread failed', err, interaction, {
+                mode: isThreadMode ? 'thread' : 'range',
+                threadInput,
+                startInput,
+                endInput,
+            });
             const message = err instanceof LogThreadError ? err.message : `Error: ${err.message}`;
             await interaction.editReply(message);
         }

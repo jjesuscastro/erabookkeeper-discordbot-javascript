@@ -57,7 +57,14 @@ function loadHelpers() {
             if (request === '../../utils/sheets') {
                 return {
                     addBalance: async () => {},
+                    addPoints: async () => {},
+                    getUser: async () => ({ house: '' }),
                     getTupper: async () => ({ tupperuser: '', tupperName: '', playerChara: '' }),
+                };
+            }
+            if (request === '../../utils/logger') {
+                return {
+                    logInteractionError: () => {},
                 };
             }
             throw new Error(`Unexpected import: ${request}`);
@@ -121,11 +128,11 @@ test('counts whitespace-separated text content', () => {
 
 test('period multipliers match the logthread bonus options', () => {
     assert.equal(helpers.PERIOD_MULTIPLIERS.None, 0);
-    assert.equal(helpers.PERIOD_MULTIPLIERS['Monthly Event'], 100);
-    assert.equal(helpers.PERIOD_MULTIPLIERS.QTE, 100);
+    assert.equal(helpers.PERIOD_MULTIPLIERS['Monthly Event'], 200);
+    assert.equal(helpers.PERIOD_MULTIPLIERS.QTE, 50);
     assert.equal(helpers.PERIOD_MULTIPLIERS.Assignment, 100);
     assert.equal(helpers.applyPeriodMultiplier(25, 'None'), 25);
-    assert.equal(helpers.applyPeriodMultiplier(25, 'QTE'), 125);
+    assert.equal(helpers.applyPeriodMultiplier(25, 'QTE'), 75);
 });
 
 test('admin approval check uses Administrator permission', () => {
