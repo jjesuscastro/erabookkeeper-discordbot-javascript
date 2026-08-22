@@ -28,6 +28,23 @@ const POINTS_MULTIPLIERS = {
     Assignment: 10,
 };
 const DEFAULT_PERIOD = 'None';
+const EMBED_FIELD_LIMIT = 1024;
+const BLANK_FIELD = '\u200B';
+
+function formatEmbedFieldValue(value) {
+    const text = String(value ?? '').trim();
+    if (!text) return BLANK_FIELD;
+    if (text.length <= EMBED_FIELD_LIMIT) return text;
+    return `${text.slice(0, EMBED_FIELD_LIMIT - 28)}\n*...truncated for Discord*`;
+}
+
+function buildEmbedField(name, value, inline = false) {
+    return {
+        name: name || BLANK_FIELD,
+        value: formatEmbedFieldValue(value),
+        inline,
+    };
+}
 
 function parseInput(input, fallbackChannelId) {
     if (!input) return null;
@@ -175,15 +192,15 @@ function buildLogEmbed({ startLink, endLink, totalWords, messageCount, descripti
         .setTitle('Log RP')
         .setColor(0xB7B75F)
         .addFields(
-            { name: '', value: `**Start: **${startLink ?? 'N/A'}\n**End: **${endLink ?? 'N/A'}`, inline: true },
-            { name: '', value: `**Total WC: **${totalWords}\n**Total Messages: **${messageCount}\n**Bonus: **${period}`, inline: true },
-            { name: '', value: '``` ```', inline: false },
-            { name: 'LOG SUMMARY', value: description, inline: false },
-            { name: '', value: '', inline: false },
-            { name: 'EDELS', value: payouts, inline: false },
-            { name: 'BONUS', value: bonus ? `\`+ ${bonus}\` edels!` : `No event bonuses.`, inline: false },
-            { name: '', value: '', inline: false },
-            { name: 'HOUSE POINTS', value: housepay, inline: false },
+            buildEmbedField('', `**Start: **${startLink ?? 'N/A'}\n**End: **${endLink ?? 'N/A'}`, true),
+            buildEmbedField('', `**Total WC: **${totalWords}\n**Total Messages: **${messageCount}\n**Bonus: **${period}`, true),
+            buildEmbedField('', '``` ```'),
+            buildEmbedField('LOG SUMMARY', description),
+            buildEmbedField('', ''),
+            buildEmbedField('EDELS', payouts),
+            buildEmbedField('BONUS', bonus ? `\`+ ${bonus}\` edels!` : `No event bonuses.`),
+            buildEmbedField('', ''),
+            buildEmbedField('HOUSE POINTS', housepay),
         );
 
     //if (unmatched) {
