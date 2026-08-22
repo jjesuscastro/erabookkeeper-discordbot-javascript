@@ -13,7 +13,7 @@ const {
 const { getUser, addBalance, getTupper, addPoints } = require('../../utils/sheets');
 const { logInteractionError } = require('../../utils/logger');
 
-class LogThreadError extends Error {}
+class LogThreadError extends Error { }
 
 const PERIOD_MULTIPLIERS = {
     None: 0,
@@ -35,7 +35,7 @@ function formatEmbedFieldValue(value) {
     const text = String(value ?? '').trim();
     if (!text) return BLANK_FIELD;
     if (text.length <= EMBED_FIELD_LIMIT) return text;
-    return `${text.slice(0, EMBED_FIELD_LIMIT - 28)}\n*...truncated for Discord*`;
+    return `${text.slice(0, EMBED_FIELD_LIMIT - 28)}\n*...*`;
 }
 
 function buildEmbedField(name, value, inline = false) {
@@ -157,7 +157,7 @@ async function grantEdels(results, astra, solis, luna) {
     await addPoints('Astra', astra);
     await addPoints('Solis', solis);
     await addPoints('Luna', luna);
-    
+
 
     let grantDesc = granted.join('\n') || 'No registered payouts found.';
     grantDesc += `\n\n`;
@@ -181,11 +181,11 @@ async function grantEdels(results, astra, solis, luna) {
 function buildLogEmbed({ startLink, endLink, totalWords, messageCount, description, payouts, unmatched, period, housepay }) {
     let bonus;
 
-    if(period === 'Monthly Event')
+    if (period === 'Monthly Event')
         bonus = 200;
-    if(period === 'QTE')
+    if (period === 'QTE')
         bonus = 50;
-    if(period == 'Assignment')
+    if (period == 'Assignment')
         bonus = 100;
 
     const embed = new EmbedBuilder()
@@ -217,13 +217,13 @@ async function fetchReviewChannel(client, period) {
     //const channelId = process.env.LOGTHREAD_REVIEW_CHANNEL_ID;
     let channelId = '1533869599630819368';
 
-    if(period === 'Monthly Event')
+    if (period === 'Monthly Event')
         channelId = '1533869525651689743';
-    if(period === 'QTE')
+    if (period === 'QTE')
         channelId = '1533869599630819368';
-    if(period == 'Assignment')
+    if (period == 'Assignment')
         channelId = '1533869657692307497';
-    
+
     //const channelId = '1517194272846118993';
     //if (!channelId) throw new LogThreadError('LOGTHREAD_REVIEW_CHANNEL_ID is not configured.');
 
@@ -451,7 +451,7 @@ module.exports = {
             var astra = 0;
             var luna = 0;
             var solis = 0;
-            
+
             const lines = [];
             const wordWidth = results[0].words.toString().length;
             for (const result of results) {
@@ -461,15 +461,15 @@ module.exports = {
                 if (result.userId !== '') {
                     if (playerChara == 'TRUE') {
                         const { house } = await getUser(tupperuser);
-                        if(house == 'Astra' && result.words > 125)
+                        if (house == 'Astra' && result.words > 125)
                             astra++;
-                        if(house == 'Luna' && result.words > 125)
+                        if (house == 'Luna' && result.words > 125)
                             luna++;
-                        if(house == 'Solis' && result.words > 125)
+                        if (house == 'Solis' && result.words > 125)
                             solis++;
 
                         lines.push(`\`${result.words.toString().padEnd(wordWidth, ' ')} WC\` - **${result.name}** - <@${tupperuser}>`);
-                        
+
                     } else {
                         lines.push(`\`${result.words.toString().padEnd(wordWidth, ' ')} WC\` - \`NPC\` **${result.name}** - <@${tupperuser}>`);
                         result.edels = Math.round(result.edels * 5 / 20);
@@ -512,21 +512,21 @@ module.exports = {
             var astra2 = 0;
             var luna2 = 0;
             var solis2 = 0;
-            
+
             const buildHouseText = snapshot => {
                 const registered = snapshot.filter(result => result.userId !== '');
                 const width = registered.reduce((max, result) => Math.max(max, result.edels.toString().length), 1);
                 let housepay = '';
                 let multiplier = 1;
-                
+
                 for (const result of registered) {
                     multiplier = result.house;
                 }
                 astra2 = astra * multiplier;
                 solis2 = solis * multiplier;
-                luna2  = luna * multiplier;
-                    
-                if( astra + luna + solis > 0 ){
+                luna2 = luna * multiplier;
+
+                if (astra + luna + solis > 0) {
                     if (astra > 0)
                         housepay += `\`+${astra2}\` - **Astra** ★\n`;
                     if (luna > 0)
@@ -534,11 +534,11 @@ module.exports = {
                     if (solis > 0)
                         housepay += `\`+${solis2}\` - **Solis** ☀`;
                 }
-            
+
                 else housepay = 'No house points given.';
                 return housepay;
             };
-            
+
             const buildUnmatchedText = snapshot => {
                 const unmatched = snapshot.filter(result => result.userId === '');
                 let text = '';
@@ -591,7 +591,7 @@ module.exports = {
                 const finalEmbed = buildCurrentEmbed(finalPeriod, payoutSnapshot);
                 await i.update({ embeds: [finalEmbed], components: buildSubmitComponents(finalPeriod, true) });
                 collector.stop(i.customId);
-                if (i.customId === 'logthread_cancel'){
+                if (i.customId === 'logthread_cancel') {
                     const cancelembed = new EmbedBuilder()
                         .setTitle(`❌ Submission Cancelled`)
                         .setColor(0xEBBCA2)
@@ -672,7 +672,7 @@ module.exports = {
 
             collector.on('end', (_, reason) => {
                 if (reason === 'time') {
-                    interaction.editReply({ components: buildSubmitComponents(selectedPeriod, true) }).catch(() => {});
+                    interaction.editReply({ components: buildSubmitComponents(selectedPeriod, true) }).catch(() => { });
                 }
             });
         } catch (err) {
