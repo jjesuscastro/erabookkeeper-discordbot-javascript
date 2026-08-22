@@ -443,11 +443,11 @@ module.exports = {
                 if (result.userId !== '') {
                     if (playerChara == 'TRUE') {
                         const { house } = await getUser(tupperuser);
-                        if(house == 'Astra')
+                        if(house == 'Astra' && result.words > 125)
                             astra++;
-                        if(house == 'Luna')
+                        if(house == 'Luna' && result.words > 125)
                             luna++;
-                        if(house == 'Solis')
+                        if(house == 'Solis' && result.words > 125)
                             solis++;
 
                         lines.push(`\`${result.words.toString().padEnd(wordWidth, ' ')} WC\` - **${result.name}** - <@${tupperuser}>`);
