@@ -36,6 +36,7 @@ function formatEmbedFieldValue(value) {
     if (!text) return BLANK_FIELD;
     if (text.length <= EMBED_FIELD_LIMIT) return text;
     return `${text.slice(0, EMBED_FIELD_LIMIT - 28)}\n*...*`;
+    //This is the truncated message ^^^^^
 }
 
 function buildEmbedField(name, value, inline = false) {
