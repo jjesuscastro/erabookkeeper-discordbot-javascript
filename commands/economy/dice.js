@@ -12,7 +12,7 @@ module.exports = {
 
         await interaction.deferReply();
         try {
-            const diceRegex = /(\d+)[d](\d+)(\-?\+?)(\d+)(k?)(\d?)/;
+            const diceRegex = /(\d+)[d](\d+)(\-?\+?)(\d*)(k?)(\d?)/;
             const match = input.match(diceRegex);
 
             if (match) {
