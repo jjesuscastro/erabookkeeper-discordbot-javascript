@@ -23,7 +23,7 @@ const PERIOD_MULTIPLIERS = {
 };
 const POINTS_MULTIPLIERS = {
     None: 5,
-    'Monthly Event': 20,
+    'Monthly Event': 15,
     QTE: 5,
     Assignment: 10,
 };
