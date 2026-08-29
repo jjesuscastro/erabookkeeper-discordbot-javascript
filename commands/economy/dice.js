@@ -72,7 +72,7 @@ module.exports = {
                 line2 += " ➜ " + total;
 
                 const embed = new EmbedBuilder()
-                    .setTitle(`🎲${total}`)
+                    .setTitle(`🎲${total}!`)
                     .setColor(0xEBBCA2)
                     .addFields(
                         { name: line1, value: line2 }
