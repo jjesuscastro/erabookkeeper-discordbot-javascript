@@ -12,7 +12,7 @@ module.exports = {
 
         await interaction.deferReply();
         try {
-            const diceRegex = /(\d+)[d](\d+)(\-?\+?)(\d?)(k?)(\d?)/;
+            const diceRegex = /(\d+)[d](\d+)(\-?\+?)(\d*)(k?)(\d?)/;
             const match = input.match(diceRegex);
 
             if (match) {
@@ -72,7 +72,7 @@ module.exports = {
                 line2 += " ➜ " + total;
 
                 const embed = new EmbedBuilder()
-                    .setTitle(`🎲${total}`)
+                    .setTitle(`🎲${total}!`)
                     .setColor(0xEBBCA2)
                     .addFields(
                         { name: line1, value: line2 }
