@@ -1,4 +1,5 @@
 .env
 node_modules/
 .claude/
-#webhook test
+discord-bots-docker-compose.yml
+DB_MIGRATION.md

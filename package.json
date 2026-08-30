@@ -4,6 +4,7 @@
   "description": "Book Keeper Discord Bot",
   "main": "index.js",
   "scripts": {
+    "db:migrate:sheets": "node scripts/migrate-sheets-to-postgres.js",
     "test": "node --test"
   },
   "keywords": [],
@@ -13,6 +14,7 @@
   "dependencies": {
     "discord.js": "^14.26.4",
     "dotenv": "^17.4.2",
-    "googleapis": "^173.0.0"
+    "googleapis": "^173.0.0",
+    "pg": "^8.23.0"
   }
 }
