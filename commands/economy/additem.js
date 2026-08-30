@@ -2,8 +2,8 @@
 // Autocomplete reads from shop cache (warmed by /shop); falls back to Sheets if cache is cold
 
 const { SlashCommandBuilder, EmbedBuilder, PermissionFlagsBits } = require('discord.js');
-const { getUser, getShopItems, addInventoryItem } = require('../../utils/sheets');
-const { getShopCache, clearInventoryCache } = require('../../utils/cache');
+const { getUser, addInventoryItem } = require('../../utils/sheets');
+const { clearInventoryCache } = require('../../utils/cache');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -16,17 +16,6 @@ module.exports = {
         .addIntegerOption(opt =>
             opt.setName('quantity').setDescription('How many').setMinValue(1).setRequired(true))
         .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
-
-    async autocomplete(interaction) {
-        const focused = interaction.options.getFocused().toLowerCase();
-        const items = getShopCache() ?? await getShopItems();
-        const choices = items
-            .filter(i => i.name.toLowerCase().includes(focused))
-            .slice(0, 25)
-            .map(i => ({ name: i.name, value: i.name }));
-
-        await interaction.respond(choices);
-    },
 
     async execute(interaction) {
         const itemName = interaction.options.getString('item');
