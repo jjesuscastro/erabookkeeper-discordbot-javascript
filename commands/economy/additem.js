@@ -12,7 +12,7 @@ module.exports = {
         .addUserOption(opt =>
             opt.setName('user').setDescription('Mun name').setRequired(true))
         .addStringOption(opt =>
-            opt.setName('item').setDescription('Item name').setRequired(true).setAutocomplete(true))
+            opt.setName('item').setDescription('Item name').setRequired(true))
         .addIntegerOption(opt =>
             opt.setName('quantity').setDescription('How many').setMinValue(1).setRequired(true))
         .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
