@@ -6,6 +6,7 @@
   "scripts": {
     "db:apply-schema": "node scripts/apply-postgres-schema.js",
     "db:migrate:sheets": "node scripts/migrate-sheets-to-postgres.js",
+    "db:sync:sheets": "node scripts/sync-postgres-to-sheets.js",
     "test": "node --test"
   },
   "keywords": [],
