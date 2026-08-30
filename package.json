@@ -4,6 +4,7 @@
   "description": "Book Keeper Discord Bot",
   "main": "index.js",
   "scripts": {
+    "db:apply-schema": "node scripts/apply-postgres-schema.js",
     "db:migrate:sheets": "node scripts/migrate-sheets-to-postgres.js",
     "test": "node --test"
   },

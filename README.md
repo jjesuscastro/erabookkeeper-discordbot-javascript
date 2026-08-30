@@ -36,7 +36,7 @@ A Discord bot for managing a coin economy and item shop, backed by Google Sheets
 
 ## Google Sheets Setup
 
-The bot reads from and writes to three sheets in one spreadsheet. See [GSHEET.md](GSHEET.md) for the exact column layout.
+The bot can use PostgreSQL or Google Sheets through `DATA_BACKEND`. PostgreSQL is the deployment default; the Google Sheets implementation is retained as a rollback backend. See [DB_MIGRATION.md](DB_MIGRATION.md) for setup and rollback steps.
 
 | Sheet | Purpose |
 |---|---|
@@ -62,6 +62,8 @@ SPREADSHEET_ID=              # Google Sheets spreadsheet ID
 GOOGLE_SERVICE_ACCOUNT_EMAIL= # Service account email
 GOOGLE_PRIVATE_KEY=          # Service account private key (include the full key with newlines)
 LOGTHREAD_REVIEW_CHANNEL_ID=  # Channel ID where logthread submissions go for admin approval
+DATA_BACKEND=postgres         # postgres or sheets
+DATABASE_URL=                 # PostgreSQL connection string when DATA_BACKEND=postgres
 ```
 
 ### Docker / Portainer
