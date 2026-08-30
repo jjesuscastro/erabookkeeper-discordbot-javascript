@@ -4,6 +4,9 @@
   "description": "Book Keeper Discord Bot",
   "main": "index.js",
   "scripts": {
+    "deploy:global": "node deploy-commands.js global",
+    "deploy:dev": "node deploy-commands.js dev",
+    "clear:dev": "node deploy-commands.js clear-dev",
     "db:apply-schema": "node scripts/apply-postgres-schema.js",
     "db:migrate:sheets": "node scripts/migrate-sheets-to-postgres.js",
     "db:sync:sheets": "node scripts/sync-postgres-to-sheets.js",

@@ -7,4 +7,4 @@ RUN npm ci --omit=dev
 
 COPY . .
 
-CMD ["sh", "-c", "node deploy-commands.js && node index.js"]
+CMD ["sh", "-c", "npm run deploy:global && node index.js"]
