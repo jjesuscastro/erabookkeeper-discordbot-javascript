@@ -40,7 +40,7 @@ for (const folder of commandFolders) {
     }
 }
 
-client.once('ready', async () => {
+client.once('clientReady', async () => {
     console.log(`Ready! Logged in as ${client.user.tag}`);
     try {
         const { getAllProfiles, getShopItems } = require('./utils/sheets');
