@@ -1,6 +1,6 @@
 // /buy <item> <quantity> — purchase an item from the shop
 // Autocomplete reads from shop cache (warmed by /shop); falls back to Sheets if cache is cold
-/*
+
 const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 const { getUser, getShopItems, deductBalance, addInventoryItem } = require('../../utils/sheets');
 const { getShopCache, clearInventoryCache } = require('../../utils/cache');
@@ -74,4 +74,3 @@ module.exports = {
         }
     },
 };
-*/

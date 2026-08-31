@@ -2,7 +2,7 @@
 // Autocomplete reads from inventory cache (warmed by /inventory); falls back to Sheets if cold
 
 const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
-const { getUser, getInventory, removeInventoryItem } = require('../../utils/sheets');
+const { getUser, getInventory, removeInventoryItem, addPoints } = require('../../utils/sheets');
 const { getInventoryCache, clearInventoryCache } = require('../../utils/cache');
 
 module.exports = {
@@ -31,14 +31,24 @@ module.exports = {
 
         await interaction.deferReply();
         try {
-            const { characterName } = await getUser(interaction.user.id);
+            const { characterName, house } = await getUser(interaction.user.id);
+            let embed;
+            
             await removeInventoryItem(characterName, itemName, quantity);
             clearInventoryCache(interaction.user.id); // inventory changed — force fresh fetch on next autocomplete
-            
-            const embed = new EmbedBuilder()
+            if(itemName == "House Mascot Plush"){
+                const newBalance = await addPoints(house, 20);
+                embed = new EmbedBuilder()
+                .setTitle('House Mascot Plush Used!')
+                .setColor(0xB7B75F)
+                .setDescription(`<@${target.id}> used their **${itemName}**.\n+20 points to **${house}**!`);
+            }
+            else{
+                embed = new EmbedBuilder()
                 .setTitle('Item Used!')
                 .setColor(0xB7B75F)
                 .setDescription(`<@${target.id}> used x${quantity} **${itemName}**`);
+            }
 
             await interaction.editReply({ embeds: [embed] });
         } catch (err) {
@@ -54,7 +64,7 @@ module.exports = {
                 const embed = new EmbedBuilder()
                     .setTitle('❌ Uh oh...')
                     .setColor(0xEBBCA2)
-                    .setDescription(`You don't have enough **${itemName}** to transfer.`)
+                    .setDescription(`You don't have enough **${itemName}** to use.`)
                 await interaction.editReply({ embeds: [embed] });
             }
             else await interaction.editReply(`Error: ${err.message}`);
