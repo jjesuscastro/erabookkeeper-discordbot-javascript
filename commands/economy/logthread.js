@@ -460,7 +460,7 @@ module.exports = {
 
                 result.userId = tupperuser ?? '';
                 if (result.userId !== '') {
-                    if (playerChara == 'TRUE') {
+                    if (playerChara.toUpperCase() == 'TRUE') {
                         const { house } = await getUser(tupperuser);
                         if (house == 'Astra' && result.words > 125)
                             astra++;

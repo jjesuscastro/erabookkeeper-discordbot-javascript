@@ -19,7 +19,7 @@ module.exports = {
 
             allTuppers.sort((a,b) => b.tupperName - a.tupperName );
             
-            var list = allTuppers.map(i => i.playerChara==='TRUE' ? `**${i.tupperName}** - \`PLAYER CHARACTER\``:`**${i.tupperName}** - \`NPC\``).join('\n');
+            var list = allTuppers.map(i => i.playerChara.toUpperCase()=='TRUE' ? `**${i.tupperName}** - \`PLAYER CHARACTER\``:`**${i.tupperName}** - \`NPC\``).join('\n');
             
             if (allTuppers.length === 0) list = "No tuppers registered :("
             
