@@ -2,7 +2,7 @@
 // Autocomplete reads from shop cache (warmed by /shop); falls back to Sheets if cache is cold
 
 const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
-const { getUser, getShopItems, deductBalance, addInventoryItem } = require('../../utils/sheets');
+const { getUser, getShopItems, deductBalance, addInventoryItem, getInventoryItem } = require('../../utils/sheets');
 const { getShopCache, clearInventoryCache } = require('../../utils/cache');
 const shop = require('./shop');
 
@@ -53,6 +53,17 @@ module.exports = {
 
                     return interaction.editReply({ embeds: [embed] });
             } 
+            if (shopItem == 'House Mascot Plush'){
+                const existing = await getInventoryItem(characterName, itemName);
+                if (existing){
+                    const embed = new EmbedBuilder()
+                    .setTitle('❌ Uh oh...')
+                    .setColor(0xEBBCA2)
+                    .setDescription(`You already have a plush in your inventory!`)
+
+                    return interaction.editReply({ embeds: [embed] });
+                }
+            }
             const newBalance = await deductBalance(interaction.user.id, totalCost);
             await addInventoryItem(characterName, shopItem.name, quantity);
             clearInventoryCache(interaction.user.id); // inventory changed — force fresh fetch on next autocomplete
