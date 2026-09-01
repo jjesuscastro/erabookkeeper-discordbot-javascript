@@ -20,8 +20,14 @@ module.exports = {
             const embed = new EmbedBuilder()
                 .setTitle('Eirenhel Services')
                 .setColor(0xB7B75F)
-                .setDescription(items.map(i => `**${i.name}** — *${i.price} edels* \n > ${i.itemdesc} \n`).join('\n'))
-                .setFooter(`Every shop item is a one time \`/use\``);
+                .setDescription(items.map(i => !(i.name.includes('Potion')) ? `**${i.name}** — *${i.price} edels* \n > ${i.itemdesc} \n` : '').join('\n'))
+                .setFooter({text:`Every shop item is a one time \`/use\``});
+
+            const embed1 = new EmbedBuilder()
+                .setColor(0xB7B75F)
+                .setDescription(items.map(i => i.name.includes('Potion') ? `**${i.name}** — *${i.price} edels* \n > ${i.itemdesc} \n` : '').join('\n'))
+                //.setDescription(items.map(i => `**${i.name}** — *${i.price} edels* \n > ${i.itemdesc} \n`).join('\n'))
+                .setFooter({text:`Every shop item is a one time \`/use\``});
 
             await interaction.editReply({ embeds: [embed] });
         } catch (err) {
