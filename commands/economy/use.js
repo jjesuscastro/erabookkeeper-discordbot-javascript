@@ -43,6 +43,23 @@ module.exports = {
                 .setColor(0xB7B75F)
                 .setDescription(`<@${target.id}> used their **${itemName}**.\n+20 points to **${house}**!`);
             }
+            if(itemName == "Unknown Potion"){
+                const choices = [
+                    '2P Potion: Your personality is does a 180.',
+                    'Kemonomimi Potion: You grow ears and a tail! (Animal of your choice)',    
+                    'Hair Potion: Your hair length and color changes. (Length/Color of your choice)',
+                    'Voice Potion: You can only yell.'
+                ];
+                const size = choices.length;
+
+                const final = Math.floor(Math.random() * size) + 1; 
+                const hours = Math.floor(Math.random() * 24) + 1; 
+
+                embed = new EmbedBuilder()
+                    .setTitle(`Unknown Potion Used!`)
+                    .setColor(0xB7B75F)
+                    .setDescription(`${choices[final-1]}\nLasts for ${hours} hours.`);
+            }
             else{
                 embed = new EmbedBuilder()
                 .setTitle('Item Used!')
