@@ -2,7 +2,7 @@
 // Autocomplete reads from shop cache (warmed by /shop); falls back to Sheets if cache is cold
 
 const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
-const { getUser, getShopItems, deductBalance, addInventoryItem, getInventoryItem } = require('../../utils/sheets');
+const { getUser, getShopItems, deductBalance, addInventoryItem, getInventory } = require('../../utils/sheets');
 const { getShopCache, clearInventoryCache } = require('../../utils/cache');
 const shop = require('./shop');
 
