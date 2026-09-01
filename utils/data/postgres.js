@@ -387,6 +387,7 @@ module.exports = {
     addBalance,
     deductBalance,
     getAllBalances,
+    getInventoryItem,
     getStandings,
     getHousePoints,
     addPoints,
