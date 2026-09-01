@@ -54,8 +54,9 @@ module.exports = {
                     return interaction.editReply({ embeds: [embed] });
             } 
             if (shopItem.name.toLowerCase() == 'house mascot plush'){
-                const existing = await getInventoryItem(characterName, itemName);
-                if (existing){
+                const allItems = await getInventory(characterName);
+                const existing = allItems.filter(i => i.itemName == 'House Mascot Plush');
+                if (existing.length > 0){
                     const embed = new EmbedBuilder()
                     .setTitle('❌ Uh oh...')
                     .setColor(0xEBBCA2)
