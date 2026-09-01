@@ -53,7 +53,7 @@ module.exports = {
 
                     return interaction.editReply({ embeds: [embed] });
             } 
-            if (shopItem.toLowerCase() == 'house mascot plush'){
+            if (shopItem == 'house mascot plush'){
                 const existing = await getInventoryItem(characterName, itemName);
                 if (existing){
                     const embed = new EmbedBuilder()
