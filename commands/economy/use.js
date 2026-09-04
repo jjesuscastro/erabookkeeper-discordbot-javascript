@@ -37,11 +37,11 @@ module.exports = {
             await removeInventoryItem(characterName, itemName, quantity);
             clearInventoryCache(interaction.user.id); // inventory changed — force fresh fetch on next autocomplete
             if(itemName == "House Mascot Plush"){
-                const newBalance = await addPoints(house, 20);
+                const newBalance = await addPoints(house, 30);
                 embed = new EmbedBuilder()
                 .setTitle('House Mascot Plush Used!')
                 .setColor(0xB7B75F)
-                .setDescription(`<@${target.id}> used their **${itemName}**.\n+20 points to **${house}**!`);
+                .setDescription(`<@${target.id}> used their **${itemName}**.\n+30 points to **${house}**!`);
             }
             else if(itemName == 'Unknown Potion'){
                 const choices = [
