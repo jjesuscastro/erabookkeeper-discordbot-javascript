@@ -4,6 +4,7 @@
 const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 const { getUser, getShopItems, getInventory, purchaseShopItem } = require('../../utils/sheets');
 const { getShopCache, setShopCache, clearInventoryCache } = require('../../utils/cache');
+const { logStockDeduction } = require('../../utils/logger');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -67,6 +68,12 @@ module.exports = {
             const purchase = await purchaseShopItem(interaction.user.id, characterName, shopItem.name, quantity);
             clearInventoryCache(interaction.user.id);
             setShopCache(null);
+            logStockDeduction(interaction, {
+                itemName: purchase.itemName,
+                quantity,
+                previousStock: purchase.previousStock,
+                currentStock: purchase.remainingStock,
+            });
 
             let edels = 'edels';
             if (purchase.newBalance === 1) edels = 'edel';

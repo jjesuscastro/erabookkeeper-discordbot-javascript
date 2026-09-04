@@ -120,6 +120,20 @@ function logAutocompleteUsage(interaction) {
     }));
 }
 
+function logStockDeduction(interaction, stockChange) {
+    console.log(`[${getTimestamp()}] Stock deducted`, util.inspect({
+        interaction: describeInteraction(interaction),
+        item: stockChange.itemName,
+        quantity: stockChange.quantity,
+        previousStock: stockChange.previousStock,
+        currentStock: stockChange.currentStock,
+    }, {
+        depth: 5,
+        colors: false,
+        maxArrayLength: 50,
+    }));
+}
+
 function logInteractionError(label, error, interaction, extra = {}) {
     const payload = {
         label,
@@ -139,5 +153,6 @@ function logInteractionError(label, error, interaction, extra = {}) {
 module.exports = {
     logAutocompleteUsage,
     logCommandUsage,
+    logStockDeduction,
     logInteractionError,
 };

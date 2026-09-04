@@ -387,6 +387,7 @@ async function purchaseShopItem(userId, characterName, itemName, quantity) {
             itemName: shopItem.rows[0].name,
             newBalance,
             totalCost,
+            previousStock: stock,
             remainingStock: stock - quantity,
         };
     });
