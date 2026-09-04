@@ -267,13 +267,14 @@ async function getTupperList(user) {
 
 async function getShopItems() {
     const res = await pool.query(
-        'SELECT name, price, description FROM shop_items ORDER BY name ASC',
+        'SELECT name, price, description, stock FROM shop_items ORDER BY name ASC',
     );
 
     return res.rows.map(row => ({
         name: row.name,
         price: parseInt(row.price || '0', 10),
         itemdesc: row.description,
+        stock: parseInt(row.stock || '0', 10),
     }));
 }
 
@@ -312,26 +313,82 @@ async function getInventoryItem(client, characterName, itemName, lock = false) {
 
 async function addInventoryItem(characterName, itemName, quantity) {
     return withTransaction(async client => {
-        const existing = await getInventoryItem(client, characterName, itemName, true);
+        await addInventoryItemWithClient(client, characterName, itemName, quantity);
+    });
+}
 
-        if (existing) {
-            await client.query(
-                `
-                UPDATE inventory
-                SET quantity = quantity + $3
-                WHERE owner = $1 AND item_name = $2
-                `,
-                [existing.owner, existing.item_name, quantity],
-            );
-        } else {
-            await client.query(
-                `
-                INSERT INTO inventory (owner, item_name, quantity)
-                VALUES ($1, $2, $3)
-                `,
-                [characterName, itemName, quantity],
-            );
+async function addInventoryItemWithClient(client, characterName, itemName, quantity) {
+    const existing = await getInventoryItem(client, characterName, itemName, true);
+
+    if (existing) {
+        await client.query(
+            `
+            UPDATE inventory
+            SET quantity = quantity + $3
+            WHERE owner = $1 AND item_name = $2
+            `,
+            [existing.owner, existing.item_name, quantity],
+        );
+    } else {
+        await client.query(
+            `
+            INSERT INTO inventory (owner, item_name, quantity)
+            VALUES ($1, $2, $3)
+            `,
+            [characterName, itemName, quantity],
+        );
+    }
+}
+
+async function purchaseShopItem(userId, characterName, itemName, quantity) {
+    return withTransaction(async client => {
+        const shopItem = await client.query(
+            `
+            SELECT name, price, stock
+            FROM shop_items
+            WHERE lower(name) = lower($1)
+            FOR UPDATE
+            `,
+            [itemName],
+        );
+
+        if (!shopItem.rows[0]) throw new Error('Item not found.');
+
+        const stock = parseInt(shopItem.rows[0].stock || '0', 10);
+        if (stock < quantity) throw new Error('No stocks left.');
+
+        const price = parseInt(shopItem.rows[0].price || '0', 10);
+        const totalCost = price * quantity;
+
+        const profile = await client.query(
+            'SELECT balance FROM profiles WHERE discord_id = $1 FOR UPDATE',
+            [String(userId)],
+        );
+
+        if (!profile.rows[0]) {
+            throw new Error("You don't have a profile set up. Contact an admin.");
         }
+
+        const balance = parseInt(profile.rows[0].balance || '0', 10);
+        if (balance < totalCost) throw new Error('Insufficient funds.');
+
+        const newBalance = balance - totalCost;
+        await client.query(
+            'UPDATE profiles SET balance = $2 WHERE discord_id = $1',
+            [String(userId), newBalance],
+        );
+        await client.query(
+            'UPDATE shop_items SET stock = stock - $2 WHERE name = $1',
+            [shopItem.rows[0].name, quantity],
+        );
+        await addInventoryItemWithClient(client, characterName, shopItem.rows[0].name, quantity);
+
+        return {
+            itemName: shopItem.rows[0].name,
+            newBalance,
+            totalCost,
+            remainingStock: stock - quantity,
+        };
     });
 }
 
@@ -399,5 +456,6 @@ module.exports = {
     getShopItems,
     getInventory,
     addInventoryItem,
+    purchaseShopItem,
     removeInventoryItem,
 };

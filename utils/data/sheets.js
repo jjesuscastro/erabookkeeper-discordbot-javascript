@@ -319,6 +319,22 @@ async function addInventoryItem(characterName, itemName, quantity) {
     }
 }
 
+async function purchaseShopItem(userId, characterName, itemName, quantity) {
+    const items = await getShopItems();
+    const shopItem = items.find(i => i.name.toLowerCase() === itemName.toLowerCase());
+    if (!shopItem) throw new Error('Item not found.');
+
+    const totalCost = shopItem.price * quantity;
+    const newBalance = await deductBalance(userId, totalCost);
+    await addInventoryItem(characterName, shopItem.name, quantity);
+
+    return {
+        itemName: shopItem.name,
+        newBalance,
+        totalCost,
+    };
+}
+
 // Removes quantity from an inventory row; deletes the row entirely if it hits 0.
 // Throws if the character doesn't own the item or has insufficient quantity.
 async function removeInventoryItem(characterName, itemName, quantity) {
@@ -358,5 +374,6 @@ module.exports = {
     getShopItems,
     getInventory,
     addInventoryItem,
+    purchaseShopItem,
     removeInventoryItem,
 };

@@ -18,9 +18,12 @@ CREATE TABLE IF NOT EXISTS shop_items (
     name TEXT PRIMARY KEY,
     price INTEGER NOT NULL DEFAULT 0 CHECK (price >= 0),
     description TEXT,
+    stock INTEGER NOT NULL DEFAULT 0 CHECK (stock >= 0),
     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
+
+ALTER TABLE shop_items ADD COLUMN IF NOT EXISTS stock INTEGER NOT NULL DEFAULT 0 CHECK (stock >= 0);
 
 CREATE TABLE IF NOT EXISTS inventory (
     owner TEXT NOT NULL,
