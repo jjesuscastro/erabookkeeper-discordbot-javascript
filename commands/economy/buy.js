@@ -1,4 +1,4 @@
-// /buy <item> <quantity> - purchase an item from the shop
+// /buy <item> <quantity> — purchase an item from the shop
 // Autocomplete reads from shop cache (warmed by /shop); falls back to the data source if cache is cold.
 
 const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
@@ -17,7 +17,7 @@ module.exports = {
 
     async autocomplete(interaction) {
         const items = getShopCache() ?? await getShopItems();
-        await interaction.respond(items.map(i => ({ name: `${i.name} - ${i.price}`, value: i.name })));
+        await interaction.respond(items.map(i => ({ name: `${i.name} — ${i.price}`, value: i.name })));
     },
 
     async execute(interaction) {
@@ -30,7 +30,7 @@ module.exports = {
             const shopItem = items.find(i => i.name.toLowerCase() === itemName.toLowerCase());
             if (!shopItem) {
                 const embed = new EmbedBuilder()
-                    .setTitle('Uh oh...')
+                    .setTitle('❌ Uh oh...')
                     .setColor(0xEBBCA2)
                     .setDescription(`**${itemName}** not found. Check out \`/shop\` to see our available items.`);
 
@@ -45,7 +45,7 @@ module.exports = {
                 if (balance === 1) edels = 'edel';
 
                 const embed = new EmbedBuilder()
-                    .setTitle('Uh oh...')
+                    .setTitle('❌ Uh oh...')
                     .setColor(0xEBBCA2)
                     .setDescription(`You don't have enough money! You only have ${balance} ${edels}.`);
 
@@ -57,7 +57,7 @@ module.exports = {
                 const existing = allItems.filter(i => i.itemName === 'House Mascot Plush');
                 if (existing.length > 0) {
                     const embed = new EmbedBuilder()
-                        .setTitle('Uh oh...')
+                        .setTitle('❌ Uh oh...')
                         .setColor(0xEBBCA2)
                         .setDescription('You already have a plush in your inventory!');
 
@@ -79,10 +79,10 @@ module.exports = {
             if (purchase.newBalance === 1) edels = 'edel';
 
             const embed = new EmbedBuilder()
-                .setTitle('Item bought!')
+                .setTitle('🛍️ Item bought!')
                 .setColor(0xB7B75F)
                 .setDescription(`Purchased x${quantity} **${purchase.itemName}** for ${purchase.totalCost} edels.`)
-                .setFooter({ text: `- New balance: ${purchase.newBalance} ${edels}.` });
+                .setFooter({ text: `— New balance: ${purchase.newBalance} ${edels}.` });
 
             await interaction.editReply({ embeds: [embed] });
         } catch (err) {
