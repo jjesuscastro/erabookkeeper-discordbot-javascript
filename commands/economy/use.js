@@ -44,13 +44,24 @@ module.exports = {
                 .setDescription(`<@${target.id}> used their **${itemName}**.\n+30 points to **${house}**!`);
             }
             else if(itemName.toLowerCase() == 'unknown potion'){
-                const choices = [
+                let choices = [
                     '2P Potion: Your personality is does a 180.',
                     'Kemonomimi Potion: You grow ears and a tail! (Animal of your choice)',    
                     'Hair Potion: Your hair length and color changes. (Length/Color of your choice)',
                     'Screaming Potion: You can only yell.',
-                    ''
+                    'Genderbend Potion: You are now the opposite gender.',
+                    'Truth Potion: You can only speak the truth.',
+                    'Invisibility Potion: You suddenly turn invisible.',
+                    'Shrinking Potion: You are now 10 centimeters tall.',
+                    'Growth Potion: You are now 20 centimeters taller.',
+                    'Cloud Potion: YOu are now floating 2 feet off the ground.',
+                    'Luck Potion: +3 on all rolls.'
                 ];
+                if(target.username == 'faeruumi'){
+                    choices = [
+                        'Kemonomimi Potion: You grow ears and a tail! (Animal of your choice)'
+                    ];
+                }
                 const size = choices.length;
 
                 const final = Math.floor(Math.random() * size) + 1; 
