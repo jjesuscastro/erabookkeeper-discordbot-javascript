@@ -8,7 +8,7 @@ const { getInventoryCache, clearInventoryCache } = require('../../utils/cache');
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('use')
-        .setDescription('Use (consume) an item from your inventory')
+        .setDescription('Use (remove) an item from your inventory')
         .addStringOption(opt =>
             opt.setName('item').setDescription('Item name').setRequired(true).setAutocomplete(true))
         .addIntegerOption(opt =>
@@ -48,7 +48,8 @@ module.exports = {
                     '2P Potion: Your personality is does a 180.',
                     'Kemonomimi Potion: You grow ears and a tail! (Animal of your choice)',    
                     'Hair Potion: Your hair length and color changes. (Length/Color of your choice)',
-                    'Screaming Potion: You can only yell.'
+                    'Screaming Potion: You can only yell.',
+                    ''
                 ];
                 const size = choices.length;
 
