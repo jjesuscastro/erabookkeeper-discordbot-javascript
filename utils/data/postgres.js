@@ -334,17 +334,18 @@ async function addInventoryItemWithClient(client, characterName, itemName, quant
             `
             UPDATE inventory
             SET quantity = quantity + $3
+                type = $4
             WHERE owner = $1 AND item_name = $2
             `,
-            [existing.owner, existing.item_name, quantity],
+            [existing.owner, existing.item_name, quantity, "true"],
         );
     } else {
         await client.query(
             `
-            INSERT INTO inventory (owner, item_name, quantity)
-            VALUES ($1, $2, $3)
+            INSERT INTO inventory (owner, item_name, quantity, type)
+            VALUES ($1, $2, $3, $4)
             `,
-            [characterName, itemName, quantity],
+            [characterName, itemName, quantity, "true"],
         );
     }
 }
