@@ -1,6 +1,6 @@
   
 const { SlashCommandBuilder, EmbedBuilder, PermissionFlagsBits } = require('discord.js');
-const { getUser, addInventoryItem } = require('../../utils/sheets');
+const { getUser, addInventoryItem, addBalance } = require('../../utils/sheets');
 const { clearInventoryCache } = require('../../utils/cache');
 
 module.exports = {
@@ -19,6 +19,7 @@ module.exports = {
 
         await interaction.deferReply();
         try {
+            const target = await resolveTarget(`<@${input.id}>`);
             const { characterName } = await getUser(input.id);
 
             if (!messageLink){
@@ -77,6 +78,7 @@ module.exports = {
                 else
                     ;//await addInventoryItem(characterName, item, 1);
             }
+            //await addBalance(target.discordId, edels);
             const filteredItems = items.filter(item => !(item.includes('edels')));
                 
 
