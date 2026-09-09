@@ -37,7 +37,16 @@ module.exports = {
             }
 
             const { characterName, age, pronouns, height, profile, balance, lastDaily, house, birthday, picture } = await getUser(userId);
-            
+            let emote;
+            if(house == 'Astra'){
+                emote = '<:astra:1532787819792306397>'
+            }
+            if(house == 'Luna'){
+                emote = '<:luna:1532790119344504934>'
+            }
+            if(house == 'Solis'){
+                emote = '<:solis:1532790790407979080>'
+            }
             const embed = new EmbedBuilder()
                 .setTitle(`✧ ${characterName}`)
                 .setColor(0xB7B75F)
@@ -46,7 +55,7 @@ module.exports = {
                     { name: 'Age',      value: age      || '—', inline: true },
                     { name: 'Pronouns', value: pronouns || '—', inline: true },
                     { name: 'Birthday', value: birthday || '—', inline: true },
-                    { name: 'House',    value: `:${house.toLowerCase()}: ${house}`    || '—', inline: true },
+                    { name: 'House',    value: `${emote} ${house}`    || '—', inline: true },
                     { name: 'Height',   value: height   || '—', inline: true },
                     { name: 'Profile',  value: `[Link](${profile})`  || '—', inline: true },
                     { name: 'Mun',      value: `<@${userId}>` || '—', inline: true },
