@@ -59,7 +59,7 @@ module.exports = {
                 throw new Error(`Could not find or access the message.`);
             }
             messagecontent = message.content;
-            messagecontent = messagecontent.slice(3, -3);
+            messagecontent = messagecontent.slice(4, -3);
             messagecontent = messagecontent.trim();
             const items = messagecontent.split('-');
             items.forEach((item, index) => {
@@ -74,7 +74,7 @@ module.exports = {
             const embed = new EmbedBuilder()
             .setTitle('🛍️ Items Given!')
             .setColor(0xB7B75F)
-            .setDescription(`**${items}**\n\nto <@${input.discordId}>`);
+            .setDescription(`**${items}**\n\nto <@${input.id}>`);
             //.setDescription(`Gave x${quantity} **${itemName}** to ${input.username}.`)
 
             await interaction.editReply({ embeds: [embed] });
