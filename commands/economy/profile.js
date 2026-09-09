@@ -46,7 +46,7 @@ module.exports = {
                     { name: 'Age',      value: age      || '—', inline: true },
                     { name: 'Pronouns', value: pronouns || '—', inline: true },
                     { name: 'Birthday', value: birthday || '—', inline: true },
-                    { name: 'House',    value: house    || '—', inline: true },
+                    { name: 'House',    value: `:${house.toLowerCase()}: ${house}`    || '—', inline: true },
                     { name: 'Height',   value: height   || '—', inline: true },
                     { name: 'Profile',  value: `[Link](${profile})`  || '—', inline: true },
                     { name: 'Mun',      value: `<@${userId}>` || '—', inline: true },

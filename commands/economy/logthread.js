@@ -179,7 +179,7 @@ async function grantEdels(results, astra, solis, luna) {
         .setDescription(grantDesc);
 }
 
-function buildLogEmbed({ startLink, endLink, totalWords, messageCount, description, payouts, unmatched, period, housepay }) {
+function buildLogEmbed({ startLink, endLink, totalWords, messageCount, description, payouts, unmatched, period, housepay, note }) {
     let bonus;
 
     if (period === 'Monthly Event')
@@ -202,7 +202,8 @@ function buildLogEmbed({ startLink, endLink, totalWords, messageCount, descripti
             buildEmbedField('BONUS', bonus ? `\`+ ${bonus}\` edels!` : `No event bonuses.`),
             buildEmbedField('', ''),
             buildEmbedField('HOUSE POINTS', housepay),
-        );
+        )
+        .setFooter({text:`Submission Note: ${note}`});
 
     //if (unmatched) {
     //    embed.addFields(
@@ -377,7 +378,10 @@ module.exports = {
         .addStringOption(opt =>
             opt.setName('start').setDescription('Start message ID or link').setRequired(false))
         .addStringOption(opt =>
-            opt.setName('end').setDescription('End message ID or link').setRequired(false)),
+            opt.setName('end').setDescription('End message ID or link').setRequired(false))
+        .addStringOption(opt =>
+            opt.setName('note').setDescription('mun note (prompts/assignment/etcc').setRequired(false)),
+
 
     async execute(interaction) {
         const threadInput = interaction.options.getString('thread');
@@ -385,7 +389,8 @@ module.exports = {
         const endInput = interaction.options.getString('end');
         const isThreadMode = Boolean(threadInput) && !startInput && !endInput;
         const isRangeMode = !threadInput && Boolean(startInput) && Boolean(endInput);
-
+        const note = interaction.options.getString('note');
+        
         if (!isThreadMode && !isRangeMode) {
             return interaction.reply({
                 content: 'Provide either `thread` by itself, or provide both `start` and `end`.',
@@ -566,6 +571,7 @@ module.exports = {
                 unmatched: buildUnmatchedText(snapshot),
                 period,
                 housepay: buildHouseText(snapshot),
+                note: note,
             });
 
             const reply = await interaction.editReply({
