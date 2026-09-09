@@ -59,15 +59,15 @@ module.exports = {
                 throw new Error(`Could not find or access the message.`);
             }
             messagecontent = message.content;
-            messagecontent = messagecontent.slice(4, -3);
+            messagecontent = messagecontent.slice(5, -3);
             messagecontent = messagecontent.trim();
             const items = messagecontent.split('-');
             items.forEach((item, index) => {
                 items[index] = item.trim();
             });
 
-            for (const item of items)
-                await addInventoryItem(characterName, item, 1);
+            //for (const item of items)
+            //    await addInventoryItem(characterName, item, 1);
 
             clearInventoryCache(input.id); // inventory changed — force fresh fetch on next autocomplete
             
