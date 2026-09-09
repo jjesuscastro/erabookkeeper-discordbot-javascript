@@ -67,8 +67,8 @@ module.exports = {
                 items[index] = item.trim();
             });
 
-            //for (const item of items)
-            //    await addInventoryItem(characterName, item, 1);
+            for (const item of items)
+                await addInventoryItem(characterName, item, 1);
 
             clearInventoryCache(input.id); // inventory changed — force fresh fetch on next autocomplete
             
