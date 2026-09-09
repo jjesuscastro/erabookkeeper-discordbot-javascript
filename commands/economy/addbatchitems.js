@@ -54,7 +54,7 @@ module.exports = {
             }
 
             try {
-                message = await channel.messages.fetch(parsed.messageId)
+                message = await channel.messages.fetch(messageId)
             } catch {
                 throw new Error(`Could not find or access the message.`);
             }
