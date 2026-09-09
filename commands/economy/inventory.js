@@ -24,7 +24,20 @@ module.exports = {
             items.sort((a,b) => b.quantity - a.quantity );
             const line = `**BALANCE**\n\`\`\`✧ ${balance} edels ✧\`\`\`\n**ITEMS**\n`;
             
-            var inv = items.map(i => `\`x${i.quantity.toString().padStart(items[0].quantity.toString().length)}\` **${i.itemName}**`).join('\n');
+            let inv1 = [];
+            let inv2 = [];
+
+            for(const i of items){
+                if(!(i.type == 'shop')){
+                    inv1.push(`\`x${i.quantity.toString().padStart(items[0].quantity.toString().length)}\` **${i.itemName}** \n`);
+                }
+                else
+                    inv2.push(`\`x${i.quantity.toString().padStart(items[0].quantity.toString().length)}\` **${i.itemName}** \n`);
+            }
+            if(inv2.length === 0)
+                inv2.push("Nothing inside :(")
+            
+            var inv = "**SHOP ITEMS**\n" + inv1.join("\n") + "\n**MISC ITEMS**\n" + inv2.join("\n");
             
             if (items.length === 0) inv = "Nothing inside :("
             

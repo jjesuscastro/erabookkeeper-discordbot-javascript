@@ -289,7 +289,7 @@ async function getShopItems() {
 async function getInventory(characterName) {
     const res = await pool.query(
         `
-        SELECT owner, item_name, quantity
+        SELECT owner, item_name, quantity, type
         FROM inventory
         WHERE lower(owner) = lower($1)
         ORDER BY item_name ASC
@@ -301,6 +301,7 @@ async function getInventory(characterName) {
         rowIndex: `${row.owner}:${row.item_name}`,
         itemName: row.item_name,
         quantity: parseInt(row.quantity || '0', 10),
+        type: row.type,
     }));
 }
 
