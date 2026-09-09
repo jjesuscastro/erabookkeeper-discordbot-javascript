@@ -39,7 +39,7 @@ module.exports = {
 
             const totalCost = shopItem.price * quantity;
 
-            const { characterName, balance } = await getUser(interaction.user.id);
+            const { characterName, balance, plush } = await getUser(interaction.user.id);
             if (balance < totalCost) {
                 let edels = 'edels';
                 if (balance === 1) edels = 'edel';
@@ -60,6 +60,14 @@ module.exports = {
                         .setTitle('❌ Uh oh...')
                         .setColor(0xEBBCA2)
                         .setDescription('You already have a plush in your inventory!');
+
+                    return interaction.editReply({ embeds: [embed] });
+                }
+                if(plush =='true'){
+                    const embed = new EmbedBuilder()
+                        .setTitle('❌ Uh oh...')
+                        .setColor(0xEBBCA2)
+                        .setDescription('You already bought a plush this month!');
 
                     return interaction.editReply({ embeds: [embed] });
                 }

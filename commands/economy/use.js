@@ -59,7 +59,12 @@ module.exports = {
                 ];
                 if(target.username == 'faeruumi'){
                     choices = [
-                        'Kemonomimi Potion: You grow ears and a tail! (Animal of your choice)'
+                        'Kemonomimi Potion: You grow ears and a tail! (Animal of your choice)',
+                        'Cloud Potion: YOu are now floating 2 feet off the ground.',
+                        'Luck Potion: +3 on all rolls.',
+                        'Shrinking Potion: You are now 10 centimeters tall.',
+                        'Genderbend Potion: You are now the opposite gender.',
+                        'Hair Potion: Your hair length and color changes. (Length/Color of your choice)',
                     ];
                 }
                 const size = choices.length;
