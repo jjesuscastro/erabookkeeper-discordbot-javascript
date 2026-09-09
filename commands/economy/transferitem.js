@@ -3,7 +3,7 @@
 // Item autocomplete reads from sender's inventory cache; falls back to Sheets if cold
 const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 const { getUser, getInventory, removeInventoryItem, addInventoryItem } = require('../../utils/sheets');
-const { getInventoryCache, clearInventoryCache } = require('../../utils/cache');
+const { getInventoryCache, clearInventoryCache, getShopCache } = require('../../utils/cache');
 const { resolveTarget, autocompleteProfiles } = require('../../utils/resolver');
 
 module.exports = {
@@ -55,7 +55,14 @@ module.exports = {
             const { characterName: senderName } = await getUser(sender.id);
 
             await removeInventoryItem(senderName, itemName, quantity);
-            await addInventoryItem(target.characterName, itemName, quantity);
+            const shopitems = getShopCache() ?? await getShopItems();
+            const shopItem = shopitems.find(i => i.name.toLowerCase() === itemName.toLowerCase());
+            
+            if(shopItem)
+                await addInventoryItem(target.characterName, itemName, 1, "shop");
+            else
+                await addInventoryItem(target.characterName, itemName, 1, "junk");
+            //await addInventoryItem(target.characterName, itemName, quantity);
             clearInventoryCache(sender.id);
             clearInventoryCache(target.discordId);
 

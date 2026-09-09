@@ -3,7 +3,7 @@
 
 const { SlashCommandBuilder, EmbedBuilder, PermissionFlagsBits } = require('discord.js');
 const { getUser, addInventoryItem } = require('../../utils/sheets');
-const { clearInventoryCache } = require('../../utils/cache');
+const { clearInventoryCache, getShopCache } = require('../../utils/cache');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -26,7 +26,13 @@ module.exports = {
         try {
             const { characterName } = await getUser(input.id);
 
-            await addInventoryItem(characterName, itemName, quantity);
+            const shopitems = getShopCache() ?? await getShopItems();
+            const shopItem = shopitems.find(i => i.name.toLowerCase() === itemName.toLowerCase());
+            if(shopItem)
+                await addInventoryItem(characterName, itemName, 1, "shop");
+            else
+                await addInventoryItem(characterName, itemName, 1, "junk");
+
             clearInventoryCache(input.id); // inventory changed — force fresh fetch on next autocomplete
             
             const embed = new EmbedBuilder()

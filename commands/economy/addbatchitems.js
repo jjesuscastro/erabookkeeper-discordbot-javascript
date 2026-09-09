@@ -1,7 +1,7 @@
   
 const { SlashCommandBuilder, EmbedBuilder, PermissionFlagsBits } = require('discord.js');
 const { getUser, addInventoryItem, addBalance } = require('../../utils/sheets');
-const { clearInventoryCache } = require('../../utils/cache');
+const { clearInventoryCache, getShopCache } = require('../../utils/cache');
 const { resolveTarget } = require('../../utils/resolver');
 
 
@@ -24,6 +24,7 @@ module.exports = {
             const target = await resolveTarget(`<@${input.id}>`);
             const { characterName } = await getUser(input.id);
 
+            
             if (!messageLink){
                 throw new Error('Invalid Message Link.');
             }
@@ -77,8 +78,16 @@ module.exports = {
                     const edelvalue = item.split(" ");
                     edels+= parseInt(edelvalue[0]);
                 }
-                else
-                    await addInventoryItem(characterName, item, 1);
+                else{
+                    const shopitems = getShopCache() ?? await getShopItems();
+                    const shopItem = shopitems.find(i => i.name.toLowerCase() === item.toLowerCase());
+                    if(shopItem)
+                        await addInventoryItem(characterName, item, 1, "shop");
+                    else
+                        await addInventoryItem(characterName, item, 1, "junk");
+                    
+                }
+                    
             }
             await addBalance(target.discordId, edels);
             const filteredItems = items.filter(item => !(item.includes('edels')));

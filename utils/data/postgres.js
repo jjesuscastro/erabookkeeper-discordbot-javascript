@@ -337,7 +337,7 @@ async function addInventoryItemWithClient(client, characterName, itemName, quant
                 type = $4
             WHERE owner = $1 AND item_name = $2
             `,
-            [existing.owner, existing.item_name, quantity, "true"],
+            [existing.owner, existing.item_name, quantity, "shop"],
         );
     } else {
         await client.query(
@@ -345,7 +345,7 @@ async function addInventoryItemWithClient(client, characterName, itemName, quant
             INSERT INTO inventory (owner, item_name, quantity, type)
             VALUES ($1, $2, $3, $4)
             `,
-            [characterName, itemName, quantity, "true"],
+            [characterName, itemName, quantity, "shop"],
         );
     }
 }
