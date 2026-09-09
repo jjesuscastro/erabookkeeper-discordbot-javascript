@@ -188,7 +188,11 @@ function buildLogEmbed({ startLink, endLink, totalWords, messageCount, descripti
         bonus = 50;
     if (period == 'Assignment')
         bonus = 100;
-
+    let footer;
+    if (note == 'null')
+        footer = '';
+    else
+        footer = `Submission Note: ${note}`;
     const embed = new EmbedBuilder()
         .setTitle('Log RP')
         .setColor(0xB7B75F)
@@ -203,7 +207,7 @@ function buildLogEmbed({ startLink, endLink, totalWords, messageCount, descripti
             buildEmbedField('', ''),
             buildEmbedField('HOUSE POINTS', housepay),
         )
-        .setFooter({text:`Submission Note: ${note}`});
+        .setFooter({text: footer});
 
     //if (unmatched) {
     //    embed.addFields(
