@@ -320,13 +320,13 @@ async function getInventoryItem(client, characterName, itemName, lock = false) {
     return res.rows[0] || null;
 }
 
-async function addInventoryItem(characterName, itemName, quantity) {
+async function addInventoryItem(characterName, itemName, quantity, type) {
     return withTransaction(async client => {
-        await addInventoryItemWithClient(client, characterName, itemName, quantity);
+        await addInventoryItemWithClient(client, characterName, itemName, quantity, type);
     });
 }
 
-async function addInventoryItemWithClient(client, characterName, itemName, quantity) {
+async function addInventoryItemWithClient(client, characterName, itemName, quantity, type) {
     const existing = await getInventoryItem(client, characterName, itemName, true);
 
     if (existing) {
@@ -337,7 +337,7 @@ async function addInventoryItemWithClient(client, characterName, itemName, quant
                 type = $4
             WHERE owner = $1 AND item_name = $2
             `,
-            [existing.owner, existing.item_name, quantity, "shop"],
+            [existing.owner, existing.item_name, quantity, type],
         );
     } else {
         await client.query(
@@ -345,7 +345,7 @@ async function addInventoryItemWithClient(client, characterName, itemName, quant
             INSERT INTO inventory (owner, item_name, quantity, type)
             VALUES ($1, $2, $3, $4)
             `,
-            [characterName, itemName, quantity, "shop"],
+            [characterName, itemName, quantity, type],
         );
     }
 }
@@ -391,7 +391,7 @@ async function purchaseShopItem(userId, characterName, itemName, quantity) {
             'UPDATE shop_items SET stock = stock - $2 WHERE name = $1',
             [shopItem.rows[0].name, quantity],
         );
-        await addInventoryItemWithClient(client, characterName, shopItem.rows[0].name, quantity);
+        await addInventoryItemWithClient(client, characterName, shopItem.rows[0].name, quantity, "shop");
 
         return {
             itemName: shopItem.rows[0].name,
