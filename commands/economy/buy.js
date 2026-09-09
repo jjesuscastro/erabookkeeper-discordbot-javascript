@@ -55,14 +55,6 @@ module.exports = {
             if (shopItem.name.toLowerCase() === 'house mascot plush') {
                 const allItems = await getInventory(characterName);
                 const existing = allItems.filter(i => i.itemName === 'House Mascot Plush');
-                if (existing.length > 0) {
-                    const embed = new EmbedBuilder()
-                        .setTitle('❌ Uh oh...')
-                        .setColor(0xEBBCA2)
-                        .setDescription('You already have a plush in your inventory!');
-
-                    return interaction.editReply({ embeds: [embed] });
-                }
                 if(plush =='true'){
                     const embed = new EmbedBuilder()
                         .setTitle('❌ Uh oh...')
@@ -71,6 +63,15 @@ module.exports = {
 
                     return interaction.editReply({ embeds: [embed] });
                 }
+                if (existing.length > 0) {
+                    const embed = new EmbedBuilder()
+                        .setTitle('❌ Uh oh...')
+                        .setColor(0xEBBCA2)
+                        .setDescription('You already have a plush in your inventory!');
+
+                    return interaction.editReply({ embeds: [embed] });
+                }
+                
             }
 
             const purchase = await purchaseShopItem(interaction.user.id, characterName, shopItem.name, quantity);
