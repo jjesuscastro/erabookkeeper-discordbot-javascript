@@ -77,14 +77,14 @@ module.exports = {
                 else
                     ;//await addInventoryItem(characterName, item, 1);
             }
-
+            const filteredItems = items.filter(item => !(item.includes('edels')));
                 
 
             clearInventoryCache(input.id); // inventory changed — force fresh fetch on next autocomplete
             
-            var inv = items.map(i => `**${i}**`).join(', ');
+            var inv = filteredItems.map(i => `**${i}**`).join(', ');
             if(edels>0){
-                inv += `and ${edels} edels`;
+                inv += ` and **${edels} edels**`;
             }
             const embed = new EmbedBuilder()
             .setTitle('🛍️ Items Given!')
