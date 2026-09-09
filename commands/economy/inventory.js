@@ -28,15 +28,15 @@ module.exports = {
             let inv2 = [];
 
             for(const i of items){
-                if(!(i.type == 'shop')){
-                    inv1.push(`\`x${i.quantity.toString().padStart(items[0].quantity.toString().length)}\` **${i.itemName}** \n`);
+                if((i.type == 'shop')){
+                    inv1.push(`\`x${i.quantity.toString().padStart(items[0].quantity.toString().length)}\` **${i.itemName}**`);
                 }
                 else
-                    inv2.push(`\`x${i.quantity.toString().padStart(items[0].quantity.toString().length)}\` **${i.itemName}** \n`);
+                    inv2.push(`\`x${i.quantity.toString().padStart(items[0].quantity.toString().length)}\` **${i.itemName}**`);
             }
             if(inv2.length === 0)
                 inv2.push("Nothing inside :(")
-            
+
             var inv = "**SHOP ITEMS**\n" + inv1.join("\n") + "\n**MISC ITEMS**\n" + inv2.join("\n");
             
             if (items.length === 0) inv = "Nothing inside :("
