@@ -189,7 +189,7 @@ function buildLogEmbed({ startLink, endLink, totalWords, messageCount, descripti
     if (period == 'Assignment')
         bonus = 100;
     let footer;
-    if (note == 'null')
+    if (note == null)
         footer = '';
     else
         footer = `Submission Note: ${note}`;
