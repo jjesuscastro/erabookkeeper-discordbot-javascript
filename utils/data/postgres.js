@@ -46,6 +46,7 @@ function mapUser(row) {
         house: row.house || null,
         birthday: row.birthday || null,
         picture: row.picture || null,
+        plush: row.plush || '',
     };
 }
 
@@ -53,7 +54,7 @@ async function getUser(userId) {
     const res = await pool.query(
         `
         SELECT discord_id, character_name, age, pronouns, height, profile,
-               balance, last_daily, house, birthday, picture
+               balance, last_daily, house, birthday, picture, plush
         FROM profiles
         WHERE discord_id = $1
         `,
