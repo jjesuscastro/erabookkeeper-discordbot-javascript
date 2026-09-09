@@ -59,7 +59,9 @@ module.exports = {
                 throw new Error(`Could not find or access the message.`);
             }
 
-
+            message = message.slice(3, -3);
+            const items = message.split('-');
+            
             //await addInventoryItem(characterName, itemName, 1);
 
 
@@ -68,7 +70,7 @@ module.exports = {
             const embed = new EmbedBuilder()
             .setTitle('🛍️ Items Given!')
             .setColor(0xB7B75F)
-            .setDescription(`${message}`);
+            .setDescription(`${items}`);
             //.setDescription(`Gave x${quantity} **${itemName}** to ${input.username}.`)
 
             await interaction.editReply({ embeds: [embed] });
