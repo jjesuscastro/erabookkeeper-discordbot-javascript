@@ -74,7 +74,7 @@ module.exports = {
             const embed = new EmbedBuilder()
             .setTitle('🛍️ Items Given!')
             .setColor(0xB7B75F)
-            .setDescription(`**${items}**\n\nto ${input.username}`);
+            .setDescription(`**${items}**\n\nto <@${input.discordId}>`);
             //.setDescription(`Gave x${quantity} **${itemName}** to ${input.username}.`)
 
             await interaction.editReply({ embeds: [embed] });
