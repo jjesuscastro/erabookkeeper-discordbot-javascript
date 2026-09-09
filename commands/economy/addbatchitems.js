@@ -58,9 +58,9 @@ module.exports = {
             } catch {
                 throw new Error(`Could not find or access the message.`);
             }
-
-            message = message.slice(3, -3);
-            const items = message.split('-');
+            messagecontent = message.content;
+            messagecontent = messagecontent.slice(3, -3);
+            const items = messagecontent.split('-');
             
             //await addInventoryItem(characterName, itemName, 1);
 

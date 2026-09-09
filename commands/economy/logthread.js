@@ -190,7 +190,7 @@ function buildLogEmbed({ startLink, endLink, totalWords, messageCount, descripti
         bonus = 100;
     let footer;
     if (note == null)
-        footer = '';
+        footer = "No submission note.";
     else
         footer = `Submission Note: ${note}`;
     const embed = new EmbedBuilder()
