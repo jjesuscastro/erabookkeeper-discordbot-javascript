@@ -67,7 +67,7 @@ module.exports = {
                     const embed = new EmbedBuilder()
                         .setTitle('❌ Uh oh...')
                         .setColor(0xEBBCA2)
-                        .setDescription('You already have a plush in your inventory!');
+                        .setDescription(`You already have a plush in your inventory! ${plush}`);
 
                     return interaction.editReply({ embeds: [embed] });
                 }
