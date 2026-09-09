@@ -2,7 +2,7 @@
 // <user> accepts a character name (autocomplete) or a Discord @mention
 // Item autocomplete reads from sender's inventory cache; falls back to Sheets if cold
 const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
-const { getUser, getInventory, removeInventoryItem, addInventoryItem } = require('../../utils/sheets');
+const { getShopItems, getUser, getInventory, removeInventoryItem, addInventoryItem } = require('../../utils/sheets');
 const { getInventoryCache, clearInventoryCache, getShopCache } = require('../../utils/cache');
 const { resolveTarget, autocompleteProfiles } = require('../../utils/resolver');
 
