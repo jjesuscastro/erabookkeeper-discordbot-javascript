@@ -59,6 +59,7 @@ module.exports = {
                 throw new Error(`Could not find or access the message.`);
             }
             messagecontent = message.content;
+            messagecontent = messagecontent.substring(messagecontent.indexOf("```"));
             messagecontent = messagecontent.slice(5, -3);
             messagecontent = messagecontent.trim();
             const items = messagecontent.split('-');
