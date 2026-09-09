@@ -61,7 +61,10 @@ module.exports = {
             messagecontent = message.content;
             messagecontent = messagecontent.slice(3, -3);
             const items = messagecontent.split('-');
-            
+            items.forEach((item, index) => {
+                items[index] = item.trim();
+            });
+
             //await addInventoryItem(characterName, itemName, 1);
 
 
@@ -70,7 +73,7 @@ module.exports = {
             const embed = new EmbedBuilder()
             .setTitle('🛍️ Items Given!')
             .setColor(0xB7B75F)
-            .setDescription(`${items}`);
+            .setDescription(`**${items}**\n\nto to ${input.username}`);
             //.setDescription(`Gave x${quantity} **${itemName}** to ${input.username}.`)
 
             await interaction.editReply({ embeds: [embed] });
