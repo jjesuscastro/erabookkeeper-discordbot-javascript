@@ -11,7 +11,8 @@ CREATE TABLE IF NOT EXISTS profiles (
     birthday TEXT,
     picture TEXT,
     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    plush TEXT
 );
 
 CREATE TABLE IF NOT EXISTS shop_items (

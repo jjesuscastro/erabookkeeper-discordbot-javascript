@@ -2,7 +2,7 @@
 // Autocomplete reads from shop cache (warmed by /shop); falls back to the data source if cache is cold.
 
 const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
-const { getUser, getShopItems, getInventory, purchaseShopItem } = require('../../utils/sheets');
+const { getUser, getShopItems, getInventory, purchaseShopItem, buyPlush } = require('../../utils/sheets');
 const { getShopCache, setShopCache, clearInventoryCache } = require('../../utils/cache');
 const { logStockDeduction } = require('../../utils/logger');
 
@@ -39,7 +39,7 @@ module.exports = {
 
             const totalCost = shopItem.price * quantity;
 
-            const { characterName, balance, plush } = await getUser(interaction.user.id);
+            const { rowIndex, characterName, balance, plush } = await getUser(interaction.user.id);
             if (balance < totalCost) {
                 let edels = 'edels';
                 if (balance === 1) edels = 'edel';
@@ -63,13 +63,16 @@ module.exports = {
 
                     return interaction.editReply({ embeds: [embed] });
                 }
-                if (existing.length > 0) {
+                else if (existing.length > 0) {
                     const embed = new EmbedBuilder()
                         .setTitle('❌ Uh oh...')
                         .setColor(0xEBBCA2)
                         .setDescription(`You already have a plush in your inventory! ${plush}`);
 
                     return interaction.editReply({ embeds: [embed] });
+                }
+                else{
+                    await buyPlush(rowIndex, "true");
                 }
                 
             }

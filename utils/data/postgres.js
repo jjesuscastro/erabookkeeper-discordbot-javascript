@@ -99,6 +99,13 @@ async function setLastDaily(rowIndex, timestamp) {
     );
 }
 
+async function buyPlush(rowIndex, bought) {
+    await pool.query(
+        'UPDATE profiles SET plush = $2 WHERE discord_id = $1',
+        [String(rowIndex), String(bought)],
+    );
+}
+
 async function addBalance(userId, amount) {
     return withTransaction(async client => {
         const res = await client.query(
@@ -443,6 +450,7 @@ module.exports = {
     getUserID,
     getAllProfiles,
     setLastDaily,
+    buyPlush,
     addBalance,
     deductBalance,
     getAllBalances,
