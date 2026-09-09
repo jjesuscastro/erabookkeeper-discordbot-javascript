@@ -78,9 +78,9 @@ module.exports = {
                     edels+= parseInt(edelvalue[0]);
                 }
                 else
-                    ;//await addInventoryItem(characterName, item, 1);
+                    await addInventoryItem(characterName, item, 1);
             }
-            //await addBalance(target.discordId, edels);
+            await addBalance(target.discordId, edels);
             const filteredItems = items.filter(item => !(item.includes('edels')));
                 
 

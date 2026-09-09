@@ -22,7 +22,7 @@ module.exports = {
             const items = allItems.filter(i => i.quantity > 0);
             setInventoryCache(target.id, items); // warm cache for /use and /transferitem autocomplete
             items.sort((a,b) => b.quantity - a.quantity );
-            const line = `**BALANCE**\n\`\`\`✧ ${balance} edels ✧\`\`\`\n**ITEMS**\n`;
+            const line = `**BALANCE**\n\`\`\`✧ ${balance} edels ✧\`\`\`\n`;
             
             let inv1 = [];
             let inv2 = [];
@@ -37,7 +37,7 @@ module.exports = {
             if(inv2.length === 0)
                 inv2.push("Nothing inside :(")
 
-            var inv = "**SHOP ITEMS**\n" + inv1.join("\n") + "\n**MISC ITEMS**\n" + inv2.join("\n");
+            var inv = "**SHOP ITEMS**\n" + inv1.join("\n") + "\n\n**MISC ITEMS**\n" + inv2.join("\n");
             
             if (items.length === 0) inv = "Nothing inside :("
             
