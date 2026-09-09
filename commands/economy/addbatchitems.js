@@ -1,6 +1,6 @@
   
 const { SlashCommandBuilder, EmbedBuilder, PermissionFlagsBits } = require('discord.js');
-const { getUser, addInventoryItem, addBalance } = require('../../utils/sheets');
+const { getShopItems, getUser, addInventoryItem, addBalance } = require('../../utils/sheets');
 const { clearInventoryCache, getShopCache } = require('../../utils/cache');
 const { resolveTarget } = require('../../utils/resolver');
 
