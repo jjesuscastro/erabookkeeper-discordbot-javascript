@@ -2,6 +2,8 @@
 const { SlashCommandBuilder, EmbedBuilder, PermissionFlagsBits } = require('discord.js');
 const { getUser, addInventoryItem, addBalance } = require('../../utils/sheets');
 const { clearInventoryCache } = require('../../utils/cache');
+const { resolveTarget } = require('../../utils/resolver');
+
 
 module.exports = {
     data: new SlashCommandBuilder()
