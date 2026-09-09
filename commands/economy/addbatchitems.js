@@ -67,15 +67,29 @@ module.exports = {
                 items[index] = item.trim();
             });
 
-            for (const item of items)
-                await addInventoryItem(characterName, item, 1);
+            var edels = 0;
+
+            for (const item of items){
+                if(item.includes('edels')){
+                    const edelvalue = item.split(" ");
+                    edels+= parseInt(edelvalue[0]);
+                }
+                else
+                    ;//await addInventoryItem(characterName, item, 1);
+            }
+
+                
 
             clearInventoryCache(input.id); // inventory changed — force fresh fetch on next autocomplete
             
+            var inv = items.map(i => `**${i}**`).join(', ');
+            if(edels>0){
+                inv += `and ${edels} edels`;
+            }
             const embed = new EmbedBuilder()
             .setTitle('🛍️ Items Given!')
             .setColor(0xB7B75F)
-            .setDescription(`**${items}**\n\nto <@${input.id}>`);
+            .setDescription(`${inv}\n\nto <@${input.id}>`);
             //.setDescription(`Gave x${quantity} **${itemName}** to ${input.username}.`)
 
             await interaction.editReply({ embeds: [embed] });
