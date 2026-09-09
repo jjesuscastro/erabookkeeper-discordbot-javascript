@@ -207,7 +207,7 @@ function buildLogEmbed({ startLink, endLink, totalWords, messageCount, descripti
             buildEmbedField('', ''),
             buildEmbedField('HOUSE POINTS', housepay),
         )
-        .setFooter({text: footer});
+        .setFooter({text: `${footer}`});
 
     //if (unmatched) {
     //    embed.addFields(
