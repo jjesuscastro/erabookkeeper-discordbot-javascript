@@ -289,7 +289,7 @@ async function getShopItems() {
 async function getInventory(characterName) {
     const res = await pool.query(
         `
-        SELECT owner, item_name, quantity, type
+        SELECT owner, item_name, quantity, itemtype
         FROM inventory
         WHERE lower(owner) = lower($1)
         ORDER BY item_name ASC
@@ -301,7 +301,7 @@ async function getInventory(characterName) {
         rowIndex: `${row.owner}:${row.item_name}`,
         itemName: row.item_name,
         quantity: parseInt(row.quantity || '0', 10),
-        type: row.type,
+        itemtype: row.itemtype,
     }));
 }
 
@@ -320,13 +320,13 @@ async function getInventoryItem(client, characterName, itemName, lock = false) {
     return res.rows[0] || null;
 }
 
-async function addInventoryItem(characterName, itemName, quantity, type) {
+async function addInventoryItem(characterName, itemName, quantity, itemtype) {
     return withTransaction(async client => {
-        await addInventoryItemWithClient(client, characterName, itemName, quantity, type);
+        await addInventoryItemWithClient(client, characterName, itemName, quantity, itemtype);
     });
 }
 
-async function addInventoryItemWithClient(client, characterName, itemName, quantity, type) {
+async function addInventoryItemWithClient(client, characterName, itemName, quantity, itemtype) {
     const existing = await getInventoryItem(client, characterName, itemName, true);
 
     if (existing) {
@@ -334,18 +334,18 @@ async function addInventoryItemWithClient(client, characterName, itemName, quant
             `
             UPDATE inventory
             SET quantity = quantity + $3
-                type = $4
+                itemtype = $4
             WHERE owner = $1 AND item_name = $2
             `,
-            [existing.owner, existing.item_name, quantity, type],
+            [existing.owner, existing.item_name, quantity, itemtype],
         );
     } else {
         await client.query(
             `
-            INSERT INTO inventory (owner, item_name, quantity, type)
+            INSERT INTO inventory (owner, item_name, quantity, itemtype)
             VALUES ($1, $2, $3, $4)
             `,
-            [characterName, itemName, quantity, type],
+            [characterName, itemName, quantity, itemtype],
         );
     }
 }
