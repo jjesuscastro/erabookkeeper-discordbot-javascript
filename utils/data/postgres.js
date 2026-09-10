@@ -333,7 +333,7 @@ async function addInventoryItemWithClient(client, characterName, itemName, quant
         await client.query(
             `
             UPDATE inventory
-            SET quantity = quantity + $3
+            SET quantity = quantity + $3,
                 itemtype = $4
             WHERE owner = $1 AND item_name = $2
             `,
