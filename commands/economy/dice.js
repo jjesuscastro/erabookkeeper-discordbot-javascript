@@ -12,11 +12,11 @@ module.exports = {
 
         await interaction.deferReply();
         try {
-            const diceRegex = /(\d+)[d](\d+)(\-?\+?)(\d*)(k?)(\d?)/;
+            const diceRegex = /(\d*)[d](\d+)(\-?\+?)(\d*)(k?)(\d?)/;
             const match = input.match(diceRegex);
 
             if (match) {
-                const numDice = parseInt(match[1]);
+                let numDice = parseInt(match[1]);
                 const sideDice = parseInt(match[2]);
                 const diceModifier = match[3];
                 const numModifier = parseInt(match[4]);
@@ -26,6 +26,9 @@ module.exports = {
                 const rolls2 = [];
                 var total = 0;
 
+                if(numDice == null){
+                    numDice = 1;
+                }
                 for (let i = 0; i < numDice; i++) {
                     const roll = Math.floor(Math.random() * sideDice) + 1;
                     rolls2.push(roll);
