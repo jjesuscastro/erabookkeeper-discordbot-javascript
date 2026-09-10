@@ -28,7 +28,7 @@ module.exports = {
             let inv2 = [];
 
             for(const i of items){
-                if((i.type == 'shop')){
+                if((i.itemtype == 'shop')){
                     inv1.push(`\`x${i.quantity.toString().padStart(items[0].quantity.toString().length)}\` **${i.itemName}**`);
                 }
                 else
