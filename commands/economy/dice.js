@@ -26,7 +26,7 @@ module.exports = {
                 const rolls2 = [];
                 var total = 0;
 
-                if(numDice == null){
+                if(numDice == null || numDice == ''){
                     numDice = 1;
                 }
                 for (let i = 0; i < numDice; i++) {
