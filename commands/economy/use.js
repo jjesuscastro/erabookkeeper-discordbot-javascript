@@ -55,7 +55,8 @@ module.exports = {
                     'Shrinking Potion: You are now 10 centimeters tall.',
                     'Growth Potion: You are now 20 centimeters taller.',
                     'Cloud Potion: YOu are now floating 2 feet off the ground.',
-                    'Luck Potion: +3 on all rolls.'
+                    'Luck Potion: +3 on all rolls.',
+                    'Unlucky Potion: -3 on all rolls.'
                 ];
                 if(target.username == 'faeruumi'){
                     choices = [

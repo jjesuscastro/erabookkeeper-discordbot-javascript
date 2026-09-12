@@ -59,9 +59,9 @@ module.exports = {
             const shopItem = shopitems.find(i => i.name.toLowerCase() === itemName.toLowerCase());
             
             if(shopItem)
-                await addInventoryItem(target.characterName, itemName, 1, "shop");
+                await addInventoryItem(target.characterName, itemName, quantity, "shop");
             else
-                await addInventoryItem(target.characterName, itemName, 1, "junk");
+                await addInventoryItem(target.characterName, itemName, quantity, "junk");
             //await addInventoryItem(target.characterName, itemName, quantity);
             clearInventoryCache(sender.id);
             clearInventoryCache(target.discordId);
