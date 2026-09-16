@@ -29,9 +29,9 @@ module.exports = {
             const shopitems = getShopCache() ?? await getShopItems();
             const shopItem = shopitems.find(i => i.name.toLowerCase() === itemName.toLowerCase());
             if(shopItem)
-                await addInventoryItem(characterName, itemName, 1, "shop");
+                await addInventoryItem(characterName, itemName, quantity, "shop");
             else
-                await addInventoryItem(characterName, itemName, 1, "junk");
+                await addInventoryItem(characterName, itemName, quantity, "junk");
 
             clearInventoryCache(input.id); // inventory changed — force fresh fetch on next autocomplete
             
