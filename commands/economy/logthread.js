@@ -71,7 +71,7 @@ function applyPeriodMultiplier(edels, period, words) {
         else
             return edels;
     if (period == 'Assignment')
-        if(words >= 150)
+        if(words >= 175)
             return edels + (PERIOD_MULTIPLIERS[period] ?? PERIOD_MULTIPLIERS[DEFAULT_PERIOD]);
         else
             return edels;
@@ -87,7 +87,7 @@ function applyHouseMultiplier(points, period, words) {
         else
             return POINTS_MULTIPLIERS[DEFAULT_PERIOD];
     if (period == 'Assignment')
-        if(words >= 150)
+        if(words >= 175)
             return POINTS_MULTIPLIERS[period] ?? POINTS_MULTIPLIERS[DEFAULT_PERIOD];
         else
             return POINTS_MULTIPLIERS[DEFAULT_PERIOD];
