@@ -43,7 +43,7 @@ module.exports = {
                 .setColor(0xB7B75F)
                 .setDescription(`<@${target.id}> used their **${itemName}**.\n+30 points to **${house}**!`);
             }
-            if(itemName.toLowerCase() == "kemonomimi potion"){
+            else if(itemName.toLowerCase() == "kemonomimi potion"){
                 const hours = Math.floor(Math.random() * 24) + 1; 
 
                 embed = new EmbedBuilder()
@@ -51,7 +51,7 @@ module.exports = {
                 .setColor(0xB7B75F)
                 .setDescription(`You grow ears and a tail! (Animal of your choice)\nLasts for ${hours} hours.`);
             }
-            if(itemName.toLowerCase() == "genderbend potion"){
+            else if(itemName.toLowerCase() == "genderbend potion"){
                 const hours = Math.floor(Math.random() * 24) + 1; 
 
                 embed = new EmbedBuilder()
