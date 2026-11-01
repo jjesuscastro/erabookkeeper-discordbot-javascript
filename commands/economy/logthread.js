@@ -79,7 +79,19 @@ function applyPeriodMultiplier(edels, period, words) {
         return edels + (PERIOD_MULTIPLIERS[period] ?? PERIOD_MULTIPLIERS[DEFAULT_PERIOD]);
 }
 
-function applyHouseMultiplier(points, period) {
+function applyHouseMultiplier(points, period, words) {
+
+    if (period === 'Monthly Event')
+        if(words > 200)
+            return POINTS_MULTIPLIERS[period] ?? POINTS_MULTIPLIERS[DEFAULT_PERIOD];
+        else
+            return POINTS_MULTIPLIERS[DEFAULT_PERIOD];
+    if (period == 'Assignment')
+        if(words > 200)
+            return POINTS_MULTIPLIERS[period] ?? POINTS_MULTIPLIERS[DEFAULT_PERIOD];
+        else
+            return POINTS_MULTIPLIERS[DEFAULT_PERIOD];
+
     return POINTS_MULTIPLIERS[period] ?? POINTS_MULTIPLIERS[DEFAULT_PERIOD];
 }
 
@@ -511,7 +523,7 @@ module.exports = {
             const buildPayoutSnapshot = period => results.map(result => ({
                 ...result,
                 edels: applyPeriodMultiplier(result.edels, period, result.words),
-                house: applyHouseMultiplier(result.house, period),
+                house: applyHouseMultiplier(result.house, period, result.words),
             }));
             const buildPayoutText = snapshot => {
                 const registered = snapshot.filter(result => result.userId !== '');
