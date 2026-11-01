@@ -43,6 +43,22 @@ module.exports = {
                 .setColor(0xB7B75F)
                 .setDescription(`<@${target.id}> used their **${itemName}**.\n+30 points to **${house}**!`);
             }
+            if(itemName.toLowerCase() == "kemonomimi potion"){
+                const hours = Math.floor(Math.random() * 24) + 1; 
+
+                embed = new EmbedBuilder()
+                .setTitle('Kemonomimi Potion Used!')
+                .setColor(0xB7B75F)
+                .setDescription(`You grow ears and a tail! (Animal of your choice)\nLasts for ${hours} hours.`);
+            }
+            if(itemName.toLowerCase() == "genderbend potion"){
+                const hours = Math.floor(Math.random() * 24) + 1; 
+
+                embed = new EmbedBuilder()
+                .setTitle('Genderbend Potion Used!')
+                .setColor(0xB7B75F)
+                .setDescription(`You are now the opposite gender.\nLasts for ${hours} hours.`);
+            }
             else if(itemName.toLowerCase() == 'unknown potion'){
                 let choices = [
                     '2P Potion: Your personality is does a 180.',
