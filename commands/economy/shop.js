@@ -18,9 +18,12 @@ module.exports = {
             if (items.length === 0) return interaction.editReply('The shop is currently empty.');
             const shop1 = [];
             const shop2 = [];
+            const combatshop = [];
 
             for(const i of items){
-                if(!(i.name.includes('Potion'))){
+                if((i.name.includes('Revival')) || (i.name.includes('Warding')) || (i.name.includes('Vitality'))){
+                    combatshop.push(`**${i.name}** — *${i.price} edels* \n > ${i.itemdesc} \n`);
+                }if(!(i.name.includes('Potion'))){
                     shop1.push(`**${i.name}** — *${i.price} edels* \n > ${i.itemdesc} \n`);
                 }
                 else
@@ -37,8 +40,13 @@ module.exports = {
                 .setDescription(shop2.join('\n'))
                 //.setDescription(items.map(i => `**${i.name}** — *${i.price} edels* \n > ${i.itemdesc} \n`).join('\n'))
                 .setFooter({text:`Every shop item is a one time \`/use\``});
+            const embed3 = new EmbedBuilder()
+                .setTitle('Combat Potions')
+                .setColor(0xB7B75F)
+                .setDescription(combatshop.join('\n'))
+                .setFooter({text:`Every shop item is a one time \`/use\``});
 
-            await interaction.editReply({ embeds: [embed, embed1] });
+            await interaction.editReply({ embeds: [embed, embed1, embed3] });
         } catch (err) {
             await interaction.editReply(`Error: ${err.message}`);
         }
