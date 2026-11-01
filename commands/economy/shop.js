@@ -23,7 +23,7 @@ module.exports = {
             for(const i of items){
                 if((i.name.includes('Revival')) || (i.name.includes('Warding')) || (i.name.includes('Vitality'))){
                     combatshop.push(`**${i.name}** — *${i.price} edels* \n > ${i.itemdesc} \n`);
-                }if(!(i.name.includes('Potion'))){
+                }else if(!(i.name.includes('Potion'))){
                     shop1.push(`**${i.name}** — *${i.price} edels* \n > ${i.itemdesc} \n`);
                 }
                 else
