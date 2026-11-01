@@ -66,12 +66,12 @@ function countWords(content) {
 
 function applyPeriodMultiplier(edels, period, words) {
     if (period === 'Monthly Event')
-        if(words > 200)
+        if(words >= 200)
             return edels + (PERIOD_MULTIPLIERS[period] ?? PERIOD_MULTIPLIERS[DEFAULT_PERIOD]);
         else
             return edels;
     if (period == 'Assignment')
-        if(words > 200)
+        if(words >= 200)
             return edels + (PERIOD_MULTIPLIERS[period] ?? PERIOD_MULTIPLIERS[DEFAULT_PERIOD]);
         else
             return edels;
@@ -82,12 +82,12 @@ function applyPeriodMultiplier(edels, period, words) {
 function applyHouseMultiplier(points, period, words) {
 
     if (period === 'Monthly Event')
-        if(words > 200)
+        if(words >- 200)
             return POINTS_MULTIPLIERS[period] ?? POINTS_MULTIPLIERS[DEFAULT_PERIOD];
         else
             return POINTS_MULTIPLIERS[DEFAULT_PERIOD];
     if (period == 'Assignment')
-        if(words > 200)
+        if(words >= 200)
             return POINTS_MULTIPLIERS[period] ?? POINTS_MULTIPLIERS[DEFAULT_PERIOD];
         else
             return POINTS_MULTIPLIERS[DEFAULT_PERIOD];
