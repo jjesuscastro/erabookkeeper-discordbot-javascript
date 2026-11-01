@@ -41,7 +41,7 @@ module.exports = {
                 //.setDescription(items.map(i => `**${i.name}** — *${i.price} edels* \n > ${i.itemdesc} \n`).join('\n'))
                 .setFooter({text:`Every shop item is a one time \`/use\``});
             const embed3 = new EmbedBuilder()
-                .setTitle('Combat Potions')
+                .setTitle('Combat Essentials')
                 .setColor(0xB7B75F)
                 .setDescription(combatshop.join('\n'))
                 .setFooter({text:`Every shop item is a one time \`/use\``});
