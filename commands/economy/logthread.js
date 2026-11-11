@@ -64,11 +64,8 @@ function countWords(content) {
     return content.trim().split(/\s+/).filter(w => w.length > 0).length;
 }
 
-async function applyPeriodMultiplier(edels, period, words, name) {
-    const playerChara = await getTupper(result.name);
-    if (playerChara.toUpperCase() == 'FALSE')
-        return edels + (PERIOD_MULTIPLIERS[period] ?? PERIOD_MULTIPLIERS[DEFAULT_PERIOD]);
-    else if (period === 'Monthly Event')
+function applyPeriodMultiplier(edels, period, words, playerChara) {
+    if (period === 'Monthly Event')
         if(words >= 200)
             return edels + (PERIOD_MULTIPLIERS[period] ?? PERIOD_MULTIPLIERS[DEFAULT_PERIOD]);
         else
@@ -525,7 +522,7 @@ module.exports = {
             let selectedPeriod = DEFAULT_PERIOD;
             const buildPayoutSnapshot = period => results.map(result => ({
                 ...result,
-                edels: applyPeriodMultiplier(result.edels, period, result.words, result.name),
+                edels: applyPeriodMultiplier(result.edels, period, result.words),
                 house: applyHouseMultiplier(result.house, period, result.words),
             }));
             const buildPayoutText = snapshot => {
