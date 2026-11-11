@@ -64,7 +64,7 @@ function countWords(content) {
     return content.trim().split(/\s+/).filter(w => w.length > 0).length;
 }
 
-function applyPeriodMultiplier(edels, period, words, playerChara) {
+function applyPeriodMultiplier(edels, period, words) {
     if (period === 'Monthly Event')
         if(words >= 200)
             return edels + (PERIOD_MULTIPLIERS[period] ?? PERIOD_MULTIPLIERS[DEFAULT_PERIOD]);
@@ -81,17 +81,18 @@ function applyPeriodMultiplier(edels, period, words, playerChara) {
 
 function applyHouseMultiplier(points, period, words) {
 
-    if (period === 'Monthly Event')
+    if (period === 'Monthly Event'){
         if(words >= 200)
             return POINTS_MULTIPLIERS[period] ?? POINTS_MULTIPLIERS[DEFAULT_PERIOD];
         else
             return POINTS_MULTIPLIERS[DEFAULT_PERIOD];
-    if (period == 'Assignment')
+    }
+    if (period == 'Assignment'){
         if(words >= 175)
             return POINTS_MULTIPLIERS[period] ?? POINTS_MULTIPLIERS[DEFAULT_PERIOD];
         else
             return POINTS_MULTIPLIERS[DEFAULT_PERIOD];
-
+    }
     return POINTS_MULTIPLIERS[period] ?? POINTS_MULTIPLIERS[DEFAULT_PERIOD];
 }
 
