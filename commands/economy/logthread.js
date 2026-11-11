@@ -493,15 +493,15 @@ module.exports = {
                 if (result.userId !== '') {
                     if (playerChara.toUpperCase() == 'TRUE') {
                         const { house } = await getUser(tupperuser);
-                        if (house == 'Astra' && result.words > 125){
+                        if (house == 'Astra' && result.words >= 125){
                             astra++;
                             result.housename = "astra";
                         }
-                        if (house == 'Luna' && result.words > 125){
+                        if (house == 'Luna' && result.words >= 125){
                             luna++;
                             result.housename = "luna";
                         }
-                        if (house == 'Solis' && result.words > 125){
+                        if (house == 'Solis' && result.words >= 125){
                             solis++;
                             result.housename = "solis";
                         }
@@ -547,7 +547,9 @@ module.exports = {
 
                 return text || 'No registered payouts.';
             };
-            
+            var astra2 = 0;
+            var luna2 = 0;
+            var solis2 = 0;
     
             const buildHouseText = snapshot => {
                 
@@ -555,9 +557,9 @@ module.exports = {
                 const width = registered.reduce((max, result) => Math.max(max, result.edels.toString().length), 1);
                 let housepay = '';
                 let multiplier = 1;
-                var astra2 = 0;
-                var luna2 = 0;
-                var solis2 = 0;
+                astra2 = 0;
+                luna2 = 0;
+                solis2 = 0;
 
                 for (const result of registered) {
 
