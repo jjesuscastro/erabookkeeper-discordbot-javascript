@@ -22,10 +22,10 @@ const PERIOD_MULTIPLIERS = {
     Assignment: 100,
 };
 const POINTS_MULTIPLIERS = {
-    None: 1,
-    'Monthly Event': 3,
+    None: 5,
+    'Monthly Event': 15,
     QTE: 1,
-    Assignment: 2,
+    Assignment: 10,
 };
 const DEFAULT_PERIOD = 'None';
 const EMBED_FIELD_LIMIT = 1024;
@@ -83,20 +83,18 @@ function applyPeriodMultiplier(edels, period, words) {
 function applyHouseMultiplier(points, period, words) {
     console.log(period);
     if (period == 'Monthly Event'){
-        console.log("match event");
         if(words >= 200)
-            return points * POINTS_MULTIPLIERS[period] ?? POINTS_MULTIPLIERS[DEFAULT_PERIOD];
+            return POINTS_MULTIPLIERS[period] ?? POINTS_MULTIPLIERS[DEFAULT_PERIOD];
         else
-            return points * POINTS_MULTIPLIERS[DEFAULT_PERIOD];
+            return POINTS_MULTIPLIERS[DEFAULT_PERIOD];
     }
     else if (period == 'Assignment'){
-        console.log("match assignment");
         if(words >= 175)
-            return points * POINTS_MULTIPLIERS[period] ?? POINTS_MULTIPLIERS[DEFAULT_PERIOD];
+            return POINTS_MULTIPLIERS[period] ?? POINTS_MULTIPLIERS[DEFAULT_PERIOD];
         else
-            return points * POINTS_MULTIPLIERS[DEFAULT_PERIOD];
+            return POINTS_MULTIPLIERS[DEFAULT_PERIOD];
     }
-    return points * POINTS_MULTIPLIERS[period] ?? POINTS_MULTIPLIERS[DEFAULT_PERIOD];
+    return POINTS_MULTIPLIERS[period] ?? POINTS_MULTIPLIERS[DEFAULT_PERIOD];
 }
 
 function isAdminInteraction(interaction) {
