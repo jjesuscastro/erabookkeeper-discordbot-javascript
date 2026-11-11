@@ -476,6 +476,7 @@ module.exports = {
                     edels: Math.floor(parseInt(words) / 5),
                     registered: true,
                     house: 5,
+                    housename,
                 }))
                 .sort((a, b) => b.words - a.words);
 
@@ -492,12 +493,18 @@ module.exports = {
                 if (result.userId !== '') {
                     if (playerChara.toUpperCase() == 'TRUE') {
                         const { house } = await getUser(tupperuser);
-                        if (house == 'Astra' && result.words > 125)
+                        if (house == 'Astra' && result.words > 125){
                             astra++;
-                        if (house == 'Luna' && result.words > 125)
+                            result.housename = "astra";
+                        }
+                        if (house == 'Luna' && result.words > 125){
                             luna++;
-                        if (house == 'Solis' && result.words > 125)
+                            result.housename = "luna";
+                        }
+                        if (house == 'Solis' && result.words > 125){
                             solis++;
+                            result.housename = "solis";
+                        }
 
                         lines.push(`\`${result.words.toString().padEnd(wordWidth, ' ')} WC\` - **${result.name}** - <@${tupperuser}>`);
 
@@ -540,38 +547,34 @@ module.exports = {
 
                 return text || 'No registered payouts.';
             };
-            var astra2 = 0;
-            var luna2 = 0;
-            var solis2 = 0;
+            
     
-            const buildHouseText = async snapshot => {
+            const buildHouseText = snapshot => {
                 
                 const registered = snapshot.filter(result => result.userId !== '');
                 const width = registered.reduce((max, result) => Math.max(max, result.edels.toString().length), 1);
                 let housepay = '';
                 let multiplier = 1;
+                var astra2 = 0;
+                var luna2 = 0;
+                var solis2 = 0;
                 
                 for (const result of registered) {
 
-                    const { tupperuser, playerChara } = await getTupper(result.name);
-                    if (result.userId !== '')
-                        if (playerChara.toUpperCase() == 'TRUE') {
-                            const { house } = await getUser(tupperuser);
-                            if (house == 'Astra' && result.words > 125){
-                                console.log("astra: ", result.house);
-                                astra2+=result.house;
-                            }
-                            if (house == 'Luna' && result.words > 125){
-                                console.log("luna: ", result.house);
-                                luna2+=result.house;
-                            }
-                            if (house == 'Solis' && result.words > 125){
-                                console.log("solis: ", result.house);
-                                solis2+=result.house;
-                            }
-                        } 
-                    multiplier = result.house;
-                    console.log("multiplier: ", multiplier);
+                    if (result.housename == 'astra'){
+                        console.log("astra: ", result.house);
+                        astra2+=result.house;
+                    }
+                    if (result.housename == 'luna'){
+                        console.log("luna: ", result.house);
+                        luna2+=result.house;
+                    }
+                    if (result.housename == 'solis'){
+                        console.log("solis: ", result.house);
+                        solis2+=result.house;
+                    }
+                    //multiplier = result.house;
+                    //console.log("multiplier: ", multiplier);
                 }
                 //astra2 = astra * multiplier;
                 //solis2 = solis * multiplier;
@@ -606,7 +609,7 @@ module.exports = {
 
                 return text;
             };
-            const buildCurrentEmbed = async (period, snapshot = buildPayoutSnapshot(period)) => buildLogEmbed({
+            const buildCurrentEmbed = (period, snapshot = buildPayoutSnapshot(period)) => buildLogEmbed({
                 startLink,
                 endLink,
                 totalWords,
@@ -615,7 +618,7 @@ module.exports = {
                 payouts: buildPayoutText(snapshot),
                 unmatched: buildUnmatchedText(snapshot),
                 period,
-                housepay: await buildHouseText(snapshot),
+                housepay: buildHouseText(snapshot),
                 note: note,
             });
 
@@ -640,7 +643,7 @@ module.exports = {
 
                 const finalPeriod = selectedPeriod;
                 const payoutSnapshot = buildPayoutSnapshot(finalPeriod);
-                const finalEmbed = await buildCurrentEmbed(finalPeriod, payoutSnapshot);
+                const finalEmbed = buildCurrentEmbed(finalPeriod, payoutSnapshot);
                 await i.update({ embeds: [finalEmbed], components: buildSubmitComponents(finalPeriod, true) });
                 collector.stop(i.customId);
                 if (i.customId === 'logthread_cancel') {
