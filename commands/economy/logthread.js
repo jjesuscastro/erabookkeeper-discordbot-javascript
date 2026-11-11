@@ -547,6 +547,9 @@ module.exports = {
                 const { tupperuser, playerChara } = await getTupper(result.name);
 
                 result.userId = tupperuser ?? '';
+                console.log("tupper id", tupperuser);
+                console.log("player", playerChara);
+                
                 if (result.userId !== '') {
                     if (playerChara.toUpperCase() == 'TRUE') {
                         const { house } = await getUser(tupperuser);
