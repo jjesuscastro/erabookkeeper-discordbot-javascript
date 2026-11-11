@@ -59,7 +59,7 @@ module.exports = {
                     }
                 }
 
-                rolls.push(`\`🎲${total}\`!`);
+                rolls.push(`\`🎲${total}\``);
                     
                 const match2 = match[0].toString();
                 var diceRoll = match2;
@@ -75,7 +75,7 @@ module.exports = {
                 line2 += " ➜ " + total;
 
                 const embed = new EmbedBuilder()
-                    .setTitle(`🎲 ${total}`)
+                    .setTitle(`🎲 ${total}!`)
                     .setColor(0xEBBCA2)
                     .addFields(
                         { name: line1, value: line2 }
