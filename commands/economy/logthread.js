@@ -640,7 +640,7 @@ module.exports = {
 
                 const finalPeriod = selectedPeriod;
                 const payoutSnapshot = buildPayoutSnapshot(finalPeriod);
-                const finalEmbed = buildCurrentEmbed(finalPeriod, payoutSnapshot);
+                const finalEmbed = await buildCurrentEmbed(finalPeriod, payoutSnapshot);
                 await i.update({ embeds: [finalEmbed], components: buildSubmitComponents(finalPeriod, true) });
                 collector.stop(i.customId);
                 if (i.customId === 'logthread_cancel') {
