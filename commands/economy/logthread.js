@@ -82,13 +82,15 @@ function applyPeriodMultiplier(edels, period, words) {
 
 function applyHouseMultiplier(period, words) {
     console.log(period);
-    if (period === 'Monthly Event'){
+    if (period == 'Monthly Event'){
+        console.log("match event");
         if(words >= 200)
             return POINTS_MULTIPLIERS[period] ?? POINTS_MULTIPLIERS[DEFAULT_PERIOD];
         else
             return POINTS_MULTIPLIERS[DEFAULT_PERIOD];
     }
     else if (period == 'Assignment'){
+        console.log("match assignment");
         if(words >= 175)
             return POINTS_MULTIPLIERS[period] ?? POINTS_MULTIPLIERS[DEFAULT_PERIOD];
         else
