@@ -22,10 +22,10 @@ const PERIOD_MULTIPLIERS = {
     Assignment: 100,
 };
 const POINTS_MULTIPLIERS = {
-    None: 5,
-    'Monthly Event': 15,
-    QTE: 5,
-    Assignment: 10,
+    None: 1,
+    'Monthly Event': 3,
+    QTE: 1,
+    Assignment: 2,
 };
 const DEFAULT_PERIOD = 'None';
 const EMBED_FIELD_LIMIT = 1024;
@@ -80,23 +80,23 @@ function applyPeriodMultiplier(edels, period, words) {
         return edels + (PERIOD_MULTIPLIERS[period] ?? PERIOD_MULTIPLIERS[DEFAULT_PERIOD]);
 }
 
-function applyHouseMultiplier(period, words) {
+function applyHouseMultiplier(points, period, words) {
     console.log(period);
     if (period == 'Monthly Event'){
         console.log("match event");
         if(words >= 200)
-            return POINTS_MULTIPLIERS[period] ?? POINTS_MULTIPLIERS[DEFAULT_PERIOD];
+            return points * POINTS_MULTIPLIERS[period] ?? POINTS_MULTIPLIERS[DEFAULT_PERIOD];
         else
-            return POINTS_MULTIPLIERS[DEFAULT_PERIOD];
+            return points * POINTS_MULTIPLIERS[DEFAULT_PERIOD];
     }
     else if (period == 'Assignment'){
         console.log("match assignment");
         if(words >= 175)
-            return POINTS_MULTIPLIERS[period] ?? POINTS_MULTIPLIERS[DEFAULT_PERIOD];
+            return points * POINTS_MULTIPLIERS[period] ?? POINTS_MULTIPLIERS[DEFAULT_PERIOD];
         else
-            return POINTS_MULTIPLIERS[DEFAULT_PERIOD];
+            return points * POINTS_MULTIPLIERS[DEFAULT_PERIOD];
     }
-    return POINTS_MULTIPLIERS[period] ?? POINTS_MULTIPLIERS[DEFAULT_PERIOD];
+    return points * POINTS_MULTIPLIERS[period] ?? POINTS_MULTIPLIERS[DEFAULT_PERIOD];
 }
 
 function isAdminInteraction(interaction) {
@@ -527,7 +527,7 @@ module.exports = {
             const buildPayoutSnapshot = period => results.map(result => ({
                 ...result,
                 edels: applyPeriodMultiplier(result.edels, period, result.words),
-                house: applyHouseMultiplier(period, result.words),
+                house: applyHouseMultiplier(result.house, period, result.words),
             }));
             const buildPayoutText = snapshot => {
                 const registered = snapshot.filter(result => result.userId !== '');
@@ -545,20 +545,36 @@ module.exports = {
             var astra2 = 0;
             var luna2 = 0;
             var solis2 = 0;
+            for (const result of results) {
+                const { tupperuser, playerChara } = await getTupper(result.name);
 
+                result.userId = tupperuser ?? '';
+                if (result.userId !== '') {
+                    if (playerChara.toUpperCase() == 'TRUE') {
+                        const { house } = await getUser(tupperuser);
+                        if (house == 'Astra' && result.words > 125)
+                            astra2+=result.house;
+                        if (house == 'Luna' && result.words > 125)
+                            luna2+=result.house;
+                        if (house == 'Solis' && result.words > 125)
+                            solis2+=result.house;
+
+                    } 
+                }
+            }
             const buildHouseText = snapshot => {
                 const registered = snapshot.filter(result => result.userId !== '');
                 const width = registered.reduce((max, result) => Math.max(max, result.edels.toString().length), 1);
                 let housepay = '';
                 let multiplier = 1;
-
+                
                 for (const result of registered) {
                     multiplier = result.house;
                     console.log("multiplier: ", multiplier);
                 }
-                astra2 = astra * multiplier;
-                solis2 = solis * multiplier;
-                luna2 = luna * multiplier;
+                //astra2 = astra * multiplier;
+                //solis2 = solis * multiplier;
+                //luna2 = luna * multiplier;
 
                 if (astra + luna + solis > 0) {
                     if (astra > 0)
