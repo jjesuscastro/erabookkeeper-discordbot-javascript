@@ -476,7 +476,7 @@ module.exports = {
                     edels: Math.floor(parseInt(words) / 5),
                     registered: true,
                     house: 5,
-                    housename,
+                    housename: '',
                 }))
                 .sort((a, b) => b.words - a.words);
 
@@ -558,7 +558,7 @@ module.exports = {
                 var astra2 = 0;
                 var luna2 = 0;
                 var solis2 = 0;
-                
+
                 for (const result of registered) {
 
                     if (result.housename == 'astra'){
