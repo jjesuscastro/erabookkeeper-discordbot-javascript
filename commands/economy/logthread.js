@@ -81,7 +81,7 @@ function applyPeriodMultiplier(edels, period, words) {
 }
 
 function applyHouseMultiplier(period, words) {
-
+    console.log(period);
     if (period === 'Monthly Event'){
         if(words >= 200)
             return POINTS_MULTIPLIERS[period] ?? POINTS_MULTIPLIERS[DEFAULT_PERIOD];
