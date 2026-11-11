@@ -550,12 +550,18 @@ module.exports = {
                 if (result.userId !== '') {
                     if (playerChara.toUpperCase() == 'TRUE') {
                         const { house } = await getUser(tupperuser);
-                        if (house == 'Astra' && result.words > 125)
+                        if (house == 'Astra' && result.words > 125){
+                            console.log("astra: ", result.house);
                             astra2+=result.house;
-                        if (house == 'Luna' && result.words > 125)
+                        }
+                        if (house == 'Luna' && result.words > 125){
+                            console.log("luna: ", result.house);
                             luna2+=result.house;
-                        if (house == 'Solis' && result.words > 125)
+                        }
+                        if (house == 'Solis' && result.words > 125){
+                            console.log("solis: ", result.house);
                             solis2+=result.house;
+                        }
 
                     } 
                 }
