@@ -543,39 +543,33 @@ module.exports = {
             var astra2 = 0;
             var luna2 = 0;
             var solis2 = 0;
-            for (const result of results) {
-                const { tupperuser, playerChara } = await getTupper(result.name);
-
-                result.userId = tupperuser ?? '';
-                console.log("tupper id", tupperuser);
-                console.log("player", playerChara);
+    
+            const buildHouseText = async snapshot => {
                 
-                if (result.userId !== '') {
-                    if (playerChara.toUpperCase() == 'TRUE') {
-                        const { house } = await getUser(tupperuser);
-                        if (house == 'Astra' && result.words > 125){
-                            console.log("astra: ", result.house);
-                            astra2+=result.house;
-                        }
-                        if (house == 'Luna' && result.words > 125){
-                            console.log("luna: ", result.house);
-                            luna2+=result.house;
-                        }
-                        if (house == 'Solis' && result.words > 125){
-                            console.log("solis: ", result.house);
-                            solis2+=result.house;
-                        }
-
-                    } 
-                }
-            }
-            const buildHouseText = snapshot => {
                 const registered = snapshot.filter(result => result.userId !== '');
                 const width = registered.reduce((max, result) => Math.max(max, result.edels.toString().length), 1);
                 let housepay = '';
                 let multiplier = 1;
                 
                 for (const result of registered) {
+
+                    const { tupperuser, playerChara } = await getTupper(result.name);
+                    if (result.userId !== '')
+                        if (playerChara.toUpperCase() == 'TRUE') {
+                            const { house } = await getUser(tupperuser);
+                            if (house == 'Astra' && result.words > 125){
+                                console.log("astra: ", result.house);
+                                astra2+=result.house;
+                            }
+                            if (house == 'Luna' && result.words > 125){
+                                console.log("luna: ", result.house);
+                                luna2+=result.house;
+                            }
+                            if (house == 'Solis' && result.words > 125){
+                                console.log("solis: ", result.house);
+                                solis2+=result.house;
+                            }
+                        } 
                     multiplier = result.house;
                     console.log("multiplier: ", multiplier);
                 }
