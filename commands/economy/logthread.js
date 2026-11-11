@@ -606,16 +606,16 @@ module.exports = {
 
                 return text;
             };
-            const buildCurrentEmbed = (period, snapshot = buildPayoutSnapshot(period)) => buildLogEmbed({
+            const buildCurrentEmbed = async (period, snapshot = buildPayoutSnapshot(period)) => buildLogEmbed({
                 startLink,
                 endLink,
                 totalWords,
                 messageCount: messages.length,
                 description,
-                payouts: buildPayoutText(snapshot),
-                unmatched: buildUnmatchedText(snapshot),
+                payouts: await buildPayoutText(snapshot),
+                unmatched: await buildUnmatchedText(snapshot),
                 period,
-                housepay: buildHouseText(snapshot),
+                housepay: await buildHouseText(snapshot),
                 note: note,
             });
 
