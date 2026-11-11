@@ -59,7 +59,7 @@ module.exports = {
                     }
                 }
 
-                rolls.push(`\`🎲${total}\``);
+                rolls.push(`\`🎲${total}\`!`);
                     
                 const match2 = match[0].toString();
                 var diceRoll = match2;
