@@ -66,14 +66,14 @@ function countWords(content) {
 
 async function applyPeriodMultiplier(edels, period, words, name) {
     const playerChara = await getTupper(result.name);
-    if(playerChara == 'FALSE')
+    if (playerChara.toUpperCase() == 'FALSE')
         return edels + (PERIOD_MULTIPLIERS[period] ?? PERIOD_MULTIPLIERS[DEFAULT_PERIOD]);
-    if (period === 'Monthly Event')
+    else if (period === 'Monthly Event')
         if(words >= 200)
             return edels + (PERIOD_MULTIPLIERS[period] ?? PERIOD_MULTIPLIERS[DEFAULT_PERIOD]);
         else
             return edels;
-    if (period == 'Assignment')
+    else if (period == 'Assignment')
         if(words >= 175)
             return edels + (PERIOD_MULTIPLIERS[period] ?? PERIOD_MULTIPLIERS[DEFAULT_PERIOD]);
         else
