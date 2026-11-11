@@ -554,6 +554,7 @@ module.exports = {
 
                 for (const result of registered) {
                     multiplier = result.house;
+                    console.log("multiplier: ", multiplier);
                 }
                 astra2 = astra * multiplier;
                 solis2 = solis * multiplier;
