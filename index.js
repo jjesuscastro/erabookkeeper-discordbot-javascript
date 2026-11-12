@@ -1,5 +1,5 @@
 require('dotenv').config();
-const { Client, Collection, GatewayIntentBits } = require('discord.js');
+const { Client, Collection, GatewayIntentBits, Partials } = require('discord.js');
 const fs = require('fs');
 const path = require('path');
 const { logAutocompleteUsage, logCommandUsage, logInteractionError } = require('./utils/logger');
@@ -19,9 +19,11 @@ const client = new Client({
     intents: [
         GatewayIntentBits.Guilds,
         GatewayIntentBits.GuildMessages,
+        GatewayIntentBits.GuildMessageReactions,
         GatewayIntentBits.MessageContent,
         GatewayIntentBits.GuildMembers,
     ],
+    partials: [Partials.Message, Partials.Reaction],
 });
 client.commands = new Collection();
 
@@ -89,6 +91,52 @@ client.on('interactionCreate', async interaction => {
         } catch (replyErr) {
             console.error('Failed to send command error response:', replyErr);
         }
+    }
+});
+
+client.on('messageReactionAdd', async (reaction, user) => {
+    if (user.bot || reaction.emoji.name !== '🎨') return;
+
+    const destinationId = process.env.FORWARD_CHANNEL_ID;
+    if (!destinationId) {
+        console.error('Cannot forward art-reacted message: FORWARD_CHANNEL_ID is not configured.');
+        return;
+    }
+
+    try {
+        if (reaction.partial) await reaction.fetch();
+        const message = reaction.message.partial ? await reaction.message.fetch() : reaction.message;
+        if (!message.guild || message.channel.id === destinationId) return;
+
+        const { claimForwardedMessage, releaseForwardedMessage } = require('./utils/forwarded-messages');
+        const claimed = await claimForwardedMessage(message.id);
+        if (!claimed) return;
+
+        try {
+            const destination = await client.channels.fetch(destinationId);
+            if (!destination?.isTextBased() || !destination.messages) {
+                throw new Error('FORWARD_CHANNEL_ID must refer to a text channel the bot can access.');
+            }
+
+            const author = message.author?.tag || 'Unknown user';
+            const sourceChannel = message.channel.name ? `#${message.channel.name}` : 'a channel';
+            const attachmentLinks = [...message.attachments.values()].map(file => file.url);
+            const body = [message.content, ...attachmentLinks].filter(Boolean).join('\n');
+            const attribution = `🎨 **${author}** in ${sourceChannel}\n[Jump to original message](${message.url})`;
+            const maxBodyLength = Math.max(0, 2000 - attribution.length - 5);
+            const forwardedBody = body.length > maxBodyLength ? `${body.slice(0, maxBodyLength - 1)}…` : body;
+            await destination.send({
+                content: [attribution, forwardedBody].filter(Boolean).join('\n\n'),
+                allowedMentions: { parse: [] },
+            });
+        } catch (error) {
+            await releaseForwardedMessage(message.id).catch(dbError => {
+                console.error('Failed to release forwarding claim:', dbError);
+            });
+            throw error;
+        }
+    } catch (error) {
+        console.error('Failed to forward art-reacted message:', error);
     }
 });
 
