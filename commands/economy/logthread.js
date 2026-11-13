@@ -715,7 +715,7 @@ module.exports = {
                             .setColor(0xEBBCA2)
                             .setDescription(`No edels for you!`);
 
-                        await interaction.editReply({ embeds: [cancelembed], components: [] });
+                        await reviewMessage.edit({ embeds: [cancelembed], components: [] });
                         return;
                     }
 
