@@ -122,15 +122,16 @@ client.on('messageReactionAdd', async (reaction, user) => {
             const sourceChannel = message.channel.name ? `#${message.channel.name}` : 'a channel';
             const attachmentLinks = [...message.attachments.values()].map(file => file.url);
             const body = [message.content, ...attachmentLinks].filter(Boolean).join('\n');
-            const attribution = `> 🎨 **${author}** in <#${message.channel.id}>\n> [link to post](${message.url})`;
+            const attribution = `🎨 **${author}** in <#${message.channel.id}>`;
+            //const attribution = `🎨 **${author}** in <#${message.channel.id}>\n> [link to post](${message.url})`;
             const maxBodyLength = Math.max(0, 2000 - attribution.length - 5);
             const forwardedBody = body.length > maxBodyLength ? `${body.slice(0, maxBodyLength - 1)}…` : body;
-            await message.forward(destination);
             await destination.send({
                 //content: [attribution, forwardedBody].filter(Boolean).join('\n\n'),
                 content: [attribution].filter(Boolean).join('\n\n'),
                 allowedMentions: { parse: [] },
             });
+            await message.forward(destination);
         } catch (error) {
             await releaseForwardedMessage(message.id).catch(dbError => {
                 console.error('Failed to release forwarding claim:', dbError);
