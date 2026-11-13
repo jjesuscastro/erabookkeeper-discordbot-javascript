@@ -64,12 +64,10 @@ function countWords(content) {
     return content.trim().split(/\s+/).filter(w => w.length > 0).length;
 }
 
-async function applyPeriodMultiplier(edels, period, words, name) {
-    const playerChara = await getTupper(result.name);
-
-    if (playerChara.toUpperCase() == 'FALSE')
+function applyPeriodMultiplier(edels, period, words, name) {
+    if (name.toUpperCase() == 'FALSE')
         return edels + (PERIOD_MULTIPLIERS[period] ?? PERIOD_MULTIPLIERS[DEFAULT_PERIOD]);
-    
+
     if (period === 'Monthly Event'){
         if(words >= 200)
             return edels + (PERIOD_MULTIPLIERS[period] ?? PERIOD_MULTIPLIERS[DEFAULT_PERIOD]);
@@ -482,6 +480,7 @@ module.exports = {
                     registered: true,
                     house: 5,
                     housename: '',
+                    player: 'FALSE',
                 }))
                 .sort((a, b) => b.words - a.words);
 
@@ -497,6 +496,7 @@ module.exports = {
                 result.userId = tupperuser ?? '';
                 if (result.userId !== '') {
                     if (playerChara.toUpperCase() == 'TRUE') {
+                        result.player = "TRUE";
                         const { house } = await getUser(tupperuser);
                         if (house == 'Astra' && result.words >= 125){
                             astra++;
@@ -536,7 +536,7 @@ module.exports = {
             let selectedPeriod = DEFAULT_PERIOD;
             const buildPayoutSnapshot = period => results.map(result => ({
                 ...result,
-                edels: applyPeriodMultiplier(result.edels, period, result.words, result.name),
+                edels: applyPeriodMultiplier(result.edels, period, result.words, result.player),
                 house: applyHouseMultiplier(result.house, period, result.words),
             }));
             const buildPayoutText = snapshot => {
