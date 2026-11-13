@@ -125,8 +125,10 @@ client.on('messageReactionAdd', async (reaction, user) => {
             const attribution = `> 🎨 **${author}** in <#${message.channel.id}>\n> [link to post](${message.url})`;
             const maxBodyLength = Math.max(0, 2000 - attribution.length - 5);
             const forwardedBody = body.length > maxBodyLength ? `${body.slice(0, maxBodyLength - 1)}…` : body;
+            await message.forward(destination);
             await destination.send({
-                content: [attribution, forwardedBody].filter(Boolean).join('\n\n'),
+                //content: [attribution, forwardedBody].filter(Boolean).join('\n\n'),
+                content: [attribution].filter(Boolean).join('\n\n'),
                 allowedMentions: { parse: [] },
             });
         } catch (error) {
