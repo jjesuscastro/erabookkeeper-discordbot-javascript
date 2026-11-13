@@ -514,10 +514,12 @@ module.exports = {
                         lines.push(`\`${result.words.toString().padEnd(wordWidth, ' ')} WC\` - **${result.name}** - <@${tupperuser}>`);
 
                     } else {
+                        result.player = "FALSE";
                         lines.push(`\`${result.words.toString().padEnd(wordWidth, ' ')} WC\` - \`NPC\` **${result.name}** - <@${tupperuser}>`);
                         result.edels = Math.round(result.edels * 5 / 20);
                     }
                 } else {
+                    result.player = "FALSE";
                     lines.push(`\`${result.words.toString().padEnd(wordWidth, ' ')} WC\` - **${result.name}**`);
                     result.registered = false;
                 }
