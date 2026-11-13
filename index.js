@@ -122,7 +122,7 @@ client.on('messageReactionAdd', async (reaction, user) => {
             const sourceChannel = message.channel.name ? `#${message.channel.name}` : 'a channel';
             const attachmentLinks = [...message.attachments.values()].map(file => file.url);
             const body = [message.content, ...attachmentLinks].filter(Boolean).join('\n');
-            const attribution = `🎨 **${author}** in ${sourceChannel}\n[Jump to original message](${message.url})`;
+            const attribution = `> 🎨 **${author}** in <#${message.channel.id}>\n> [link to post](${message.url})`;
             const maxBodyLength = Math.max(0, 2000 - attribution.length - 5);
             const forwardedBody = body.length > maxBodyLength ? `${body.slice(0, maxBodyLength - 1)}…` : body;
             await destination.send({
