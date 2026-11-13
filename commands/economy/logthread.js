@@ -65,10 +65,10 @@ function countWords(content) {
 }
 
 function applyPeriodMultiplier(edels, period, words, name) {
-    if (name.toUpperCase() == 'FALSE')
-        return edels + (PERIOD_MULTIPLIERS[period] ?? PERIOD_MULTIPLIERS[DEFAULT_PERIOD]);
+    if (name.toUpperCase() == "FALSE")
+        return edels + (PERIOD_MULTIPLIERS[DEFAULT_PERIOD]);
 
-    if (period === 'Monthly Event'){
+    else if (period === 'Monthly Event'){
         if(words >= 200)
             return edels + (PERIOD_MULTIPLIERS[period] ?? PERIOD_MULTIPLIERS[DEFAULT_PERIOD]);
         else
