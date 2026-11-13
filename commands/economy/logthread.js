@@ -709,7 +709,15 @@ module.exports = {
 
                     await action.update({ components: [buildReviewButtons(true)] });
                     reviewCollector.stop(action.customId);
-                    if (action.customId === 'logthread_review_cancel') return;
+                    if (action.customId === 'logthread_review_cancel') {
+                        const cancelembed = new EmbedBuilder()
+                            .setTitle(`❌ Submission Rejected`)
+                            .setColor(0xEBBCA2)
+                            .setDescription(`No edels for you!`);
+
+                        await interaction.editReply({ embeds: [cancelembed], components: [] });
+                        return;
+                    }
 
                     try {
                         const grantEmbed = await grantEdels(payoutSnapshot, astra2, solis2, luna2);
