@@ -721,7 +721,8 @@ module.exports = {
 
                     try {
                         const grantEmbed = await grantEdels(payoutSnapshot, astra2, solis2, luna2);
-                        await reviewChannel.send({ embeds: [grantEmbed] });
+                        await reviewMessage.reply({ embeds: [grantEmbed] });
+                        //await reviewChannel.send({ embeds: [grantEmbed] });
                     } catch (err) {
                         logInteractionError('Logthread grant failed', err, action, {
                             period: finalPeriod,
