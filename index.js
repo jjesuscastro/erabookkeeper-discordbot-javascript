@@ -95,7 +95,7 @@ client.on('interactionCreate', async interaction => {
 });
 
 client.on('messageReactionAdd', async (reaction, user) => {
-    if (user.bot || reaction.emoji.name !== '🎨') return;
+    if (user.bot || reaction.emoji.name !== '🎨'|| reaction.emoji.name !== '🖌️') return;
 
     var destinationId = process.env.FORWARD_CHANNEL_ID;
     if (!destinationId) {
