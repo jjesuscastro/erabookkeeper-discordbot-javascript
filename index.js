@@ -97,12 +97,15 @@ client.on('interactionCreate', async interaction => {
 client.on('messageReactionAdd', async (reaction, user) => {
     if (user.bot || reaction.emoji.name !== '🎨') return;
 
-    const destinationId = process.env.FORWARD_CHANNEL_ID;
+    var destinationId = process.env.FORWARD_CHANNEL_ID;
     if (!destinationId) {
         console.error('Cannot forward art-reacted message: FORWARD_CHANNEL_ID is not configured.');
         return;
     }
 
+    if (reaction.emoji.name == '🖌️') 
+        destinationId = 1517194272846118993;
+    
     try {
         if (reaction.partial) await reaction.fetch();
         const message = reaction.message.partial ? await reaction.message.fetch() : reaction.message;
