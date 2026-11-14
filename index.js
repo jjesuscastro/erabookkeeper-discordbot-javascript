@@ -118,11 +118,12 @@ client.on('messageReactionAdd', async (reaction, user) => {
                 throw new Error('FORWARD_CHANNEL_ID must refer to a text channel the bot can access.');
             }
 
+            const authorId = message.author.id;
             const author = message.author?.tag || 'Unknown user';
             const sourceChannel = message.channel.name ? `#${message.channel.name}` : 'a channel';
             const attachmentLinks = [...message.attachments.values()].map(file => file.url);
             const body = [message.content, ...attachmentLinks].filter(Boolean).join('\n');
-            const attribution = `🎨 **${author}** in <#${message.channel.id}>`;
+            const attribution = `🎨 **<@${authorId}>** in <#${message.channel.id}>`;
             //const attribution = `🎨 **${author}** in <#${message.channel.id}>\n> [link to post](${message.url})`;
             const maxBodyLength = Math.max(0, 2000 - attribution.length - 5);
             const forwardedBody = body.length > maxBodyLength ? `${body.slice(0, maxBodyLength - 1)}…` : body;
