@@ -104,7 +104,7 @@ client.on('messageReactionAdd', async (reaction, user) => {
     }
 
     if (reaction.emoji.name == '🖌️') 
-        destinationId = 1517194272846118993;
+        destinationId = '1517194272846118993';
     
     try {
         if (reaction.partial) await reaction.fetch();
